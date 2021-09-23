@@ -1,4 +1,4 @@
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 from .functions import Functions
 from .api import Generator, Settings, Sink, log
 import os
@@ -19,7 +19,12 @@ class JinjaBasedGenerator(Generator):
             templates_folder = "."
         self._templates_folder = templates_folder
         self._templates_env = Environment(
-            loader=FileSystemLoader(self._templates_folder))
+            loader=FileSystemLoader(self._templates_folder),
+            autoescape=select_autoescape(
+                disabled_extensions=('ttl', 'txt'),
+                default_for_string=True,
+                default=True
+            ))
 
     def __repr__(self):
         abs_folder = os.path.abspath(self._templates_folder)
