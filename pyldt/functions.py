@@ -11,17 +11,17 @@ class Functions:
         }
 
 
-def turtle_format(content, type):
+def turtle_format(content, type_name):
     quotes = "'"
-    if type.startswith('@'):
-        suffix = type
-        type = "xsd:string" # assuming string content for further quoting rules
+    if type_name.startswith('@'):
+        suffix = type_name
+        type_name = "xsd:string" # assuming string content for further quoting rules
     else:
-        suffix = "^^" + type
+        suffix = "^^" + type_name
 
     # todo support other types of formatting + enforce rules https://www.w3.org/TR/turtle/#sec-grammar-grammar
 
-    if type == "xsd:string":
+    if type_name == "xsd:string":
         #deal with escapes
         content = content.replace('\\', '\\\\')  # odd to read, but this escapes single \ to double \\
 

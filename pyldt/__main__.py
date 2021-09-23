@@ -38,14 +38,14 @@ def make_sources(args: argparse.Namespace) -> dict:
     if args.input is not None:
         inputs['_'] = CSVFileSource(args.input)
     if args.sets is not None:
-        assert True == False, "failing --sets  to load additional input sets is not yet supported"
+        assert True is False, "failing --sets  to load additional input sets is not yet supported"
     return inputs
 
 def make_sink(args:argparse.Namespace ) -> Sink:
     if args.output is None:
         return StdOutSink()
     #else
-    assert True == False, "failing --output is not yet supported, we just dump results to stdout for now"
+    assert True is False, "failing --output is not yet supported, we just dump results to stdout for now"
 
 def main():
     """

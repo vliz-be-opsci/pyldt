@@ -27,8 +27,8 @@ class AssertingSink:
 def get_expected_parts(outfile):
     parts = ['']
     n = 0
-    with open(outfile, 'r') as input:
-        for line in input:
+    with open(outfile, 'r') as content:
+        for line in content:
             if not line.startswith('#'):
                 parts[n] = parts[n] + line
             else:

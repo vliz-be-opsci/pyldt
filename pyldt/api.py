@@ -20,7 +20,6 @@ class Sink(ABC):
         """
         writes out the part to the sink
         """
-        pass
 
 
 class StdOutSink(Sink) :
@@ -111,4 +110,3 @@ class Generator(ABC):
         :type inputs: dict
         :param settings: Settings object holding the
         """
-        pass
