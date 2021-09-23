@@ -35,7 +35,7 @@ class SourceFactory:
     @staticmethod
     def mime_from_url(url: str) -> str:
         # just get the header, no content yet
-        response = requests.head(identifier, allow_redirects=True)
+        response = requests.head(url, allow_redirects=True)
         if response.status_code == 200:
             mime = response.info().get_content_type()
             cdhead = response.headers.get('Content-Disposition')
