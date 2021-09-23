@@ -1,32 +1,46 @@
 # -*- coding: utf-8 -*-
 import argparse
-import sys
 
 from .generator import Generator, JinjaBasedGenerator
-from .api import Sink, Source, Settings, log
+from .api import Sink, Settings, log
 from .sources import SourceFactory
 from .sinks import SinkFactory
 
 
 def get_arg_parser():
     """
-    Defines the arguments to this script by using Python's [argparse](https://docs.python.org/3/library/argparse.html)
-
+    Defines the arguments to this script by using Python's
+    [argparse](https://docs.python.org/3/library/argparse.html)
     """
-    parser = argparse.ArgumentParser(description='Produces LD triples out of various datasources using a template',
-                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description='Produces LD triples a Template',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('-n', '--name', action='store', required=True, help='Speficies the name of the template to use')
+    parser.add_argument(
+        '-n', '--name',
+        action='store', required=True,
+        help='Speficies the name of the template to use')
 
     # TODO make -s
     #   ask for 2 arguments - name and inputfile
     #   be able to be used multiple times --> action = append?
-    parser.add_argument('-s', '--sets', help='Adds a set to the process' )
+    parser.add_argument(
+        '-s', '--sets',
+        help='Adds a set to the process')
 
-    parser.add_argument('-t', '--templates', help='Passes the context folder holding all the templates', default='.')
-    parser.add_argument('-i', '--input', help='Specifies the base input set to run over')
-    parser.add_argument('-o', '--output', help='Specifies where to write the output to - van be a {{template}} pattern itself.')
-    parser.add_argument('-f', '--flags', help='Modifies the mode of operation through some flags')
+    parser.add_argument(
+        '-t', '--templates',
+        help='Passes the context folder holding all the templates',
+        default='.')
+    parser.add_argument(
+        '-i', '--input',
+        help='Specifies the base input set to run over')
+    parser.add_argument(
+        '-o', '--output',
+        help='Specifies where to write the output, can use {uritemplate}.')
+    parser.add_argument(
+        '-f', '--flags',
+        help='Modifies the mode of operation through some flags')
     return parser
 
 
@@ -40,11 +54,11 @@ def make_sources(args: argparse.Namespace) -> dict:
     if args.input is not None:
         inputs['_'] = SourceFactory.make_source(args.input)
     if args.sets is not None:
-        assert False, "failing --sets  to load additional input sets is not yet supported"
+        assert False, "failing: --sets is not yet supported"
     return inputs
 
 
-def make_sink(args:argparse.Namespace ) -> Sink:
+def make_sink(args: argparse.Namespace) -> Sink:
     return SinkFactory.make_sink(args.output)
 
 

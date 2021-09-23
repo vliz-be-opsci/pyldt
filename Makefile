@@ -10,3 +10,6 @@ test:
 
 install:
 	@python setup.py install
+
+lint:
+	@flake8 --exclude venv --max-line-length=127

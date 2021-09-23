@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from contextlib import contextmanager
-import os
 import logging
 
 
@@ -27,7 +26,7 @@ class Source(ABC):
     """
     @abstractmethod
     @contextmanager
-    def iterator(self ):
+    def iterator(self):
         return []
 
 
@@ -35,7 +34,7 @@ class Settings:
     """
     Embodies all the actual possible modifiers to the process
     """
-    def __init__(self, modifiers :str = None):
+    def __init__(self, modifiers: str = None):
         self._flatten = True
         self._lowercase = True
         self.load_from_modifiers(modifiers)
@@ -71,9 +70,13 @@ class Generator(ABC):
     Abstract Interface for the actual generation Service
     """
     @abstractmethod
-    def process(self, template_name: str, inputs: dict,  settings: Settings, sink: Sink) -> None:
+    def process(
+        self, template_name: str, inputs: dict, settings: Settings,
+        sink: Sink
+    ) -> None:
         """
-        Process the records found in the _ (base) input and write them to the sink
+        Process the records found in the _ (base) input and write them to
+        the sink
 
         :param templatename: name of the template to use
         :type template_name: str

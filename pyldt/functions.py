@@ -1,6 +1,7 @@
 from uritemplate import URITemplate
 import re
 
+
 class Functions:
     @staticmethod
     def all():
@@ -11,29 +12,38 @@ class Functions:
         }
 
 
-def turtle_format(content, type_name):
+def turtle_format(content, type_name: str):
     quotes = "'"
     if type_name.startswith('@'):
         suffix = type_name
-        type_name = "xsd:string" # assuming string content for further quoting rules
+        # assuming string content for further quoting rules
+        type_name = "xsd:string"
     else:
         suffix = "^^" + type_name
 
-    # todo support other types of formatting + enforce rules https://www.w3.org/TR/turtle/#sec-grammar-grammar
+    # TODO support other types of formatting
+    #    + enforce rules https://www.w3.org/TR/turtle/#sec-grammar-grammar
 
     if type_name == "xsd:string":
-        #deal with escapes
-        content = content.replace('\\', '\\\\')  # odd to read, but this escapes single \ to double \\
+        # deal with escapes
+        # note: code is odd to read, but this escapes single \ to double \\
+        content = content.replace('\\', '\\\\')
 
         if '\n' in content or "'" in content:
             quotes = "'''"
-            content = re.sub(r"([']{3}[']*)", lambda x: "\\'" * len(x.group()), content) # sequences of 3 or more quotes should be escaped '''' --> \'\'\'\' in the content
-        assert "'''" not in content, "ttl format error, failed to avoid triplle quotes in content"
+            content = re.sub(
+                r"([']{3}[']*)",             # sequences of 3 or more quotes...
+                lambda x: "\\'" * len(x.group()),    # should have them escaped
+                content        # so all ''' should become \'\'\' in the content
+            )
+        assert "'''" not in content, "ttl format error: triple quotes in text"
     fmt = quotes + content + quotes + suffix
     return fmt
 
-def uritexpand(template :str, context):
+
+def uritexpand(template: str, context):
     return URITemplate(template).expand(context)
 
-def regexreplace(find :str, replace :str, text :str):
+
+def regexreplace(find: str, replace: str, text: str):
     return re.sub(find, replace, text)

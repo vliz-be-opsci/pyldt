@@ -20,7 +20,8 @@ except ImportError:
 
 # Fixed Package meta-data.
 NAME = 'pyldt'
-DESCRIPTION = 'python implementation of LinkedData Templates support to produce triples out of various datasources'
+DESCRIPTION = 'python implementation of LinkedData Templates' \
+    'to produce triples out of various datasources'
 URL = 'http://www.vliz.be/'
 EMAIL = 'marc.portier@gmail.com'
 AUTHOR = 'Marc Portier'
@@ -39,23 +40,31 @@ TEST_PATTERN = 'test_*.py'
 # Dynamic Packge meta-data  - read from different local files
 here = os.path.abspath(os.path.dirname(__file__))
 # Import the README and use it as the long-description.
-# Note: this will only work if 'README.rst' is present in your MANIFEST.in file!
+# Note: this requires 'README.rst' to be present in your MANIFEST.in file!
 with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = '\n' + f.read()
 
 # Load the requirements from the requirements.txt file
 with io.open(os.path.join(here, 'requirements.txt'), encoding='utf-8') as f:
-    requirements = [ln.strip() for ln in f.readlines() if not ln.startswith('-') and not ln.startswith('#') and ln.strip() != '']
+    requirements = [
+        ln.strip()
+        for ln in f.readlines()
+        if not ln.startswith('-')
+        and not ln.startswith('#')
+        and ln.strip() != ''
+    ]
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
 with io.open(os.path.join(here, NAME, '__version__.py')) as f:
     exec(f.read(), about)
 
+
 # define specific setup commands
 class CommandBase(Command):
     """"AbstractBase for our own commands"""
     user_options = []
+
     def initialize_options(self):
         pass
 
@@ -73,8 +82,11 @@ class TestCommand(CommandBase):
     description = 'Perform the tests'
 
     def run(self):
-        self.status('Discovering tests with pattern %s in folder %s' %(TEST_PATTERN, TEST_FOLDER))
-        suite = unittest.TestLoader().discover(TEST_FOLDER, pattern=TEST_PATTERN)
+        msg_fmt = 'Discovering tests with pattern {0} in folder {1}'
+        self.status(msg_fmt.format(TEST_PATTERN, TEST_FOLDER))
+        suite = unittest.TestLoader().discover(
+            TEST_FOLDER,
+            pattern=TEST_PATTERN)
         runner = unittest.TextTestRunner()
         result = runner.run(suite)
         exit(0 if result.wasSuccessful() else 1)
@@ -92,12 +104,14 @@ class UploadCommand(CommandBase):
             pass
 
         self.status('Building Source and Wheel (universal) distribution')
-        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
+        os.system('{0} setup.py sdist bdist_wheel --universal'.format(
+            sys.executable))
 
         self.status('Uploading the package to PyPi via Twine')
         os.system('twine upload dist/*')
 
         sys.exit()
+
 
 commands = {'upload': UploadCommand, 'test': TestCommand}
 
@@ -123,7 +137,7 @@ setup(
     author=AUTHOR,
     author_email=EMAIL,
     url=URL,
-    test_suite= TEST_FOLDER,
+    test_suite=TEST_FOLDER,
     packages=find_packages(exclude=('tests',)),
     # If your package is a single module, use this instead of 'packages':
     # py_modules=['mypackage'],

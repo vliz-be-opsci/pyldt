@@ -1,9 +1,9 @@
 from .api import Sink
 
 
-class StdOutSink(Sink) :
-    def __init__ (self):
-       pass
+class StdOutSink(Sink):
+    def __init__(self):
+        pass
 
     def add(self, part: str):
         print(part)
@@ -18,4 +18,4 @@ class SinkFactory:
         if identifier is None:
             return StdOutSink()
         # else
-        assert False, "Todo provide implementation for FileSink -- see https://github.com/vliz-be-opsci/pyldt/issues/7"
+        assert False, "TODO implement FileSink -- see pyldt/issues/7"
