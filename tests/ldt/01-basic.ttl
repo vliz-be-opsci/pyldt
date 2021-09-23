@@ -1,0 +1,13 @@
+@prefix ex <https://example.org/> .
+<{{fn.uritexpand("https://vliz.be/code/pyldt/test/item{#id}",_)}}>
+  a ex:test ;
+  ex:name "{{_.name}}"^^xsd:string ;
+  schema:identifier "{{fn.regexreplace('^[^:]*:', '', _.combi)}}" ;
+  {% if _.x and _.y %}geo:location [
+    a geo:Location;
+    geo:lat "{{_.x}}"^^xsd:double ;
+    geo:lon "{{_.y}}"^^xsd:double ;
+  ] ;{% endif %}
+  {% for hl in ['nl', 'fr', 'en'] %}{% set hl_text = _['txt_' + hl] %}{% if hl_text %}schema:description {{fn.ttl_fmt(hl_text,'@' + hl)}} ;{% endif %}
+  {% endfor %}
+.
