@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from contextlib import contextmanager
 import os
-import csv
 import logging
 
 
@@ -22,17 +21,6 @@ class Sink(ABC):
         """
 
 
-class StdOutSink(Sink) :
-    def __init__ (self):
-       pass
-
-    def add(self, part: str):
-        print(part)
-
-    def __repr__(self):
-        return "StdOutSink"
-
-
 class Source(ABC):
     """
     Abstract Interface for input Sources
@@ -42,23 +30,6 @@ class Source(ABC):
     def iterator(self ):
         return []
 
-
-class CSVFileSource(Source):
-    """
-    Source producing iterator over data-set coming from CSV on file
-    """
-    def __init__ (self, csv_file_path):
-        #todo assert if file exists and is readable
-        self._csv = csv_file_path
-
-    @contextmanager
-    def iterator(self):
-        with open(self._csv) as csvfile:
-            csvreader = csv.DictReader(csvfile, delimiter=',')
-            yield csvreader
-
-    def __repr__(self):
-        return "CSVFileSource('%s')" % os.path.abspath(self._csv)
 
 class Settings:
     """

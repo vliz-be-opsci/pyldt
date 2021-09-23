@@ -7,5 +7,7 @@
 
 """
 
-from .api import *
-from .generator import *
+from .api import Sink, Source, Settings
+from .generator import JinjaBasedGenerator
+from .sources import SourceFactory
+from .sinks import SinkFactory

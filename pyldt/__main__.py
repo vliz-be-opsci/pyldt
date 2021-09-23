@@ -2,9 +2,10 @@
 import argparse
 import sys
 
-from .api import *
-from .generator import JinjaBasedGenerator
-
+from .generator import Generator, JinjaBasedGenerator
+from .api import Sink, Source, Settings, log
+from .sources import SourceFactory
+from .sinks import SinkFactory
 
 
 def get_arg_parser():
@@ -33,19 +34,19 @@ def make_service(args: argparse.Namespace) -> Generator:
     template_folder = args.templates
     return JinjaBasedGenerator(template_folder)
 
+
 def make_sources(args: argparse.Namespace) -> dict:
     inputs = dict()
     if args.input is not None:
-        inputs['_'] = CSVFileSource(args.input)
+        inputs['_'] = SourceFactory.make_source(args.input)
     if args.sets is not None:
-        assert True is False, "failing --sets  to load additional input sets is not yet supported"
+        assert False, "failing --sets  to load additional input sets is not yet supported"
     return inputs
 
+
 def make_sink(args:argparse.Namespace ) -> Sink:
-    if args.output is None:
-        return StdOutSink()
-    #else
-    assert True is False, "failing --output is not yet supported, we just dump results to stdout for now"
+    return SinkFactory.make_sink(args.output)
+
 
 def main():
     """

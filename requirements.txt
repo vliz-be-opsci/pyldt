@@ -1,2 +1,5 @@
 jinja2
 uritemplate
+validators
+requests
+rfc6266

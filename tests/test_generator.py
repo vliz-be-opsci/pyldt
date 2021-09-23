@@ -51,7 +51,7 @@ class TestJinjaGenerator(unittest.TestCase):
         settings = Settings()
 
         sets = dict()
-        sets["_"] = CSVFileSource(os.path.join(base, "data.csv"))
+        sets["_"] = SourceFactory.make_source(os.path.join(base, "data.csv"))
 
         sink = AssertingSink(self)
 
