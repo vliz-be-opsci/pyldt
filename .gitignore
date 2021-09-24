@@ -1,6 +1,10 @@
-venv/
 *~
 *.log
+.local/
+
+venv/
+
 __pycache__/
 build/
-.local/
+dist/
+pyldt.egg-info/
