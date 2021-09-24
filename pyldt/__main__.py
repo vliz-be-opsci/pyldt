@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import argparse
-
+import sys
 from .generator import Generator, JinjaBasedGenerator
 from .api import Sink, Settings, log
 from .sources import SourceFactory
@@ -65,7 +65,6 @@ def make_sink(args: argparse.Namespace) -> Sink:
 def main():
     """
     The main entry point to this module.
-
     """
     args = get_arg_parser().parse_args()
 
@@ -83,8 +82,12 @@ def main():
         service.process(args.name, inputs, settings, sink)
 
         log.debug("processing done")
+
     except Exception as e:
-        log.error("processing failed due to %s" % e)
+        errmsg = "pyldt processing failed due to <%s>" % e
+        log.error(errmsg)
+        print("*** ERROR *** " + errmsg, file=sys.stderr)
+
     finally:
         sink.close()
 

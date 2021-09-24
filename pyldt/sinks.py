@@ -4,10 +4,9 @@ import os
 
 
 def assert_writable(file_path):
-    # TODO check file does not exists
-    # Check parent folder is writeable
-    # assert os.access(parent_path, os.W_OK), "Can not write to %s" % _parent_path
-    pass
+    assert not os.path.isfile(file_path), "File to write '%s' alread exists" % file_path
+    parent_path = os.path.dirname(os.path.abspath(file_path))
+    assert os.access(parent_path, os.W_OK), "Can not write to folder '%s' for creating new files" % parent_path
 
 
 class SinkFactory:
@@ -16,7 +15,7 @@ class SinkFactory:
         if identifier is None:
             return StdOutSink()
         # else:
-        if len(variables(identifier)) == 0:  # identifier is not a pattern
+        if len(variables(identifier)) == 0:       # identifier is not a pattern
             return SingleFileSink(identifier)
         # else:                                        #identifier is a pattern
         return PatternedFileSink(identifier)
