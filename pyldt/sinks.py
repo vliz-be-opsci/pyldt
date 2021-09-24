@@ -15,7 +15,8 @@ class SinkFactory:
     def make_sink(identifier: str) -> Sink:
         if identifier is None:
             return StdOutSink()
-        elif len(variables(identifier)) == 0:  # identifier is not a pattern
+        # else:
+        if len(variables(identifier)) == 0:  # identifier is not a pattern
             return SingleFileSink(identifier)
         # else:                                        #identifier is a pattern
         return PatternedFileSink(identifier)
