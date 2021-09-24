@@ -18,29 +18,44 @@ def get_arg_parser():
 
     parser.add_argument(
         '-n', '--name',
-        action='store', required=True,
-        help='Speficies the name of the template to use')
+        action='store',
+        required=True,
+        help='Speficies the name of the template to use'
+    )
 
-    # TODO make -s
-    #   ask for 2 arguments - name and inputfile
-    #   be able to be used multiple times --> action = append?
     parser.add_argument(
-        '-s', '--sets',
-        help='Adds a set to the process')
+        '-s', '--set',
+        nargs=2,                      # each -s should have 2 arguments
+        metavar=('KEY', 'FILE'),      # meaning/purpose of those arguments
+        action="append",              # multiple -s can be combined
+        help='Multiple entries will add different sets under sets["KEY"] to the templating process',
+    )
 
     parser.add_argument(
         '-t', '--templates',
+        metavar="FOLDER",             # meaning of the argument
+        action="store",
+        default='.',                  # local working directory
         help='Passes the context folder holding all the templates',
-        default='.')
+    )
     parser.add_argument(
         '-i', '--input',
-        help='Specifies the base input set to run over')
+        metavar="FILE",               # meaning of the argument
+        action="store",
+        help='Specifies the base input set to run over. Shorthand for -s _ FILE',
+    )
     parser.add_argument(
         '-o', '--output',
-        help='Specifies where to write the output, can use {uritemplate}.')
+        metavar="FILE|PATTERN",       # meaning of the argument
+        action="store",
+        help='Specifies where to write the output, can use {uritemplate}.',
+    )
     parser.add_argument(
         '-f', '--flags',
-        help='Modifies the mode of operation through some flags')
+        metavar=" (no-)ig(norecase),(no-)fl(atten),(no-)it(eration) ",
+        action="store",
+        help='Modifies the mode of operation through some flags',
+    )
     return parser
 
 
@@ -53,8 +68,9 @@ def make_sources(args: argparse.Namespace) -> dict:
     inputs = dict()
     if args.input is not None:
         inputs['_'] = SourceFactory.make_source(args.input)
-    if args.sets is not None:
-        assert False, "failing: --sets is not yet supported"
+    if args.set is not None:
+        for [key, file_name] in args.set:
+            inputs[key] = SourceFactory.make_source(file_name)
     return inputs
 
 
