@@ -45,7 +45,7 @@ def get_expected_parts(outfile):
 
 class TestJinjaGenerator(unittest.TestCase):
 
-    def test_something(self):
+    def test_ldt_templates(self):
         base = os.path.abspath(os.path.dirname(__file__))
         ldt_path = os.path.join(base, 'ldt')
         out_path = os.path.join(base, 'out')
