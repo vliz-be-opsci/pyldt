@@ -74,13 +74,19 @@ def main():
     inputs = make_sources(args)
     sink = make_sink(args)
 
-    log.debug("service  = %s" % service)
-    log.debug("settings = %s" % settings)
-    log.debug("inputs   = %s" % inputs)
-    log.debug("sink     = %s" % sink)
+    try:
+        log.debug("service  = %s" % service)
+        log.debug("settings = %s" % settings)
+        log.debug("inputs   = %s" % inputs)
+        log.debug("sink     = %s" % sink)
 
-    service.process(args.name, inputs, settings, sink)
-    log.debug("processing done")
+        service.process(args.name, inputs, settings, sink)
+
+        log.debug("processing done")
+    except Exception as e:
+        log.error("processing failed due to %s" % e)
+    finally:
+        sink.close()
 
 
 if __name__ == '__main__':

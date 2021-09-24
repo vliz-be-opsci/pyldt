@@ -34,18 +34,17 @@ class JinjaBasedGenerator(Generator):
         self, template_name: str, inputs: dict, settings: Settings, sink: Sink
     ) -> None:
         ldt = self._templates_env.get_template(template_name)
-        base = inputs.pop('_', None)
+        base = inputs.get('_', None)
 
         # TODO check for " collection " modifier --> or missing _ base source
         #  --> then do not iterate but run once !
         # TODO insert also a ctrl object with control info
-        #  --> see pyldt/issues/2
+        #  --> see issues #2
         assert base is not None
         with base.iterator() as data:
             for item in data:
                 # TODO check " flattening " modifier
-                #  --> see pyldt/issues/4
-                record = item
-                log.debug("processing record _ = %s" % record)
-                part = ldt.render(_=record, sets=input, fn=Functions.all())
-                sink.add(part)
+                #  --> see issues #4
+                log.debug("processing item _ = %s" % item)
+                part = ldt.render(_=item, sets=input, fn=Functions.all())
+                sink.add(part, item)

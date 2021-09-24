@@ -21,7 +21,7 @@ def turtle_format(content, type_name: str):
     else:
         suffix = "^^" + type_name
 
-    # TODO support other types of formatting
+    # TODO support other types of formatting see issue #10
     #    + enforce rules https://www.w3.org/TR/turtle/#sec-grammar-grammar
 
     if type_name == "xsd:string":

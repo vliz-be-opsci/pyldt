@@ -13,10 +13,10 @@ class AssertingSink:
         self._parts = parts
         self._index = 0
 
-    def assert_count(self):
+    def _assert_count(self):
         self._test.assertEquals(self._index, len(self._parts))
 
-    def add(self, part):
+    def add(self, part: str, item: dict = None):
         table = str.maketrans('', '', string.whitespace)
         expected = self._parts[self._index].translate(table)
         part = part.translate(table)
@@ -24,6 +24,9 @@ class AssertingSink:
             expected, part,
             "unexpected rendering for part at index %d" % self._index)
         self._index += 1
+
+    def close(self):
+        self._assert_count()
 
 
 def get_expected_parts(outfile):
@@ -68,7 +71,7 @@ class TestJinjaGenerator(unittest.TestCase):
             g.process(name, sets, settings, sink)
 
             # assure all records were passed
-            sink.assert_count()
+            sink.close()
 
 
 if __name__ == '__main__':

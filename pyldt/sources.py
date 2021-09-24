@@ -54,7 +54,7 @@ class SourceFactory:
     def make_source(identifier: str) -> Source:
         if validators.url(identifier):
             mime = SourceFactory.mime_from_remote(identifier)
-            assert False, "TODO remote Source support - see pyldt/issues/8"
+            assert False, "TODO remote Source support - see issues #8"
 
         mime = SourceFactory.mime_from_identifier(identifier)
         sourceClass = SourceFactory.instance()._find(mime)
