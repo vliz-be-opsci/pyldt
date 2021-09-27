@@ -33,9 +33,7 @@ class TestSettings(unittest.TestCase):
             case_parts = list()
             for key in keys:
                 part = key[:(minlen + random.randrange(len(key)-minlen))]   # leading part of key
-                val_pfx = ''
-                if not case_vals[key]:
-                    val_pfx = 'no-'
+                val_pfx = 'no-' if not case_vals[key] else ''
                 case_parts.append(val_pfx + part)
                 case_keys.append(val_pfx + key)
             case_mode = ','.join(case_parts)
