@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from contextlib import contextmanager
-from typing import Dict, List, Tuple
+from typing import Dict
 import logging
 
 
@@ -49,36 +49,63 @@ class Settings:
     Embodies all the actual possible modifiers to the process
     """
 
+    _scheme: Dict[str, Dict] = {
+        "ignorecase":  {
+            "default": True,
+            "description": "Make all keys lowercase so to ignore case in key references"
+        },
+        "flatten":  {
+            "default": True,
+            "description": "Flatten hierarchical strcutures by making hierarchical key references."
+        },
+        "iteration": {
+            "default": True,
+            "description": "Perform the iteration outside of the template to avoid looping inside of it"
+        },
+    }
+    _negation: str = "no-"
+
     def __init__(self, modifiers: str = None):
-        self._flatten = True
-        self._lowercase = True
+        self._values = {key: val['default'] for (key, val) in Settings._scheme.items()}
         self.load_from_modifiers(modifiers)
 
     def load_from_modifiers(self, modifiers: str):
+        """
+        Parses the -m --mode string into actual properties
+        (no-)ig(norecase),(no-)fl(atten),(no-)it(eration)
+        """
         if modifiers is None:
             return
         # else
-        # todo interprete the list of possible modifiers
+        set_parts: Dict[str, bool] = {key: False for (key, val) in self._values.items()}
 
-    def as_modifier_str() -> str:
-        return "todo"
+        for part in modifiers.split(','):
+            val: bool = True
+            if part.startswith(Settings._negation):
+                val = False
+                part = part[len(Settings._negation):]
+            found = [key for (key, val) in self._values.items() if key.startswith(part)]
+            assert len(found) == 1, "ambiguous modifier string '%s' matches list: %s" % (part, found)
+            key = found[0]
+            assert not set_parts[key], "ambiguous modifier string '%s' matches key '%s' which is already set" % (part, key)
+            set_parts[key] = True
+            self._values[key] = val
 
-    def __repr(self) -> str:
-        return "Settings('%s')" % self._as_modifier_str()
+    def as_modifier_str(self) -> str:
+        """
+        Reproduces the modifier string that declares these settings
+        """
+        return ','.join(['no-' + key if not val else key for (key, val) in self._values.items()])
+
+    def __repr__(self) -> str:
+        return "Settings('%s')" % self.as_modifier_str()
 
     @staticmethod
     def describe() -> str:
-        return """
-            Todo - a descriptive string of all available modifiers / flags
-        """
+        return '\n'.join(["%30s: %s" % (key, val['description']) for (key, val) in Settings._scheme.items()])
 
-    @property
-    def flatten(self) -> bool:
-        return self._flatten
-
-    @property
-    def ignorecase(self) -> bool:
-        return self._ignorecase
+    def __getattr__(self, key) -> bool:
+        return self._values[key]
 
 
 class Generator(ABC):

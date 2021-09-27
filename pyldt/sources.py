@@ -1,7 +1,7 @@
 from .api import Source
 from contextlib import contextmanager
 from rfc6266 import parse_headers, ContentDisposition
-from typing import Dict, Callable
+from typing import Callable
 from typeguard import check_type
 import mimetypes
 import validators

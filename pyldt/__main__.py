@@ -51,7 +51,7 @@ def get_arg_parser():
         help='Specifies where to write the output, can use {uritemplate}.',
     )
     parser.add_argument(
-        '-f', '--flags',
+        '-m', '--mode',
         metavar=" (no-)ig(norecase),(no-)fl(atten),(no-)it(eration) ",
         action="store",
         help='Modifies the mode of operation through some flags',
@@ -85,7 +85,7 @@ def main():
     args = get_arg_parser().parse_args()
 
     service = make_service(args)
-    settings = Settings(args.flags)
+    settings = Settings(args.mode)
     inputs = make_sources(args)
     sink = make_sink(args)
 
