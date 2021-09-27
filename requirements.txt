@@ -3,3 +3,4 @@ uritemplate
 validators
 requests
 rfc6266
+typeguard

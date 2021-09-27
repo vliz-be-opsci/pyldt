@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from contextlib import contextmanager
+from typing import Dict, List, Tuple
 import logging
 
 
@@ -53,20 +54,20 @@ class Settings:
         self._lowercase = True
         self.load_from_modifiers(modifiers)
 
-    def load_from_modifiers(self, modifiers):
+    def load_from_modifiers(self, modifiers: str):
         if modifiers is None:
             return
         # else
         # todo interprete the list of possible modifiers
 
-    def as_modifier_str():
+    def as_modifier_str() -> str:
         return "todo"
 
-    def __repr(self):
+    def __repr(self) -> str:
         return "Settings('%s')" % self._as_modifier_str()
 
     @staticmethod
-    def describe():
+    def describe() -> str:
         return """
             Todo - a descriptive string of all available modifiers / flags
         """
@@ -75,6 +76,7 @@ class Settings:
     def flatten(self) -> bool:
         return self._flatten
 
+    @property
     def ignorecase(self) -> bool:
         return self._ignorecase
 
@@ -85,7 +87,7 @@ class Generator(ABC):
     """
     @abstractmethod
     def process(
-        self, template_name: str, inputs: dict, settings: Settings,
+        self, template_name: str, inputs: Dict[str, Source], settings: Settings,
         sink: Sink
     ) -> None:
         """
@@ -95,7 +97,7 @@ class Generator(ABC):
         :param template_name: name of the template to use
         :type template_name: str
         :param input: dict of named Source objects providing content
-        :type inputs: dict
+        :type inputs: Dict[str, Source]
         :param settings: Settings object holding the
         :type settings: Settings
         :param sink: the sink to write result to
