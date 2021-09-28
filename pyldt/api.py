@@ -143,6 +143,7 @@ class Generator(ABC):
             self.queued_item = None
             self.isFirst = True
             self.isLast = False
+            self.index = 0
 
         def take(self, next_item):
             """
@@ -170,10 +171,14 @@ class Generator(ABC):
                 _=item,
                 sets=input,
                 fn=Functions.all(),
-                ctrl={"isFirst": self.isFirst, "isLast": self.isLast, "settings": self.settings, },
+                ctrl={
+                    "isFirst": self.isFirst, "isLast": self.isLast, "index": self.index,
+                    "settings": self.settings,
+                },
             )
             self.sink.add(part, item)
             self.isFirst = False
+            self.index += 1
 
     def process(
         self, template_name: str, inputs: Dict[str, Source], settings: Settings, sink: Sink

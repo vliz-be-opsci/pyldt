@@ -10,4 +10,7 @@
   ] ;{% endif %}
   {% for hl in ['nl', 'fr', 'en'] %}{% set hl_text = _['txt_' + hl] %}{% if hl_text %}schema:description {{fn.ttl_fmt(hl_text,'@' + hl)}} ;{% endif %}
   {% endfor %}
+  {% if ctrl.isFirst %}ex:posFirst "true"^^xsd:boolean;{%endif%}
+  {% if ctrl.isLast %}ex:posLast "true"^^xsd:boolean;{%endif%}
+  ex:position {{fn.ttl_fmt(ctrl.index, "xsd:integer")}};
 .
