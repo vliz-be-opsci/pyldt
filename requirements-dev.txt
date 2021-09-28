@@ -1,2 +1,4 @@
 #docs
 Sphinx
+#lint checking
+flake8
