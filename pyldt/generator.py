@@ -1,6 +1,6 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from .functions import Functions
-from .api import Generator, Settings, Sink, log
+from .api import Generator
+from typing import Callable
 import os
 
 
@@ -30,21 +30,5 @@ class JinjaBasedGenerator(Generator):
         abs_folder = os.path.abspath(self._templates_folder)
         return "JinjaBasedGenerator('%s')" % abs_folder
 
-    def process(
-        self, template_name: str, inputs: dict, settings: Settings, sink: Sink
-    ) -> None:
-        ldt = self._templates_env.get_template(template_name)
-        base = inputs.get('_', None)
-
-        # TODO check for " collection " modifier --> or missing _ base source
-        #  --> then do not iterate but run once !
-        # TODO insert also a ctrl object with control info
-        #  --> see issues #2
-        assert base is not None
-        with base.iterator() as data:
-            for item in data:
-                # TODO check " flattening " modifier
-                #  --> see issues #4
-                log.debug("processing item _ = %s" % item)
-                part = ldt.render(_=item, sets=input, fn=Functions.all())
-                sink.add(part, item)
+    def make_render_fn(self, template_name: str) -> Callable:
+        return self._templates_env.get_template(template_name).render

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from contextlib import contextmanager
-from typing import Dict
+from typing import Dict, Callable
+from .functions import Functions
 import logging
 
 
@@ -65,6 +66,10 @@ class Settings:
     }
     _negation: str = "no-"
 
+    @staticmethod
+    def describe() -> str:
+        return '\n'.join(["%30s: %s" % (key, val['description']) for (key, val) in Settings._scheme.items()])
+
     def __init__(self, modifiers: str = None):
         self._values = {key: val['default'] for (key, val) in Settings._scheme.items()}
         self.load_from_modifiers(modifiers)
@@ -100,22 +105,78 @@ class Settings:
     def __repr__(self) -> str:
         return "Settings('%s')" % self.as_modifier_str()
 
-    @staticmethod
-    def describe() -> str:
-        return '\n'.join(["%30s: %s" % (key, val['description']) for (key, val) in Settings._scheme.items()])
-
-    def __getattr__(self, key) -> bool:
+    def __getattr__(self, key: str) -> bool:
         return self._values[key]
+
+    def __setattr__(self, key: str, val: bool) -> None:
+        if key in ["_values"]:         # actual props to be handled through super
+            super(Settings, self).__setattr__(key, val)
+            return
+        # else  --> dynamic props to be stored in self._values
+        if key not in Settings._scheme.keys():
+            raise KeyError("attribute '%s' not writeable in Settings object" % key)
+        self._values[key] = val
 
 
 class Generator(ABC):
     """
-    Abstract Interface for the actual generation Service
+    Abstract Base Class for the actual generation Service
     """
     @abstractmethod
+    def make_render_fn(self, template_name: str) -> Callable:
+        """
+        Produces the actual render strategy tied to a specific templating implementation
+        """
+
+    def make_processor(self, template_name: str, inputs: Dict[str, Source], settings: Settings, sink: Sink):
+        return Generator.Processor(self.make_render_fn(template_name), inputs, settings, sink)
+
+    class Processor:
+        """
+        Rendition proces Manager - controls queue, manages context
+        """
+        def __init__(self, render_fn: Callable, inputs: Dict[str, Source], settings: Settings, sink: Sink):
+            self.render = render_fn
+            self.inputs = inputs
+            self.settings = settings
+            self.sink = sink
+            self.queued_item = None
+            self.isFirst = True
+            self.isLast = False
+
+        def take(self, next_item):
+            """
+            Takes next item to be rendered and synced (might queue up to next take before actually processing)
+            """
+            assert next_item is not None, "no actual item taken"
+            if self.isFirst and self.queued_item is not None:    # queue on first call
+                self.push()
+            self.queued_item = next_item
+
+        def all_taken(self):
+            """
+            Indicates all items have been taken -- finalization
+            """
+            self.isLast = True
+            self.push()
+
+        def push(self):
+            """
+            Actually pushes the item queued
+            """
+            item = self.queued_item
+            log.debug("processing item _ = %s" % item)
+            part = self.render(
+                _=item,
+                sets=input,
+                fn=Functions.all(),
+                ctrl={"isFirst": self.isFirst, "isLast": self.isLast, "settings": self.settings, },
+            )
+            self.sink.add(part, item)
+            self.isFirst = False
+
     def process(
-        self, template_name: str, inputs: Dict[str, Source], settings: Settings,
-        sink: Sink
+        self, template_name: str, inputs: Dict[str, Source], settings: Settings, sink: Sink
     ) -> None:
         """
         Process the records found in the base input and write them to the sink.
@@ -130,3 +191,14 @@ class Generator(ABC):
         :param sink: the sink to write result to
         :type sink: Sink
         """
+        proc = self.make_processor(template_name, inputs, settings, sink)
+        base = inputs.get('_', None)
+
+        if not settings.iteration or base is None:   # conditions for collection modus
+            settings.iteration = True
+            proc.all_taken()
+        else:                                      # default modus
+            with base.iterator() as data:
+                for item in data:
+                    proc.take(item)
+                proc.all_taken()
