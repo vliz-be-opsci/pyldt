@@ -81,7 +81,7 @@ class CSVFileSource(Source):
 
     @contextmanager
     def iterator(self):
-        with open(self._csv) as csvfile:
+        with open(self._csv, mode="r", encoding="utf-8-sig") as csvfile:
             csvreader = csv.DictReader(csvfile, delimiter=',')
             yield csvreader
 
