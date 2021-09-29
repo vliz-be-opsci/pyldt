@@ -37,7 +37,7 @@ def turtle_format(content, type_name: str):
                 content        # so all ''' should become \'\'\' in the content
             )
         assert "'''" not in content, "ttl format error: triple quotes in text"
-    fmt = quotes + content + quotes + suffix
+    fmt = quotes + str(content) + quotes + suffix
     return fmt
 
 
