@@ -1,5 +1,4 @@
 from .api import Source
-from contextlib import contextmanager
 from rfc6266 import parse_headers, ContentDisposition
 from typing import Callable
 from typeguard import check_type
@@ -79,11 +78,12 @@ class CSVFileSource(Source):
         assert_readable(csv_file_path)
         self._csv = csv_file_path
 
-    @contextmanager
-    def iterator(self):
-        with open(self._csv, mode="r", encoding="utf-8-sig") as csvfile:
-            csvreader = csv.DictReader(csvfile, delimiter=',')
-            yield csvreader
+    def __enter__(self):
+        self._csvfile = open(self._csv, mode="r", encoding="utf-8-sig")
+        return csv.DictReader(self._csvfile, delimiter=',')
+
+    def __exit__(self):
+        self._csvfile.close()
 
     def __repr__(self):
         return "CSVFileSource('%s')" % os.path.abspath(self._csv)

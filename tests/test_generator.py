@@ -43,32 +43,40 @@ def get_expected_parts(outfile):
     return parts
 
 
+def get_indicator_from_name(name: str, splitter: str = '_', fallback: str = None):
+    stem = os.path.splitext(name)[0]
+    indicator = stem[stem.index(splitter) + 1:] if splitter in stem else fallback
+    return indicator
+
+
 class TestJinjaGenerator(unittest.TestCase):
 
-    def test_ldt_templates(self):
+    def test_templates(self):
         base = os.path.abspath(os.path.dirname(__file__))
-        ldt_path = os.path.join(base, 'ldt')
+        tpl_path = os.path.join(base, 'templates')
         out_path = os.path.join(base, 'out')
-        print("using templates in ", ldt_path)
+        inp_path = os.path.join(base, 'in')
 
-        g = JinjaBasedGenerator(ldt_path)
+        g = JinjaBasedGenerator(tpl_path)
 
-        settings = Settings()
-
-        sets = dict()
-        sets["_"] = SourceFactory.make_source(os.path.join(base, "data.csv"))
+        inputs = dict()
+        inp_names = next(os.walk(inp_path), (None, None, []))[2]  # [] if no file
+        for inp_name in inp_names:
+            key = get_indicator_from_name(inp_name, fallback='_')
+            inputs[key] = SourceFactory.make_source(os.path.join(inp_path, inp_name))
 
         sink = AssertingSink(self)
 
-        # read all names (files) in the ldt_path
-        names = next(os.walk(ldt_path), (None, None, []))[2]  # [] if no file
+        # read all names (files) in the tpl_path
+        names = next(os.walk(tpl_path), (None, None, []))[2]  # [] if no file
 
         for name in names:
             # load the expected parts from the matching output-file in the sink
             sink.load_parts(get_expected_parts(os.path.join(out_path, name)))
+            settings = Settings(get_indicator_from_name(name))
 
             # process
-            g.process(name, sets, settings, sink)
+            g.process(name, inputs, settings, sink)
 
             # assure all records were passed
             sink.close()

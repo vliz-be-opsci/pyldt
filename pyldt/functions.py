@@ -13,7 +13,9 @@ class Functions:
 
 
 def turtle_format(content, type_name: str):
-    quotes = "'"
+    if content is None:
+        content = ''
+
     if type_name.startswith('@'):
         suffix = type_name
         # assuming string content for further quoting rules
@@ -24,7 +26,14 @@ def turtle_format(content, type_name: str):
     # TODO support other types of formatting see issue #10
     #    + enforce rules https://www.w3.org/TR/turtle/#sec-grammar-grammar
 
-    if type_name == "xsd:string":
+    quotes = "'"
+    if type_name == "xsd:boolean":
+        # make rigid bool
+        if not isinstance(content, bool):
+            content = not(str(content).lower() in ['', '0', 'no', 'false', 'off'])
+        # serialize to string again
+        content = str(content).lower()
+    elif type_name == "xsd:string":
         # deal with escapes
         # note: code is odd to read, but this escapes single \ to double \\
         content = content.replace('\\', '\\\\')

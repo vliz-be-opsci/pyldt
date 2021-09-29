@@ -1,0 +1,7 @@
+# expected output files are split by lines with leading # marks
+#---- 01
+@prefix ex <https://example.org/> .
+ex:fullset ex:iteration 'false'^^xsd:boolean.
+<https://vliz.be/code/pyldt/test/item#1> ex:name "one"^^xsd:string.
+<https://vliz.be/code/pyldt/test/item#2> ex:name "two"^^xsd:string.
+<https://iso.org/countries/BE> ex:name 'Belgium'@en.

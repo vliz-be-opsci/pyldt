@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from contextlib import contextmanager
 from typing import Dict, Callable
+from collections.abc import Iterable
 from .functions import Functions
 import logging
 
@@ -36,13 +36,19 @@ class Sink(ABC):
 
 class Source(ABC):
     """
-    Abstract Interface for input Sources
+    Abstract Interface for input Sources - mainly context-manager for the actual Iterable to be returned
     """
+    @abstractmethod
+    def __enter__(self) -> Iterable:
+        """
+        Source context is expected to yield an Iterable
+        """
 
     @abstractmethod
-    @contextmanager
-    def iterator(self):
-        return []
+    def __exit__(self, *exc):
+        """
+        Source context cleanup
+        """
 
 
 class Settings:
@@ -118,6 +124,21 @@ class Settings:
         self._values[key] = val
 
 
+class IteratorsFromSources(dict):
+    """
+    Helper class managing the context entry of the various sources.
+    """
+    def __enter__(self):
+        iterators = dict()
+        for name, source in self.items():
+            iterators[name] = source.__enter__()
+        return iterators
+
+    def __exit__(self, *exc):
+        for name, source in self.items():
+            source.__exit__()
+
+
 class Generator(ABC):
     """
     Abstract Base Class for the actual generation Service
@@ -128,16 +149,20 @@ class Generator(ABC):
         Produces the actual render strategy tied to a specific templating implementation
         """
 
-    def make_processor(self, template_name: str, inputs: Dict[str, Source], settings: Settings, sink: Sink):
-        return Generator.Processor(self.make_render_fn(template_name), inputs, settings, sink)
+    def make_processor(self, template_name: str, sets: Dict[str, Iterable], settings: Settings, sink: Sink):
+        return Generator.Processor(self.make_render_fn(template_name), sets, settings, sink)
 
     class Processor:
         """
         Rendition proces Manager - controls queue, manages context
+
+        This mainly introduces
+        - a fifo queue of one item allowing to detect and mark the 'last' element of an iteration
+        - abstracts the actual template rendition to a Callable function producing text out of context **kvargs
         """
-        def __init__(self, render_fn: Callable, inputs: Dict[str, Source], settings: Settings, sink: Sink):
+        def __init__(self, render_fn: Callable, sets: Dict[str, Iterable], settings: Settings, sink: Sink):
             self.render = render_fn
-            self.inputs = inputs
+            self.sets = sets
             self.settings = settings
             self.sink = sink
             self.queued_item = None
@@ -148,8 +173,10 @@ class Generator(ABC):
         def take(self, next_item):
             """
             Takes next item to be rendered and synced (might queue up to next take before actually processing)
+
+            Pushes the previous taken item out, and puts the new item in the queue
             """
-            assert next_item is not None, "no actual item taken"
+            assert next_item is not None, "no actual item taken - use all_taken() for finalization in stead"
             if self.isFirst and self.queued_item is not None:    # queue on first call
                 self.push()
             self.queued_item = next_item
@@ -157,6 +184,8 @@ class Generator(ABC):
         def all_taken(self):
             """
             Indicates all items have been taken -- finalization
+
+            Will push the last item (already queued)
             """
             self.isLast = True
             self.push()
@@ -169,7 +198,7 @@ class Generator(ABC):
             log.debug("processing item _ = %s" % item)
             part = self.render(
                 _=item,
-                sets=input,
+                sets=self.sets,
                 fn=Functions.all(),
                 ctrl={
                     "isFirst": self.isFirst, "isLast": self.isLast, "index": self.index,
@@ -177,6 +206,7 @@ class Generator(ABC):
                 },
             )
             self.sink.add(part, item)
+            self.queued_item = None
             self.isFirst = False
             self.index += 1
 
@@ -196,14 +226,15 @@ class Generator(ABC):
         :param sink: the sink to write result to
         :type sink: Sink
         """
-        proc = self.make_processor(template_name, inputs, settings, sink)
-        base = inputs.get('_', None)
+        # convert inputs into sets
+        with IteratorsFromSources(inputs) as sets:
+            proc = self.make_processor(template_name, sets, settings, sink)
 
-        if not settings.iteration or base is None:   # conditions for collection modus
-            settings.iteration = True
-            proc.all_taken()
-        else:                                      # default modus
-            with base.iterator() as data:
+            if not settings.iteration or '_' not in sets:   # conditions for collection modus
+                settings.iteration = False
+                proc.all_taken()
+            else:                                      # default modus
+                data = sets['_']
                 for item in data:
                     proc.take(item)
                 proc.all_taken()
