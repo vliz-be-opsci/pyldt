@@ -34,7 +34,7 @@ def turtle_format(content, type_name: str):
     if type_name == "xsd:boolean":
         # make rigid bool
         if not isinstance(content, bool):
-            content = not(str(content).lower() in ['', '0', 'no', 'false', 'off'])
+            content = not str(content).lower() in ['', '0', 'no', 'false', 'off']
         # serialize to string again
         content = str(content).lower()
     elif type_name == "xsd:string":
