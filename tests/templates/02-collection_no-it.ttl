@@ -1,9 +1,14 @@
 @prefix ex <https://example.org/> .
 ex:fullset ex:iteration {{fn.ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}}.
 {% if not ctrl.settings.iteration %}
-{% for _ in sets['_'] %}
-<{{fn.uritexpand("https://vliz.be/code/pyldt/test/item{#id}",_)}}> ex:name "{{_.name}}"^^xsd:string.
-{% endfor %}{% endif %}
-{% for country in sets['countries'] %}{% if country['Alpha-2 code'] == 'BE' %}
+    {% set ctrymap = fn.map(sets['countries'], 'Alpha-3 code', 'Alpha-2 code') %}
+    {% for _ in sets['_'] %}
+        {% set nothing = ctrymap.apply(_, 'country', 'ctry2') %}
+<{{fn.uritexpand("https://vliz.be/code/pyldt/test/item{#id}",_)}}>
+    ex:name "{{_.name}}"^^xsd:string;
+    ex:country "{{_.ctry2}}"^xsd:string.
+    {% endfor %}
+    {% for country in sets['countries'] %}{% if country['Alpha-2 code'] == 'BE' %}
 <{{fn.uritexpand("https://iso.org/countries{/Alpha-2 code}", country)}}> ex:name {{fn.ttl_fmt(country['English short name lower case'], '@en')}}.
-{% endif %}{% endfor %}
+    {% endif %}{% endfor %}
+{% endif %}

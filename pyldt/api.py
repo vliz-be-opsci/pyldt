@@ -3,6 +3,7 @@ from typing import Dict, Callable
 from collections.abc import Iterable
 from .functions import Functions
 import logging
+import itertools
 
 
 logname = 'pyldt'
@@ -124,6 +125,30 @@ class Settings:
         self._values[key] = val
 
 
+class ReIterableAccess(dict):
+    def __init__(self, *args, **kwargs):
+        self.update(*args, **kwargs)
+
+    def __getitem__(self, key: str) -> Iterable:
+        it = dict.__getitem__(self, key)
+        # itertools.tee, makes retrieved iterators iterable again after accessing it from this dict again
+        it, cln = itertools.tee(it,2)
+        dict.__setitem__(self, key, it)
+        return cln
+
+    def __setitem__(self, key: str, val: Iterable):
+        assert isinstance(val, Iterable), "This dict only accepts Iterable objects as value"
+        dict.__setitem__(self, key, val)
+
+    def __repr__(self):
+        dictrepr = dict.__repr__(self)
+        return '%s(%s)' % (type(self).__name__, dictrepr)
+
+    def update(self, *args, **kwargs):
+        for k, v in dict(*args, **kwargs).items():
+            self[k] = v
+
+
 class IteratorsFromSources(dict):
     """
     Helper class managing the context entry of the various sources.
@@ -131,8 +156,9 @@ class IteratorsFromSources(dict):
     def __enter__(self):
         iterators = dict()
         for name, source in self.items():
-            iterators[name] = source.__enter__()
-        return iterators
+            it = source.__enter__()
+            iterators[name] = it
+        return ReIterableAccess(iterators)
 
     def __exit__(self, *exc):
         for name, source in self.items():

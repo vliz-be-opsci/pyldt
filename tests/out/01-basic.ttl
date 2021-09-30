@@ -24,6 +24,7 @@ lijnen'''@nl ;
   a ex:test ;
   ex:name "two"^^xsd:string ;
   schema:identifier "else" ;
+  schema:description 'enkel nl'@nl ;
   ex:posLast "true"^^xsd:boolean;
   ex:position '1'^^xsd:integer;
 .

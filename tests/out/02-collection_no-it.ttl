@@ -2,6 +2,10 @@
 #---- 01
 @prefix ex <https://example.org/> .
 ex:fullset ex:iteration 'false'^^xsd:boolean.
-<https://vliz.be/code/pyldt/test/item#1> ex:name "one"^^xsd:string.
-<https://vliz.be/code/pyldt/test/item#2> ex:name "two"^^xsd:string.
+<https://vliz.be/code/pyldt/test/item#1>
+    ex:name "one"^^xsd:string;
+    ex:country "BE"^xsd:string.
+<https://vliz.be/code/pyldt/test/item#2>
+    ex:name "two"^^xsd:string;
+    ex:country "US"^xsd:string.
 <https://iso.org/countries/BE> ex:name 'Belgium'@en.

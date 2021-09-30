@@ -1,14 +1,18 @@
 from uritemplate import URITemplate
 import re
+from collections.abc import Iterable
 
 
 class Functions:
+    _cache = dict()
+
     @staticmethod
     def all():
         return {
             'ttl_fmt': turtle_format,
             'uritexpand': uritexpand,
-            'regexreplace': regexreplace
+            'regexreplace': regexreplace,
+            'map': map_build,
         }
 
 
@@ -56,3 +60,35 @@ def uritexpand(template: str, context):
 
 def regexreplace(find: str, replace: str, text: str):
     return re.sub(find, replace, text)
+
+
+class ValueMapper:
+    def __init__(self):
+        self._map = dict()
+
+    def add(self, key, val):
+        if key in self._map:
+            assert val == self._map[key], "duplicate key '%s' with distinct values not allowed to build map" % key
+        self._map[key] = val
+
+    def apply(self, record: dict, origin_name: str, target_name: str, fallback=None) -> None:
+        assert target_name not in record, "applying map refuses to overwrite content already in record"
+        key = record[origin_name]
+        val = self._map.get(key, fallback)
+        record[target_name] = val
+
+
+def map_build(set: Iterable, key_name: str, val_name: str, cached_as: str = None) -> ValueMapper:
+    assert key_name, "cannot build map without valid key-name"
+    assert val_name, "cannot build map without valid val-name"
+    if cached_as is not None and cached_as in Functions._cache:
+        return Functions._cache[cached_as]
+    # else - make map
+    map = ValueMapper()
+    # - populate it
+    for item in set:
+        map.add(item[key_name], item[val_name])
+    # add it to the cache
+    if cached_as is not None:
+        Functions._cache[cached_as] = map
+    return map
