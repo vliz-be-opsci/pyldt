@@ -18,74 +18,101 @@ class Functions:
         }
 
 
+def turtle_value(content, quote, type_name, suffix=None):
+    if suffix is None:
+        suffix = "^^" + type_name
+    return quote + str(content) + quote + suffix
+
+
+def turtle_format_boolean(content, quote, suffix):
+    # make rigid bool
+    if not isinstance(content, bool):
+        asbool = str(content).lower() not in ['', '0', 'no', 'false', 'off']
+        content = asbool
+    # serialize to string again
+    return turtle_value(str(content).lower(), quote, "xsd:boolean")
+
+
+def turtle_format_integer(content, quote, suffix):
+    # make rigid int
+    if not isinstance(content, int):
+        asint = int(str(content))
+        assert str(content) == str(asint), "int format does not round-trip [ %s <> %s ]" % (str(content), str(asint))
+        content = asint
+    # serialize to string again
+    return turtle_value(str(content), quote, "xsd:integer")
+
+
+def turtle_format_double(content, quote, suffix):
+    # make rigid double
+    if not isinstance(content, float):
+        asdbl = float(str(content))
+        assert str(content) == str(asdbl), "double format does not round-trip [ %s <> %s ]" % (str(content), str(asdbl))
+        content = asdbl
+    # serialize to string again
+    return turtle_value(str(content), quote, "xsd:double")
+
+
+def turtle_format_date(content, quote, suffix):
+    # make rigid date
+    if not isinstance(content, date):
+        asdt = parser.isoparse(content).date()
+    else:
+        asdt = content
+    return turtle_value(asdt.isoformat(), quote, "xsd:date")
+
+
+def turtle_format_datetime(content, quote, suffix):
+    # make rigid datetime
+    if not isinstance(content, datetime):
+        asdtm = parser.isoparse(content)
+    else:
+        asdtm = content
+    return turtle_value(asdtm.isoformat(), quote, "xsd:datetime")
+
+
+def turtle_format_string(content, quote, suffix):
+    # deal with escapes -- note: code is odd to read, but this escapes single \ to double \\
+    content = str(content).replace('\\', '\\\\')
+    if '\n' in content or quote in content:
+        triplus_pattern = r"([']{3}[']*)" if quote == "'" else r'(["]{3}["]*)'
+        esc_qt = "\\" + quote                     # escaped quote
+        quote = quote * 3                         # make long quote variant
+        content = re.sub(
+            triplus_pattern,                      # find sequences of 3 or more quotes...
+            lambda x: esc_qt * len(x.group()),    # and have each of them escaped
+            content                               # so all ''' should become \'\'\' in the content
+        )
+    assert quote not in content, "ttl format error: still having applied quote format (%s) in text content" % quote
+    return turtle_value(content, quote, "xsd:string", suffix)
+
+
+TTL_FMT_TYPE_FN = {
+    "xsd:boolean": turtle_format_boolean,
+    "xsd:integer": turtle_format_integer,
+    "xsd:double": turtle_format_double,
+    "xsd:date": turtle_format_date,
+    "xsd:datetime": turtle_format_datetime,
+    "xsd:string": turtle_format_string,
+}
+
+
 def turtle_format(content, type_name: str, quote: str = "'"):
 
     assert quote in "'\"", "ttl format only accepts ' or \" as valid quotes."
     if content is None:
         content = ''
 
+    suffix = None
     if type_name.startswith('@'):
         suffix = type_name
         # assuming string content for further quoting rules
         type_name = "xsd:string"
-    else:
-        suffix = "^^" + type_name
 
-    if type_name == "xsd:boolean":
-        # make rigid bool
-        if not isinstance(content, bool):
-            asbool = str(content).lower() not in ['', '0', 'no', 'false', 'off']
-            content = asbool
-        # serialize to string again
-        content = str(content).lower()
-    elif type_name == "xsd:integer":
-        # make rigid int
-        if not isinstance(content, int):
-            asint = int(str(content))
-            assert str(content) == str(asint), "int format does not round-trip [ %s <> %s ]" % (str(content), str(asint))
-            content = asint
-        # serialize to string again
-        content = str(content)
-    elif type_name == "xsd:double":
-        # make rigid double
-        if not isinstance(content, float):
-            asdbl = float(str(content))
-            assert str(content) == str(asdbl), "double format does not round-trip [ %s <> %s ]" % (str(content), str(asdbl))
-            content = asdbl
-        # serialize to string again
-        content = str(content)
-    elif type_name == "xsd:date":
-        # make rigid date
-        if not isinstance(content, date):
-            asdt = parser.isoparse(content).date()
-        else:
-            asdt = content
-        content = asdt.isoformat()
-    elif type_name == "xsd:datetime":
-        # make rigid datetime
-        if not isinstance(content, datetime):
-            asdtm = parser.isoparse(content)
-        else:
-            asdtm = content
-        content = asdtm.isoformat()
-    elif type_name == "xsd:string":
-        # deal with escapes
-        # note: code is odd to read, but this escapes single \ to double \\
-        content = content.replace('\\', '\\\\')
-        if '\n' in content or quote in content:
-            triplus_pattern = r"([']{3}[']*)" if quote == "'" else r'(["]{3}["]*)'
-            esc_qt = "\\" + quote                     # escaped quote
-            quote = quote * 3                         # make long quote variant
-            content = re.sub(
-                triplus_pattern,                      # find sequences of 3 or more quotes...
-                lambda x: esc_qt * len(x.group()),    # and have each of them escaped
-                content                               # so all ''' should become \'\'\' in the content
-            )
-        assert quote not in content, "ttl format error: still having applied quote format (%s) in text content" % quote
-    else:
-        raise AssertionError("type_name '%s' not supported." % type_name)
-    fmt = quote + str(content) + quote + suffix
-    return fmt
+    type_format_fn = TTL_FMT_TYPE_FN.get(type_name, None)
+    assert type_format_fn is not None, "type_name '%s' not supported." % type_name
+
+    return type_format_fn(content, quote, suffix)
 
 
 def uritexpand(template: str, context):
