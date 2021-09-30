@@ -84,11 +84,11 @@ def map_build(set: Iterable, key_name: str, val_name: str, cached_as: str = None
     if cached_as is not None and cached_as in Functions._cache:
         return Functions._cache[cached_as]
     # else - make map
-    map = ValueMapper()
+    vmap = ValueMapper()
     # - populate it
     for item in set:
-        map.add(item[key_name], item[val_name])
+        vmap.add(item[key_name], item[val_name])
     # add it to the cache
     if cached_as is not None:
-        Functions._cache[cached_as] = map
-    return map
+        Functions._cache[cached_as] = vmap
+    return vmap
