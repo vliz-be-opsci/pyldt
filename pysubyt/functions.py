@@ -1,6 +1,8 @@
 from uritemplate import URITemplate
 import re
 from collections.abc import Iterable
+from datetime import date, datetime
+from dateutil import parser
 
 
 class Functions:
@@ -16,7 +18,9 @@ class Functions:
         }
 
 
-def turtle_format(content, type_name: str):
+def turtle_format(content, type_name: str, quote: str = "'"):
+
+    assert quote in "'\"", "ttl format only accepts ' or \" as valid quotes."
     if content is None:
         content = ''
 
@@ -27,29 +31,59 @@ def turtle_format(content, type_name: str):
     else:
         suffix = "^^" + type_name
 
-    # TODO support other types of formatting see issue #10
-    #    + enforce rules https://www.w3.org/TR/turtle/#sec-grammar-grammar
-
-    quote = "'"
     if type_name == "xsd:boolean":
         # make rigid bool
         if not isinstance(content, bool):
-            content = str(content).lower() not in ['', '0', 'no', 'false', 'off']
+            asbool = str(content).lower() not in ['', '0', 'no', 'false', 'off']
+            content = asbool
         # serialize to string again
         content = str(content).lower()
+    elif type_name == "xsd:integer":
+        # make rigid int
+        if not isinstance(content, int):
+            asint = int(str(content))
+            assert str(content) == str(asint), "int format does not round-trip [ %s <> %s ]" % (str(content), str(asint))
+            content = asint
+        # serialize to string again
+        content = str(content)
+    elif type_name == "xsd:double":
+        # make rigid double
+        if not isinstance(content, float):
+            asdbl = float(str(content))
+            assert str(content) == str(asdbl), "double format does not round-trip [ %s <> %s ]" % (str(content), str(asdbl))
+            content = asdbl
+        # serialize to string again
+        content = str(content)
+    elif type_name == "xsd:date":
+        # make rigid date
+        if not isinstance(content, date):
+            asdt = parser.isoparse(content).date()
+        else:
+            asdt = content
+        content = asdt.isoformat()
+    elif type_name == "xsd:datetime":
+        # make rigid datetime
+        if not isinstance(content, datetime):
+            asdtm = parser.isoparse(content)
+        else:
+            asdtm = content
+        content = asdtm.isoformat()
     elif type_name == "xsd:string":
         # deal with escapes
         # note: code is odd to read, but this escapes single \ to double \\
         content = content.replace('\\', '\\\\')
-
-        if '\n' in content or "'" in content:
-            quote = "'''"
+        if '\n' in content or quote in content:
+            triplus_pattern = r"([']{3}[']*)" if quote == "'" else r'(["]{3}["]*)'
+            esc_qt = "\\" + quote                     # escaped quote
+            quote = quote * 3                         # make long quote variant
             content = re.sub(
-                r"([']{3}[']*)",             # sequences of 3 or more quotes...
-                lambda x: "\\'" * len(x.group()),    # should have them escaped
-                content        # so all ''' should become \'\'\' in the content
+                triplus_pattern,                      # find sequences of 3 or more quotes...
+                lambda x: esc_qt * len(x.group()),    # and have each of them escaped
+                content                               # so all ''' should become \'\'\' in the content
             )
-        assert "'''" not in content, "ttl format error: triple quotes in text"
+        assert quote not in content, "ttl format error: still having applied quote format (%s) in text content" % quote
+    else:
+        raise AssertionError("type_name '%s' not supported." % type_name)
     fmt = quote + str(content) + quote + suffix
     return fmt
 
