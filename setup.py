@@ -19,14 +19,14 @@ except ImportError:
 
 
 # Fixed Package meta-data.
-NAME = 'pyldt'
+NAME = 'pysubyt'
 DESCRIPTION = 'python implementation of LinkedData Templates' \
     'to produce triples out of various datasources'
 URL = 'http://www.vliz.be/'
 EMAIL = 'marc.portier@gmail.com'
 AUTHOR = 'Marc Portier'
 LICENSE = 'MIT'
-CONSOLE_SCRIPTS = ['pyldt = pyldt.__main__:main']
+CONSOLE_SCRIPTS = ['pysubyt = pysubyt.__main__:main']
 TROVE_CLASSES = [
     # Trove classifiers
     # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers

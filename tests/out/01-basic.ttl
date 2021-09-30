@@ -1,7 +1,7 @@
 # expected output files are split by lines with leading # marks
 #---- 01
 @prefix ex <https://example.org/> .
-<https://vliz.be/code/pyldt/test/item#1>
+<https://vliz.be/code/pysubyt/test/item#1>
   a ex:test ;
   ex:name "one"^^xsd:string ;
   schema:identifier "good";
@@ -20,7 +20,7 @@ lijnen'''@nl ;
 .
 #---- 02
 @prefix ex <https://example.org/> .
-<https://vliz.be/code/pyldt/test/item#2>
+<https://vliz.be/code/pysubyt/test/item#2>
   a ex:test ;
   ex:name "two"^^xsd:string ;
   schema:identifier "else" ;

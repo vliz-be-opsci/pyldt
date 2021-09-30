@@ -4,7 +4,7 @@ ex:fullset ex:iteration {{fn.ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}}.
     {% set ctrymap = fn.map(sets['countries'], 'Alpha-3 code', 'Alpha-2 code') %}
     {% for _ in sets['_'] %}
         {% set nothing = ctrymap.apply(_, 'country', 'ctry2') %}
-<{{fn.uritexpand("https://vliz.be/code/pyldt/test/item{#id}",_)}}>
+<{{fn.uritexpand("https://vliz.be/code/pysubyt/test/item{#id}",_)}}>
     ex:name "{{_.name}}"^^xsd:string;
     ex:country "{{_.ctry2}}"^xsd:string.
     {% endfor %}

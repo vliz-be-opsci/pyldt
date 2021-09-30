@@ -1,4 +1,4 @@
-from pyldt import Settings
+from pysubyt import Settings
 from itertools import product
 import random
 import unittest

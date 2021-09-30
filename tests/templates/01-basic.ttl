@@ -1,5 +1,5 @@
 @prefix ex <https://example.org/> .
-<{{fn.uritexpand("https://vliz.be/code/pyldt/test/item{#id}",_)}}>
+<{{fn.uritexpand("https://vliz.be/code/pysubyt/test/item{#id}",_)}}>
   a ex:test ;
   ex:name "{{_.name}}"^^xsd:string ;
   schema:identifier "{{fn.regexreplace('^[^:]*:', '', _.combi)}}" ;

@@ -6,7 +6,7 @@ import logging
 import itertools
 
 
-logname = 'pyldt'
+logname = 'pysubyt'
 logfile = logname + '.log'
 logging.basicConfig(level=logging.DEBUG, filename=logfile)
 log = logging.getLogger(logname)
@@ -132,7 +132,7 @@ class ReIterableAccess(dict):
     def __getitem__(self, key: str) -> Iterable:
         it = dict.__getitem__(self, key)
         # itertools.tee, makes retrieved iterators iterable again after accessing it from this dict again
-        it, cln = itertools.tee(it,2)
+        it, cln = itertools.tee(it, 2)
         dict.__setitem__(self, key, it)
         return cln
 

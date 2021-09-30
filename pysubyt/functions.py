@@ -30,7 +30,7 @@ def turtle_format(content, type_name: str):
     # TODO support other types of formatting see issue #10
     #    + enforce rules https://www.w3.org/TR/turtle/#sec-grammar-grammar
 
-    quotes = "'"
+    quote = "'"
     if type_name == "xsd:boolean":
         # make rigid bool
         if not isinstance(content, bool):
@@ -43,14 +43,14 @@ def turtle_format(content, type_name: str):
         content = content.replace('\\', '\\\\')
 
         if '\n' in content or "'" in content:
-            quotes = "'''"
+            quote = "'''"
             content = re.sub(
                 r"([']{3}[']*)",             # sequences of 3 or more quotes...
                 lambda x: "\\'" * len(x.group()),    # should have them escaped
                 content        # so all ''' should become \'\'\' in the content
             )
         assert "'''" not in content, "ttl format error: triple quotes in text"
-    fmt = quotes + str(content) + quotes + suffix
+    fmt = quote + str(content) + quote + suffix
     return fmt
 
 

@@ -100,7 +100,7 @@ def main():
         log.debug("processing done")
 
     except Exception as e:
-        errmsg = "pyldt processing failed due to <%s>" % e
+        errmsg = "pysubyt processing failed due to <%s>" % e
         log.error(errmsg)
         print("*** ERROR *** " + errmsg, file=sys.stderr)
 

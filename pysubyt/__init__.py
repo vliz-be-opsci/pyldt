@@ -1,8 +1,8 @@
-""" pyldt
+""" pysubyt
 
-.. module:: pyldt
-    :synopsis: python implementation of LinkedData Templates support
-    to produce triples out of various datasources
+.. module:: pysubyt
+    :synopsis: python implementation for Semantic Uplifting by Templates
+    Helps to produces triples out of various datasources
 
 .. moduleauthor:: Marc Portier <marc.portier@gmail.com>
 

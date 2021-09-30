@@ -1,5 +1,5 @@
-from pyldt import SinkFactory
-from pyldt.sinks import SingleFileSink, PatternedFileSink
+from pysubyt import SinkFactory
+from pysubyt.sinks import SingleFileSink, PatternedFileSink
 import tempfile
 import os
 import random
