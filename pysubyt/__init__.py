@@ -15,4 +15,7 @@ from .j2.generator import JinjaBasedGenerator
 
 __all__ = [
     "Sink", "Source", "Settings", "Generator",
-    "JinjaBasedGenerator", "SourceFactory", "SinkFactory"]
+    "SourceFactory", "SinkFactory",
+    "JinjaBasedGenerator",
+    "log"
+]
