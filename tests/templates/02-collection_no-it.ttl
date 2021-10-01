@@ -1,5 +1,8 @@
 @prefix ex <https://example.org/> .
-ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}}.
+ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}};
+    ex:ctrl-first {{ttl_fmt(ctrl.isFirst, "xsd:boolean")}};
+    ex:ctrl-last {{ttl_fmt(ctrl.isLast, "xsd:boolean")}};
+    ex:ctrl-index {{ttl_fmt(ctrl.index, "xsd:integer")}}.
 {% if not ctrl.settings.iteration %}
     {% set ctrymap = map(sets['countries'], 'Alpha-3 code', 'Alpha-2 code') %}
     {% for _ in sets['_'] %}

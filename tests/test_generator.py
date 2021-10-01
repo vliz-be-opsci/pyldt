@@ -1,4 +1,4 @@
-from pysubyt import SourceFactory, JinjaBasedGenerator, Settings
+from pysubyt import SourceFactory, JinjaBasedGenerator, Settings, log
 import unittest
 import os
 import string
@@ -17,6 +17,7 @@ class AssertingSink:
         self._test.assertEquals(self._index, len(self._parts))
 
     def add(self, part: str, item: dict = None):
+        log.debug("part received no. %d:\n--\n%s\n--" % (self._index, part))
         table = str.maketrans('', '', string.whitespace)
         expected = self._parts[self._index].translate(table)
         part = part.translate(table)
@@ -52,6 +53,8 @@ def get_indicator_from_name(name: str, splitter: str = '_', fallback: str = None
 class TestJinjaGenerator(unittest.TestCase):
 
     def test_templates(self):
+        log.debug("beginning test_templates")
+        self.maxDiff = None
         base = os.path.abspath(os.path.dirname(__file__))
         tpl_path = os.path.join(base, 'templates')
         out_path = os.path.join(base, 'out')
@@ -76,10 +79,12 @@ class TestJinjaGenerator(unittest.TestCase):
             settings = Settings(get_indicator_from_name(name))
 
             # process
+            log.debug("processing test-template: %s " % os.path.join(tpl_path, name))
             g.process(name, inputs, settings, sink)
 
             # assure all records were passed
             sink.close()
+        log.debug("ending test_templates")
 
 
 if __name__ == '__main__':

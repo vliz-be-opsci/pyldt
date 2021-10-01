@@ -6,6 +6,7 @@ docu:
 	@python setup.py build_sphinx
 
 test:
+	@echo "##### log of make test @ts=$(shell date --iso=seconds)" > pysubyt.log
 	@python setup.py test
 
 install:
