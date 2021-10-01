@@ -1,16 +1,16 @@
 @prefix ex <https://example.org/> .
-<{{fn.uritexpand("https://vliz.be/code/pysubyt/test/item{#id}",_)}}>
+<{{uritexpand("https://vliz.be/code/pysubyt/test/item{#id}",_)}}>
   a ex:test ;
   ex:name "{{_.name}}"^^xsd:string ;
-  schema:identifier "{{fn.regexreplace('^[^:]*:', '', _.combi)}}" ;
+  schema:identifier "{{regexreplace('^[^:]*:', '', _.combi)}}" ;
   {% if _.x and _.y %}geo:location [
     a geo:Location;
     geo:lat "{{_.x}}"^^xsd:double ;
     geo:lon "{{_.y}}"^^xsd:double ;
   ] ;{% endif %}
-  {% for hl in ['nl', 'fr', 'en'] %}{% set hl_text = _['txt_' + hl] %}{% if hl_text %}schema:description {{fn.ttl_fmt(hl_text,'@' + hl)}} ;{% endif %}
+  {% for hl in ['nl', 'fr', 'en'] %}{% set hl_text = _['txt_' + hl] %}{% if hl_text %}schema:description {{ttl_fmt(hl_text,'@' + hl)}} ;{% endif %}
   {% endfor %}
   {% if ctrl.isFirst %}ex:posFirst "true"^^xsd:boolean;{%endif%}
   {% if ctrl.isLast %}ex:posLast "true"^^xsd:boolean;{%endif%}
-  ex:position {{fn.ttl_fmt(ctrl.index, "xsd:integer")}};
+  ex:position {{ttl_fmt(ctrl.index, "xsd:integer")}};
 .

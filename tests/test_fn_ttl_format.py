@@ -1,4 +1,4 @@
-from pysubyt.functions import Functions
+from pysubyt.j2.functions import Functions
 from typing import Callable
 import unittest
 

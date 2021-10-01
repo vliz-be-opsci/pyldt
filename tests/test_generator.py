@@ -1,7 +1,7 @@
+from pysubyt import SourceFactory, JinjaBasedGenerator, Settings
 import unittest
 import os
 import string
-from pysubyt import SourceFactory, JinjaBasedGenerator, Settings
 
 
 class AssertingSink:

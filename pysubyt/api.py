@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Callable
 from collections.abc import Iterable
-from .functions import Functions
 import logging
 import itertools
 
@@ -225,7 +224,6 @@ class Generator(ABC):
             part = self.render(
                 _=item,
                 sets=self.sets,
-                fn=Functions.all(),
                 ctrl={
                     "isFirst": self.isFirst, "isLast": self.isLast, "index": self.index,
                     "settings": self.settings,

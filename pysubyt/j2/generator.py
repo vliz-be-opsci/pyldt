@@ -1,10 +1,11 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from .api import Generator
+from .. import api
+from .functions import Functions
 from typing import Callable
 import os
 
 
-class JinjaBasedGenerator(Generator):
+class JinjaBasedGenerator(api.Generator):
     """
     Core class for the jinja based LD Templating service.
     """
@@ -24,7 +25,9 @@ class JinjaBasedGenerator(Generator):
                 disabled_extensions=('ttl', 'txt'),
                 default_for_string=True,
                 default=True
-            ))
+            ),
+        )
+        self._templates_env.globals = Functions.all()
 
     def __repr__(self):
         abs_folder = os.path.abspath(self._templates_folder)
