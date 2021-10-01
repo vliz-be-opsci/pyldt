@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 import sys
-import pysubyt
+from pysubyt import Generator, JinjaBasedGenerator, SourceFactory, Sink, SinkFactory, Settings, log
 
 
 def get_arg_parser():

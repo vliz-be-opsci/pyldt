@@ -8,7 +8,7 @@
 
 """
 
-from .api import Sink, Source, Settings, Generator
+from .api import Sink, Source, Settings, Generator, log
 from .sources import SourceFactory
 from .sinks import SinkFactory
 from .j2.generator import JinjaBasedGenerator
