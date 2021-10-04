@@ -3,15 +3,19 @@ ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}};
     ex:ctrl-first {{ttl_fmt(ctrl.isFirst, "xsd:boolean")}};
     ex:ctrl-last {{ttl_fmt(ctrl.isLast, "xsd:boolean")}};
     ex:ctrl-index {{ttl_fmt(ctrl.index, "xsd:integer")}}.
-{% if not ctrl.settings.iteration %}
-    {% set ctrymap = map(sets['countries'], 'Alpha-3 code', 'Alpha-2 code') %}
-    {% for _ in sets['_'] %}
-        {% set nothing = ctrymap.apply(_, 'country', 'ctry2') %}
+{% if not ctrl.settings.iteration -%}
+    {%- set ctrymap = map(sets['countries'], 'Alpha-3 code', 'Alpha-2 code') -%}
+    {% for _ in sets['_'] -%}
+        {%- set nothing = ctrymap.apply(_, 'country', 'ctry2') -%}
 <{{uritexpand("https://vliz.be/code/pysubyt/test/item{#id}",_)}}>
     ex:name "{{_.name}}"^^xsd:string;
     ex:country "{{_.ctry2}}"^xsd:string.
-    {% endfor %}
-    {% for country in sets['countries'] %}{% if country['Alpha-2 code'] == 'BE' %}
+{# force newline #}
+    {%- endfor %}
+    {%- for country in sets['countries'] -%}
+        {%- if country['Alpha-2 code'] == 'BE' -%}
 <{{uritexpand("https://iso.org/countries{/Alpha-2 code}", country)}}> ex:name {{ttl_fmt(country['English short name lower case'], '@en')}}.
-    {% endif %}{% endfor %}
-{% endif %}
+{# force newline #}
+        {%- endif -%}
+    {%- endfor %}
+{%- endif %}

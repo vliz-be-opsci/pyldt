@@ -1,7 +1,6 @@
 from pysubyt import SourceFactory, JinjaBasedGenerator, Settings, log
 import unittest
 import os
-import string
 
 
 class AssertingSink:
@@ -18,9 +17,8 @@ class AssertingSink:
 
     def add(self, part: str, item: dict = None):
         log.debug("part received no. %d:\n--\n%s\n--" % (self._index, part))
-        table = str.maketrans('', '', string.whitespace)
-        expected = self._parts[self._index].translate(table)
-        part = part.translate(table)
+        expected = self._parts[self._index].strip()
+        part = part.strip()
         self._test.assertEquals(
             expected, part,
             "unexpected rendering for part at index %d" % self._index)

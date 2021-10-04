@@ -3,28 +3,28 @@
 @prefix ex <https://example.org/> .
 <https://vliz.be/code/pysubyt/test/item#1>
   a ex:test ;
-  ex:name "one"^^xsd:string ;
+  ex:name "one"^^xsd:string;
   schema:identifier "good";
   geo:location [
     a geo:Location;
-    geo:lat "34.85"^^xsd:double ;
-    geo:lon "9.33"^^xsd:double ;
-  ] ;
+    geo:lat "34.85"^^xsd:double;
+    geo:lon "9.33"^^xsd:double;
+  ];
   schema:description '''een tekst over
 meerdere \'\'\'\'\'
-lijnen'''@nl ;
-  schema:description '''ceci n'est pas une texte'''@fr ;
-  schema:description 'As \\ said before'@en ;
+lijnen'''@nl;
+  schema:description '''ceci n'est pas une texte'''@fr;
+  schema:description 'As \\ said before'@en;
   ex:posFirst "true"^^xsd:boolean;
-  ex:position '0'^^xsd:integer;
-.
+
+  ex:position '0'^^xsd:integer.
 #---- 02
 @prefix ex <https://example.org/> .
 <https://vliz.be/code/pysubyt/test/item#2>
   a ex:test ;
-  ex:name "two"^^xsd:string ;
-  schema:identifier "else" ;
-  schema:description 'enkel nl'@nl ;
+  ex:name "two"^^xsd:string;
+  schema:identifier "else";
+  schema:description 'enkel nl'@nl;
   ex:posLast "true"^^xsd:boolean;
-  ex:position '1'^^xsd:integer;
-.
+
+  ex:position '1'^^xsd:integer.
