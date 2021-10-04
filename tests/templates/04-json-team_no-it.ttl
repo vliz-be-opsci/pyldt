@@ -1,0 +1,9 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+{% for colleague in sets['team'] -%}
+<{{uritexpand("https://orcid.org{/orcid}", colleague)}}>
+    a foaf:Person;
+    foaf:name {{ ttl_fmt(colleague.name, "xsd:string") }}.
+{# force newline #}
+{%- endfor %}

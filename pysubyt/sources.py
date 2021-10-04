@@ -1,4 +1,4 @@
-from .api import Source
+from .api import Source, log
 from rfc6266 import parse_headers, ContentDisposition
 from typing import Callable
 from typeguard import check_type
@@ -6,7 +6,6 @@ import mimetypes
 import validators
 import requests
 import os
-import csv
 
 
 def assert_readable(file_path):
@@ -70,23 +69,56 @@ class SourceFactory:
         return source
 
 
-class CSVFileSource(Source):
-    """
-    Source producing iterator over data-set coming from CSV on file
-    """
-    def __init__(self, csv_file_path):
-        assert_readable(csv_file_path)
-        self._csv = csv_file_path
+try:
+    import csv
 
-    def __enter__(self):
-        self._csvfile = open(self._csv, mode="r", encoding="utf-8-sig")
-        return csv.DictReader(self._csvfile, delimiter=',')
+    class CSVFileSource(Source):
+        """
+        Source producing iterator over data-set coming from CSV on file
+        """
+        def __init__(self, csv_file_path):
+            assert_readable(csv_file_path)
+            self._csv = csv_file_path
 
-    def __exit__(self):
-        self._csvfile.close()
+        def __enter__(self):
+            self._csvfile = open(self._csv, mode="r", encoding="utf-8-sig")
+            return csv.DictReader(self._csvfile, delimiter=',')
 
-    def __repr__(self):
-        return "CSVFileSource('%s')" % os.path.abspath(self._csv)
+        def __exit__(self):
+            self._csvfile.close()
+
+        def __repr__(self):
+            return "CSVFileSource('%s')" % os.path.abspath(self._csv)
+
+    SourceFactory.register("text/csv", CSVFileSource)
+except ImportError:
+    log.warn("Python CSV module not available -- disabling CSV support!")
 
 
-SourceFactory.register("text/csv", CSVFileSource)
+try:
+    import json
+
+    class JsonFileSource(Source):
+        """
+        Source producing iterator over data-set coming from json on file
+        """
+        def __init__(self, json_file_path):
+            assert_readable(json_file_path)
+            self._json = json_file_path
+
+        def __enter__(self):
+            # note this is loading everything in memory -- will not work for large sets
+            # we might need to consider (json-stream)[https://pypi.org/project/json-stream/] in the future
+            with open(self._json, mode="r", encoding="utf-8-sig") as jsonfile:
+                data = json.load(jsonfile)
+            return iter(data)
+
+        def __exit__(self):
+            pass
+
+        def __repr__(self):
+            return "JsonFileSource('%s')" % os.path.abspath(self._json)
+
+    SourceFactory.register("application/json", JsonFileSource)
+except ImportError:
+    log.warn("Python JSON module not available -- disabling JSON support!")
