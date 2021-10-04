@@ -111,6 +111,8 @@ try:
             # we might need to consider (json-stream)[https://pypi.org/project/json-stream/] in the future
             with open(self._json, mode="r", encoding="utf-8-sig") as jsonfile:
                 data = json.load(jsonfile)
+                if not isinstance(data, list):
+                    data = [data]
             return iter(data)
 
         def __exit__(self):

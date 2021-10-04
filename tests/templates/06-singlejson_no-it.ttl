@@ -1,0 +1,6 @@
+{#-
+ #  This template simply ensures that single json structs are iterable as a whole
+-#}
+{%- for item in sets['basemap'] -%}
+<{{uritexpand('https://postcodes.be/BE{/eight,four,five,zero}', item)}} ex:placename "Bredene"@nl.
+{%- endfor -%}
