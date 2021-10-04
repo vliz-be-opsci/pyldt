@@ -1,3 +1,9 @@
+{#-
+ #  This template shows basic usage of operation and some essential functions:
+ #    * uritemplate-expansion,
+ #    * regex-replacements
+ #    * specific urtle (ttl) formatting support
+-#}
 @prefix ex <https://example.org/> .
 <{{uritexpand("https://vliz.be/code/pysubyt/test/item{#id}",_)}}>
   a ex:test ;

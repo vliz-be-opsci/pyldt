@@ -1,3 +1,6 @@
+{#-
+ #  This template shows how to create and apply a translation map from one of the input sets
+-#}
 @prefix ex <https://example.org/> .
 ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}};
     ex:ctrl-first {{ttl_fmt(ctrl.isFirst, "xsd:boolean")}};
