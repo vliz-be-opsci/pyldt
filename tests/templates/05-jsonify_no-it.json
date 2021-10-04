@@ -1,0 +1,6 @@
+{#-
+  This template shows how one can use the built-in tojson filter of jinja2 to just produce standard json output
+-#}
+{%- set team = [] -%}
+{%- for member in sets['team'] -%}{%- set ign = team.append(member) -%}{%- endfor-%}
+{{ team | tojson('  ') }}
