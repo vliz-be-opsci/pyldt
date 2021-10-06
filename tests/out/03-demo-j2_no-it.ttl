@@ -11,8 +11,8 @@
     ex:in_country <https://countries.org/iso-3/USA>
 .
 <https://countries.org/iso-3/BEL> a ex:country;
-    schema:title ''@en
+    schema:title 'Belgium'@en
 .
 <https://countries.org/iso-3/USA> a ex:country;
-    schema:title ''@en
+    schema:title 'United States'@en
 .
