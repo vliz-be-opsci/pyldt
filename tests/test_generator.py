@@ -1,9 +1,9 @@
-from pysubyt import SourceFactory, JinjaBasedGenerator, Settings, log
+from pysubyt import SourceFactory, Sink, JinjaBasedGenerator, Settings, log
 import unittest
 import os
 
 
-class AssertingSink:
+class AssertingSink(Sink):
     def __init__(self, test):
         self._test = test
         self._parts = []

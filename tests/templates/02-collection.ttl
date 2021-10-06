@@ -1,21 +1,23 @@
 {#-
  #  This template shows how to create and apply a translation map from one of the input sets
- #     but does so in no-it "one run" or "collection mode"
+ #    and does so in classic iteration mode
 -#}
+{% if ctrl.isFirst %}
 @prefix ex <https://example.org/> .
 ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}};
     ex:ctrl-first {{ttl_fmt(ctrl.isFirst, "xsd:boolean")}};
     ex:ctrl-last {{ttl_fmt(ctrl.isLast, "xsd:boolean")}};
     ex:ctrl-index {{ttl_fmt(ctrl.index, "xsd:integer")}}.
-{% if not ctrl.settings.iteration -%}
-    {%- set ctrymap = map(sets['countries'], 'Alpha-3 code', 'Alpha-2 code') -%}
-    {% for _ in sets['_'] -%}
-        {%- set nothing = ctrymap.apply(_, 'country', 'ctry2') -%}
+{% endif -%}
+
+{%- set ctrymap = map(sets['countries'], 'Alpha-3 code', 'Alpha-2 code', 'ctrymap') -%}
+{#- note: using the cache-key in the map() construct avoids duplicate work in iteration mode #}
+{%- set nothing = ctrymap.apply(_, 'country', 'ctry2') -%}
 <{{uritexpand("https://vliz.be/code/pysubyt/test/item{#id}",_)}}>
     ex:name "{{_.name}}"^^xsd:string;
     ex:country "{{_.ctry2}}"^xsd:string.
-{# force newline #}
-    {%- endfor %}
+
+{% if ctrl.isLast %}
     {%- for country in sets['countries'] -%}
         {%- if country['Alpha-2 code'] == 'BE' -%}
 <{{uritexpand("https://iso.org/countries{/Alpha-2 code}", country)}}> ex:name {{ttl_fmt(country['English short name lower case'], '@en')}}.
