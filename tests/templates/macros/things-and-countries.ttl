@@ -7,7 +7,7 @@
 
 {% macro ttl_country(country) -%}
 {{ uri_country(country['Alpha-3 code'])}} a ex:country;
-    schema:title {{ttl_fmt(country.name, "@en")}}
+    schema:title {{ttl_fmt(country['English short name lower case'], "@en")}}
 .
 {% endmacro %}
 
