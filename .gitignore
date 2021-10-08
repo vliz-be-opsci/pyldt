@@ -1,8 +1,4 @@
-*~
 *.log
-.local/
-
-venv/
 
 __pycache__/
 build/
