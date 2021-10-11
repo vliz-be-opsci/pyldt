@@ -1,6 +1,6 @@
 init:
-	@pip install -r requirements.txt
-	@pip install -r requirements-dev.txt
+	@pip install -r requirements.txt -U
+	@pip install -r requirements-dev.txt -U
 
 docu:
 	@python setup.py build_sphinx

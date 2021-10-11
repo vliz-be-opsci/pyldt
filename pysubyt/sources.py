@@ -27,6 +27,7 @@ class SourceFactory:
         self._register[mime] = sourceClass
 
     def _find(self, mime: str):
+        assert mime in self._register, "no Source class available for mime '%s'" % mime
         return self._register[mime]
 
     @staticmethod
@@ -63,6 +64,7 @@ class SourceFactory:
             assert False, "TODO remote Source support - see issues #8"
 
         mime: str = SourceFactory.mime_from_identifier(identifier)
+        assert mime is not None, "no valid mime derived from identifier '%s'" % identifier
         sourceClass: Callable[[str], Source] = SourceFactory.instance()._find(mime)
         source: Source = sourceClass(identifier)
 
