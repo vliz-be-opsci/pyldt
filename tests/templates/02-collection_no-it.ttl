@@ -2,7 +2,7 @@
  #  This template shows how to create and apply a translation map from one of the input sets
  #     but does so in no-it "one run" or "collection mode"
 -#}
-@prefix ex <https://example.org/> .
+@prefix ex: <https://example.org/02-collection_no-it/> .
 ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}};
     ex:ctrl-first {{ttl_fmt(ctrl.isFirst, "xsd:boolean")}};
     ex:ctrl-last {{ttl_fmt(ctrl.isLast, "xsd:boolean")}};

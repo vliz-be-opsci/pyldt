@@ -1,7 +1,8 @@
 {#-
- #  This template mainly shows of some standard tricks available in jinja2 to optimise template-management 
+ #  This template mainly shows of some standard tricks available in jinja2 to optimise template-management
 -#}
-{%- import 'macros/things-and-countries.ttl' as tac -%}
+@prefix ex: <https://example.org/03-demo-j2_no-it/>.
+{% import 'macros/things-and-countries.ttl' as tac -%}
 {% if ctrl.isFirst -%}{# executes only on first iteration -- equaly so in no-iteration modus -#}
 {% include 'includes/prefixes.ttl' %}
 {% endif %}

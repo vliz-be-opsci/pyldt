@@ -1,6 +1,6 @@
 # expected output files are split by lines with leading # marks
 #---- 01
-@prefix ex <https://example.org/> .
+@prefix ex: <https://example.org/02-collection_no-it/> .
 ex:fullset ex:iteration 'false'^^xsd:boolean;
     ex:ctrl-first 'true'^^xsd:boolean;
     ex:ctrl-last 'true'^^xsd:boolean;

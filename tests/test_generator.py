@@ -61,10 +61,16 @@ class TestJinjaGenerator(unittest.TestCase):
         g = JinjaBasedGenerator(tpl_path)
 
         inputs = dict()
-        inp_names = next(os.walk(inp_path), (None, None, []))[2]  # [] if no file
+        inp_content = next(os.walk(inp_path), (None, None, [])) #  the stuff in the folder
+        inp_names = list(inp_content[2])   # the files
+        inp_names.extend(inp_content[1])   # the folders too
         for inp_name in inp_names:
             key = get_indicator_from_name(inp_name, fallback='_')
+            assert key not in inputs, "duplicate data-set key '%' for input '%s' overwriting object[%s]" % (key, inp_name, inputs[key])
             inputs[key] = SourceFactory.make_source(os.path.join(inp_path, inp_name))
+
+
+        self.assertTrue('_' in inputs, 'the base set should be available')
 
         sink = AssertingSink(self)
 

@@ -1,6 +1,7 @@
 {#-
  #  This template simply ensures that single json structs are iterable as a whole
 -#}
-{%- for item in sets['digits'] -%}
+@prefix ex: <https://example.org/06-singlejson_noit/>.
+{% for item in sets['digits'] -%}
 <{{uritexpand('https://postcodes.be/BE{/eight,four,five,zero}', item)}} ex:placename "Bredene"@nl.
 {%- endfor -%}

@@ -63,12 +63,80 @@ class SourceFactory:
             mime: str = SourceFactory.mime_from_remote(identifier)
             assert False, "TODO remote Source support - see issues #8"
 
+        # else
+        if os.path.isdir(identifier):
+            source = FolderSource(identifier)
+            return source
+
+        # else
         mime: str = SourceFactory.mime_from_identifier(identifier)
         assert mime is not None, "no valid mime derived from identifier '%s'" % identifier
         sourceClass: Callable[[str], Source] = SourceFactory.instance()._find(mime)
         source: Source = sourceClass(identifier)
 
         return source
+
+
+class FolderSource(Source):
+    def __init__(self, folder_path):
+        self._folder = os.path.abspath(folder_path)
+        self._sourcefiles = sorted(list(next(os.walk(self._folder), (None, None, []))[2]))
+        assert len(self._sourcefiles) > 0, "FolderSource '%s' should have content files." % self._folder
+        self._reset()
+
+    def __repr__(self):
+        return "%s('%s')" % (type(self), self._folder)
+
+    def _reset(self):
+        self._current_source = None
+        self._current_iter = None
+        self._ix = -1
+
+    def _exitCurrent(self):
+        if self._current_source is not None:
+            self._current_source.__exit__()
+
+    def _nextSource(self):
+        self._exitCurrent()
+        self._ix += 1
+        if self._ix < len(self._sourcefiles):
+            self._current_source = SourceFactory.make_source(os.path.join(self._folder, self._sourcefiles[self._ix]))
+            self._current_iter = self._current_source.__enter__()
+        else:
+            self._current_source = None
+            self._current_iter = None
+            raise StopIteration
+
+    def _nextItem(self):
+        # proceed to next element, if needed, proceed to next source
+        if self._current_source is None:
+            self._nextSource()
+        try:
+            return next(self._current_iter)
+        except StopIteration:
+            self._nextSource()
+            return next(self._current_iter)
+        # else
+        raise StopIteration
+
+    def __enter__(self):
+        class IterProxy():
+            def __init__(self, me):
+                self._me = me
+
+            def __iter__(self):
+                self._me._reset()
+                return self
+
+            def __next__(self):
+                return self._me._nextItem()
+
+        return IterProxy(self)
+
+    def __exit__(self):
+        # exit the current open source
+        self._exitCurrent()
+        self._reset()
 
 
 try:

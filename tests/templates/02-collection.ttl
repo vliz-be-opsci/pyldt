@@ -3,7 +3,7 @@
  #    and does so in classic iteration mode
 -#}
 {% if ctrl.isFirst %}
-@prefix ex <https://example.org/> .
+@prefix ex: <https://example.org/02-collection/> .
 ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}};
     ex:ctrl-first {{ttl_fmt(ctrl.isFirst, "xsd:boolean")}};
     ex:ctrl-last {{ttl_fmt(ctrl.isLast, "xsd:boolean")}};

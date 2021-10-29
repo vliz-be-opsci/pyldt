@@ -1,0 +1,9 @@
+{#-
+ #  This template shows support for iterating folder input sources
+-#}
+@prefix ex: <https://example.org/07-folderinput_no-it/> .
+{% for city in sets['cities'] -%}
+<{{uritexpand("https://example.org/flemish-cities/byzipcode{/id}", city)}}>
+    a ex:city;
+    ex:title {{ ttl_fmt(city.name, "xsd:string", '"') }}.
+{% endfor %}
