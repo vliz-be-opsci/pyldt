@@ -10,12 +10,12 @@ ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}};
     ex:ctrl-index {{ttl_fmt(ctrl.index, "xsd:integer")}}.
 {% endif -%}
 
-{%- set ctrymap = map(sets['countries'], 'Alpha-3 code', 'Alpha-2 code', 'ctrymap') -%}
+{%- set ctrymap = map(sets['countries'], 'Alpha-3 code', None, 'ctrymap') -%}
 {#- note: using the cache-key in the map() construct avoids duplicate work in iteration mode #}
-{%- set nothing = ctrymap.apply(_, 'country', 'ctry2') -%}
+{%- set nothing = ctrymap.apply(_, 'country', 'country_info') -%}
 <{{uritexpand("https://vliz.be/code/pysubyt/test/item{#id}",_)}}>
     ex:name "{{_.name}}"^^xsd:string;
-    ex:country "{{_.ctry2}}"^xsd:string.
+    ex:country "{{_.country_info['Alpha-2 code']}}"^xsd:string.
 
 {% if ctrl.isLast %}
     {%- for country in sets['countries'] -%}

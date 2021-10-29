@@ -139,16 +139,17 @@ class ValueMapper:
         record[target_name] = val
 
 
-def map_build(it: Iterable, key_name: str, val_name: str, cached_as: str = None) -> ValueMapper:
+def map_build(it: Iterable, key_name: str, val_name: str = None, cached_as: str = None) -> ValueMapper:
     assert key_name, "cannot build map without valid key-name"
-    assert val_name, "cannot build map without valid val-name"
+    # note: id val_name is None, we just map to the whole record
     if cached_as is not None and cached_as in Functions._cache:
         return Functions._cache[cached_as]
     # else - make map
     vmap = ValueMapper()
     # - populate it
     for item in it:
-        vmap.add(item[key_name], item[val_name])
+        target = item[val_name] if val_name is not None else item
+        vmap.add(item[key_name], target)
     # add it to the cache
     if cached_as is not None:
         Functions._cache[cached_as] = vmap
