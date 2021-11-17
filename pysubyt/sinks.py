@@ -1,4 +1,4 @@
-from .api import Sink
+from pysubyt.api import Sink
 from uritemplate import URITemplate, variables
 import os
 
