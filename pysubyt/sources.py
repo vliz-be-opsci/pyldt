@@ -1,4 +1,4 @@
-from .api import Source, log
+from pysubyt.api import Source, log
 from rfc6266 import parse_headers, ContentDisposition
 from typing import Callable
 from typeguard import check_type

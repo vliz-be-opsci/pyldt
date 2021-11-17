@@ -8,10 +8,10 @@
 
 """
 
-from .api import Sink, Source, Settings, Generator, log
-from .sources import SourceFactory
-from .sinks import SinkFactory
-from .j2.generator import JinjaBasedGenerator
+from pysubyt.api import Sink, Source, Settings, Generator, log
+from pysubyt.sources import SourceFactory
+from pysubyt.sinks import SinkFactory
+from pysubyt.j2.generator import JinjaBasedGenerator
 
 __all__ = [
     "Sink", "Source", "Settings", "Generator",

@@ -1,11 +1,11 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from .. import api
-from .functions import Functions
+from pysubyt.api import Generator
+from pysubyt.j2.functions import Functions
 from typing import Callable
 import os
 
 
-class JinjaBasedGenerator(api.Generator):
+class JinjaBasedGenerator(Generator):
     """
     Core class for the jinja based LD Templating service.
     """
