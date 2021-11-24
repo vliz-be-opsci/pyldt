@@ -18,6 +18,11 @@ class SourceFactory:
 
     def __init__(self):
         self._register = dict()
+        self._ext_mime_map = dict()
+
+    @property
+    def ext_2_mime(self):
+        return self._ext_mime_map
 
     def _add(self, mime: str, sourceClass: Callable[[str], Source]) -> None:
         assert mime is not False, "mime cannot be empty to register "
@@ -41,6 +46,11 @@ class SourceFactory:
         SourceFactory.instance()._add(mime, sourceClass)
 
     @staticmethod
+    def map(ext: str, mime: str) -> None:
+        SourceFactory.instance().ext_2_mime[ext] = mime
+
+
+    @staticmethod
     def mime_from_url(url: str) -> str:
         # just get the header, no content yet
         response = requests.head(url, allow_redirects=True)
@@ -55,6 +65,12 @@ class SourceFactory:
 
     @staticmethod
     def mime_from_identifier(identifier: str) -> str:
+        ext = identifier.split(".")[-1]
+        mime = SourceFactory.instance().ext_2_mime.get(ext)
+        log.debug(f"mapping ext '{ext}' to mime '{mime}'")
+        if mime is not None:
+            return mime
+        # else
         return mimetypes.guess_type(identifier)[0]
 
     @staticmethod
@@ -194,3 +210,37 @@ try:
     SourceFactory.register("application/json", JsonFileSource)
 except ImportError:
     log.warn("Python JSON module not available -- disabling JSON support!")
+
+
+try:
+    #import xml.etree.ElementTree as ET
+    import xmltodict
+    class XMLFileSource(Source):
+        """
+        Source producing iterator over data-set coming from XML on file
+        """
+        def __init__(self, xml_file_path):
+            assert_readable(xml_file_path)
+            self._xml = xml_file_path
+
+        def __enter__(self):
+            with open(self._xml, mode="r", encoding="utf-8-sig") as xmlfile:
+                xml_str = xmlfile.read()
+                data = json.loads(json.dumps(xmltodict.parse(xml_str))) # avoid the OrderedDict structures coming from xmltodict
+                # unpack root wrappers
+                while isinstance(data, dict) and len(data.keys()) == 1:
+                    data = list(data.values())[0]
+                if not isinstance(data, list): # todo this doesn't make sense -- we should check if we can just unpack the root and then see if that is a list
+                    data = [data]
+            return iter(data)
+
+        def __exit__(self):
+            pass
+
+        def __repr__(self):
+            return "XMLFileSource('%s')" % os.path.abspath(self._xml)
+
+    SourceFactory.map("eml", "text/xml")
+    SourceFactory.register("text/xml", XMLFileSource)
+except ImportError:
+    log.warn("Python XML module not available -- disabling XML support!")

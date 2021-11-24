@@ -96,10 +96,10 @@ def main():
 
         log.debug("processing done")
 
-    except Exception as e:
-        errmsg = "pysubyt processing failed due to <%s>" % e
-        log.error(errmsg)
-        print("*** ERROR *** " + errmsg, file=sys.stderr)
+#    except Exception as e:
+#        errmsg = "pysubyt processing failed due to <%s>" % e
+#        log.error(errmsg)
+#        print("*** ERROR *** " + errmsg, file=sys.stderr)
 
     finally:
         sink.close()

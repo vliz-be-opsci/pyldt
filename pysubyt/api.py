@@ -9,6 +9,7 @@ logname = 'pysubyt'
 logfile = logname + '.log'
 logging.basicConfig(level=logging.DEBUG, filename=logfile)
 log = logging.getLogger(logname)
+log.debug("api instantiation")
 
 
 class Sink(ABC):

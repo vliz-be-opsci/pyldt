@@ -5,3 +5,4 @@ requests
 rfc6266
 typeguard
 python-dateutil
+xmltodict
