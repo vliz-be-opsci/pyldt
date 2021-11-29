@@ -1,14 +1,10 @@
 {#-
  #  This template ensures that xml structures are iterable
 -#}
-
 @prefix schema: <https://schema.org/>.
 
 {% for movie in sets['movies'] -%}
 [ a schema:movie;
     schema:name "{{movie.title}}";
     schema:director "{{movie.director}}"; ] .
-{%- endfor -%}
-
-
-
+{% endfor %}
