@@ -2,7 +2,7 @@ from pysubyt.api import Source, log
 from rfc6266 import parse_headers, ContentDisposition
 from typing import Callable
 from typeguard import check_type
-import mimetypes
+import magic
 import validators
 import requests
 import os
@@ -71,7 +71,7 @@ class SourceFactory:
         if mime is not None:
             return mime
         # else
-        return mimetypes.guess_type(identifier)[0]
+        return magic.from_file(identifier, mime=True)
 
     @staticmethod
     def make_source(identifier: str) -> Source:
@@ -177,6 +177,8 @@ try:
             return "CSVFileSource('%s')" % os.path.abspath(self._csv)
 
     SourceFactory.register("text/csv", CSVFileSource)
+    # wrong, yet useful mime for csv:
+    SourceFactory.register("application/csv", CSVFileSource)
 except ImportError:
     log.warn("Python CSV module not available -- disabling CSV support!")
 

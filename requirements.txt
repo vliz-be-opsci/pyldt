@@ -1,5 +1,6 @@
 jinja2
 uritemplate
+python-magic
 validators
 requests
 rfc6266
