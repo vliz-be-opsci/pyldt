@@ -49,7 +49,6 @@ class SourceFactory:
     def map(ext: str, mime: str) -> None:
         SourceFactory.instance().ext_2_mime[ext] = mime
 
-
     @staticmethod
     def mime_from_url(url: str) -> str:
         # just get the header, no content yet
@@ -215,8 +214,8 @@ except ImportError:
 
 
 try:
-    #import xml.etree.ElementTree as ET
     import xmltodict
+
     class XMLFileSource(Source):
         """
         Source producing iterator over data-set coming from XML on file
@@ -228,11 +227,12 @@ try:
         def __enter__(self):
             with open(self._xml, mode="r", encoding="utf-8-sig") as xmlfile:
                 xml_str = xmlfile.read()
-                data = json.loads(json.dumps(xmltodict.parse(xml_str))) # avoid the OrderedDict structures coming from xmltodict
+                data = xmltodict.parse(xml_str)
                 # unpack root wrappers
                 while isinstance(data, dict) and len(data.keys()) == 1:
                     data = list(data.values())[0]
-                if not isinstance(data, list): # todo this doesn't make sense -- we should check if we can just unpack the root and then see if that is a list
+                # after unpacking - at least wrap as list
+                if not isinstance(data, list):
                     data = [data]
             return iter(data)
 
