@@ -3,7 +3,7 @@ import re
 from collections.abc import Iterable
 from datetime import date, datetime
 from dateutil import parser
-
+import xmltodict
 
 class Functions:
     _cache = dict()
@@ -15,6 +15,7 @@ class Functions:
             'uritexpand': uritexpand,
             'regexreplace': regexreplace,
             'map': map_build,
+            'unparse': xml_unparse,
         }
 
 
@@ -154,3 +155,8 @@ def map_build(it: Iterable, key_name: str, val_name: str = None, cached_as: str 
     if cached_as is not None:
         Functions._cache[cached_as] = vmap
     return vmap
+
+
+def xml_unparse(node):
+    if isinstance(node, xmltodict.OrderedDict):
+        return xmltodict.unparse(node, full_document=False)
