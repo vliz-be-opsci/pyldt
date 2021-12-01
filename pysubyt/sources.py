@@ -2,7 +2,7 @@ from pysubyt.api import Source, log
 from rfc6266 import parse_headers, ContentDisposition
 from typing import Callable
 from typeguard import check_type
-import magic
+import mimetypes
 import validators
 import requests
 import os
@@ -70,7 +70,7 @@ class SourceFactory:
         if mime is not None:
             return mime
         # else
-        return magic.from_file(identifier, mime=True)
+        return mimetypes.guess_type(identifier)[0]
 
     @staticmethod
     def make_source(identifier: str) -> Source:
@@ -244,5 +244,7 @@ try:
 
     SourceFactory.map("eml", "text/xml")
     SourceFactory.register("text/xml", XMLFileSource)
+    # wrong, yet useful mime for xml:
+    SourceFactory.register("application/xml", XMLFileSource)
 except ImportError:
     log.warn("Python XML module not available -- disabling XML support!")
