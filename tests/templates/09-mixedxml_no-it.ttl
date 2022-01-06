@@ -1,0 +1,8 @@
+{#-
+ #  This template ensures that xml structures are iterable
+-#}
+@prefix schema: <https://schema.org/>.
+
+{% for movie in sets['movies'] -%}
+[] schema:description {{ttl_fmt(unparse(movie.description), 'xsd:string')}}.
+{% endfor %}
