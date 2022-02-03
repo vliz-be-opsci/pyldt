@@ -1,0 +1,61 @@
+@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expA_01_01022020> 
+	a ex:experiment;
+	ex:type A;
+	ex:result 12 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expA_02_01022020> 
+	a ex:experiment;
+	ex:type A;
+	ex:result 14 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expA_03_01022020> 
+	a ex:experiment;
+	ex:type A;
+	ex:result 13 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expB_01_01022020> 
+	a ex:experiment;
+	ex:type B;
+	ex:result 1 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expB_02_01022020> 
+	a ex:experiment;
+	ex:type B;
+	ex:result 2 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expB_03_01022020> 
+	a ex:experiment;
+	ex:type B;
+	ex:result 5 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expC_01_01022020> 
+	a ex:experiment;
+	ex:type C;
+	ex:result 20 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expC_02_01022020> 
+	a ex:experiment;
+	ex:type C;
+	ex:result 21 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expC_03_01022020> 
+	a ex:experiment;
+	ex:type C;
+	ex:result 22 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expD_01_01022020> 
+	a ex:experiment;
+	ex:type D;
+	ex:result 89 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expD_02_01022020> 
+	a ex:experiment;
+	ex:type D;
+	ex:result 87 .@prefix ex : <https://example.org/> . 
+
+<https://example.org/#expD_03_01022020> 
+	a ex:experiment;
+	ex:type D;
+	ex:result 78 .
