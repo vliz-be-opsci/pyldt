@@ -24,7 +24,7 @@ docu:
 	@${PYTHON} setup.py build_sphinx
 
 test:
-	@${PYTHON} -m pytest ${TEST_PATH}
+	@${PYTHON} -m pytest ${TEST_PATH} --disable-warnings
 
 check:
 	@${PYTHON} -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude ${FLAKE8_EXCLUDE}
