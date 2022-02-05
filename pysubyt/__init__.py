@@ -8,7 +8,7 @@
 
 """
 
-from pysubyt.api import Sink, Source, Settings, Generator, log
+from pysubyt.api import Sink, Source, Settings, Generator
 from pysubyt.sources import SourceFactory
 from pysubyt.sinks import SinkFactory
 from pysubyt.j2.generator import JinjaBasedGenerator
@@ -17,5 +17,4 @@ __all__ = [
     "Sink", "Source", "Settings", "Generator",
     "SourceFactory", "SinkFactory",
     "JinjaBasedGenerator",
-    "log"
 ]

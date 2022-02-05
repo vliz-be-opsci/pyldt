@@ -1,4 +1,4 @@
-from pysubyt.api import Source, log
+from pysubyt.api import Source
 from rfc6266 import parse_headers, ContentDisposition
 from typing import Callable
 from typeguard import check_type
@@ -6,6 +6,10 @@ import mimetypes
 import validators
 import requests
 import os
+import logging
+
+
+log = logging.getLogger(__name__)
 
 
 def assert_readable(file_path):

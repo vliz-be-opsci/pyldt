@@ -10,6 +10,9 @@
 <https://example.org/id/sample> a ex:thing;
     ex:in_country <https://countries.org/iso-3/USA>
 .
+<https://example.org/id/sample> a ex:thing;
+    ex:in_country <https://countries.org/iso-3/BEL>
+.
 <https://countries.org/iso-3/BEL> a ex:country;
     schema:title 'Belgium'@en
 .

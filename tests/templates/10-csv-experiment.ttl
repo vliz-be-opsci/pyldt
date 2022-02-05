@@ -1,6 +1,0 @@
-@prefix ex : <https://example.org/> . 
-
-<{{uritexpand("https://example.org/{#primary_key}", _)}}> 
-	a ex:experiment;
-	ex:type {{_.experiment_type}};
-	ex:result {{_.result}} .

@@ -1,6 +1,7 @@
-from pysubyt import SourceFactory, Sink, JinjaBasedGenerator, Settings, log
+from pysubyt import SourceFactory, Sink, JinjaBasedGenerator, Settings
 import unittest
 import os
+from util4tests import run_single_test, log
 
 
 class AssertingSink(Sink):
@@ -13,13 +14,16 @@ class AssertingSink(Sink):
         self._index = 0
 
     def _assert_count(self):
-        self._test.assertEquals(self._index, len(self._parts))
+        self._test.assertEqual(self._index, len(self._parts))
 
     def add(self, part: str, item: dict = None):
         log.debug("part received no. %d:\n--\n%s\n--" % (self._index, part))
         expected = self._parts[self._index].strip()
         part = part.strip()
-        self._test.assertEquals(
+        log.debug(f"expected part == \n{expected}\n")
+        log.debug(f"actual part == \n{part}\n")
+        log.debug(f"expectations ok: {bool(part == expected)}")
+        self._test.assertEqual(
             expected, part,
             "unexpected rendering for part at index %d" % self._index)
         self._index += 1
@@ -90,4 +94,4 @@ class TestJinjaGenerator(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    run_single_test(__file__)

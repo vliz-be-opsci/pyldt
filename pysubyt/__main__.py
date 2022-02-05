@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 import argparse
 import sys
-from pysubyt import Generator, JinjaBasedGenerator, SourceFactory, Sink, SinkFactory, Settings, log
+import logging
+from pysubyt import Generator, JinjaBasedGenerator, SourceFactory, Sink, SinkFactory, Settings
 
+
+log = logging.getLogger(__name__)
 
 def get_arg_parser():
     """

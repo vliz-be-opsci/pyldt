@@ -5,6 +5,8 @@ build/
 dist/
 *.egg-info/
 
+.env
+venv/
 
 # local dependency to xmltodict
 src/xmltodict

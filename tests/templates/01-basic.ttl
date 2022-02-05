@@ -24,7 +24,7 @@
 {%- endfor -%}
 {%- if ctrl.isFirst %}
   ex:posFirst "true"^^xsd:boolean;
-{% endif -%}
+{% endif %}
 {%- if ctrl.isLast %}
   ex:posLast "true"^^xsd:boolean;
 {% endif %}

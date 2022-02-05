@@ -2,14 +2,14 @@ from pysubyt import Settings
 from itertools import product
 import random
 import unittest
-
+from util4tests import run_single_test, log
 
 class TestSettings(unittest.TestCase):
 
     def test_statics(self):
         descr = Settings.describe()
         self.assertTrue(descr, "generic description should not be empty")
-        self.assertEquals(
+        self.assertEqual(
             len(Settings._scheme.keys()),
             descr.count("\n") + 1,
             "Each key in the description should be described")
@@ -39,7 +39,7 @@ class TestSettings(unittest.TestCase):
             case_mode = ','.join(case_parts)
             case_settings = Settings(case_mode)
             for key in keys:
-                self.assertEquals(
+                self.assertEqual(
                     case_vals[key],
                     case_settings.__getattr__(key),
                     "wrong setting for key '%s' via modstr '%s' should be %s" % (key, case_mode, case_vals[key]))
@@ -52,4 +52,4 @@ class TestSettings(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    run_single_test(__file__)

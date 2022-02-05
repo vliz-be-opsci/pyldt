@@ -5,6 +5,7 @@ import os
 import random
 import string
 import unittest
+from util4tests import run_single_test, log
 
 
 class TestSinks(unittest.TestCase):
@@ -37,7 +38,7 @@ class TestSinks(unittest.TestCase):
                 sink.close()
 
             # assert there are now count +1 files
-            self.assertEquals(count + 1, len(os.listdir(temp_folder)), "expecting exactly one more file then number of items")
+            self.assertEqual(count + 1, len(os.listdir(temp_folder)), "expecting exactly one more file then number of items")
 
             # assert content of the item files
             all_data = ''
@@ -45,14 +46,14 @@ class TestSinks(unittest.TestCase):
                 item_file = os.path.join(temp_folder, "item-%04d.out" % item['id'])
                 with open(item_file, "r") as f:
                     content = f.read()
-                    self.assertEquals(item['data'], content, "content for item %d should match" % item['id'])
+                    self.assertEqual(item['data'], content, "content for item %d should match" % item['id'])
                     all_data += item['data']
             # assert the content of the overview file
             all_file = os.path.join(temp_folder, "all.out")
             with open(all_file, "r") as f:
                 all_content = f.read()
-                self.assertEquals(all_data, all_content, "aggregated content for all items should match")
+                self.assertEqual(all_data, all_content, "aggregated content for all items should match")
 
 
 if __name__ == '__main__':
-    unittest.main()
+    run_single_test(__file__)

@@ -45,14 +45,14 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = '\n' + f.read()
 
 # Load the requirements from the requirements.txt file
-with io.open(os.path.join(here, 'requirements.txt'), encoding='utf-8') as f:
-    requirements = [
-        ln.strip()
-        for ln in f.readlines()
-        if not ln.startswith('-')
-        and not ln.startswith('#')
-        and ln.strip() != ''
-    ]
+def required(sfx=''):
+    """ Load the requirements from the requirements.txt file"""
+    with open(f"requirements{sfx}.txt") as f:
+        return [ln.strip() for ln in f.readlines() if not ln.startswith('-') and not ln.startswith('#') and ln.strip() != '']
+
+requirements = required()
+requirements_dev = required('-dev')
+
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
@@ -82,11 +82,8 @@ class TestCommand(CommandBase):
     description = 'Perform the tests'
 
     def run(self):
-        msg_fmt = 'Discovering tests with pattern {0} in folder {1}'
-        self.status(msg_fmt.format(TEST_PATTERN, TEST_FOLDER))
-        suite = unittest.TestLoader().discover(
-            TEST_FOLDER,
-            pattern=TEST_PATTERN)
+        self.status('Discovering tests with pattern %s in folder %s' % (TEST_PATTERN, TEST_FOLDER))
+        suite = unittest.TestLoader().discover(TEST_FOLDER, pattern=TEST_PATTERN)
         runner = unittest.TextTestRunner()
         result = runner.run(suite)
         exit(0 if result.wasSuccessful() else 1)
@@ -104,8 +101,7 @@ class UploadCommand(CommandBase):
             pass
 
         self.status('Building Source and Wheel (universal) distribution')
-        os.system('{0} setup.py sdist bdist_wheel --universal'.format(
-            sys.executable))
+        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
 
         self.status('Uploading the package to PyPi via Twine')
         os.system('twine upload dist/*')
@@ -141,11 +137,11 @@ setup(
     packages=find_packages(exclude=('tests',)),
     # If your package is a single module, use this instead of 'packages':
     # py_modules=['mypackage'],
-
     entry_points={
          'console_scripts': CONSOLE_SCRIPTS,
     },
     install_requires=requirements,
+    extras_require={'dev': requirements_dev},
     include_package_data=True,
     license=LICENSE,
     classifiers=TROVE_CLASSES,

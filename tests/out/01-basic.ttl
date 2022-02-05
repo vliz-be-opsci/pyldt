@@ -25,6 +25,13 @@ lijnen'''@nl;
   ex:name "two"^^xsd:string;
   schema:identifier "else";
   schema:description 'enkel nl'@nl;
+  ex:position '1'^^xsd:integer.
+#---- 03
+@prefix ex: <https://example.org/01-basic/> .
+<https://vliz.be/code/pysubyt/test/item#3>
+  a ex:test ;
+  ex:name "three"^^xsd:string;
+  schema:identifier "strange";
   ex:posLast "true"^^xsd:boolean;
 
-  ex:position '1'^^xsd:integer.
+  ex:position '2'^^xsd:integer.
