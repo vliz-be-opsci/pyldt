@@ -5,6 +5,7 @@ from datetime import date, datetime
 from dateutil import parser
 import xmltodict
 
+
 class Functions:
     _cache = dict()
 

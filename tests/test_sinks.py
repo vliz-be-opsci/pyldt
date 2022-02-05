@@ -5,7 +5,7 @@ import os
 import random
 import string
 import unittest
-from util4tests import run_single_test, log
+from util4tests import run_single_test
 
 
 class TestSinks(unittest.TestCase):

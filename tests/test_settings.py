@@ -2,7 +2,8 @@ from pysubyt import Settings
 from itertools import product
 import random
 import unittest
-from util4tests import run_single_test, log
+from util4tests import run_single_test
+
 
 class TestSettings(unittest.TestCase):
 

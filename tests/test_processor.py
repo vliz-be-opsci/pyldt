@@ -96,8 +96,8 @@ class TestAPIProcessor(unittest.TestCase):
         More precisely - checking if all items are correctly processed and the ctrl variables are set correctly
     """
     def test_processor(self):
-        TESTSIZE=5
-        TESTNAME="something to be actually ignored but just tested"
+        TESTSIZE = 5
+        TESTNAME = "something to be actually ignored but just tested"
         fg = SimplePassGenerator(TESTNAME, TESTSIZE)
         inputs = dict(_=SimpleRangeSource(TESTSIZE))
         settings = Settings()

@@ -44,11 +44,13 @@ here = os.path.abspath(os.path.dirname(__file__))
 with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = '\n' + f.read()
 
+
 # Load the requirements from the requirements.txt file
 def required(sfx=''):
     """ Load the requirements from the requirements.txt file"""
     with open(f"requirements{sfx}.txt") as f:
         return [ln.strip() for ln in f.readlines() if not ln.startswith('-') and not ln.startswith('#') and ln.strip() != '']
+
 
 requirements = required()
 requirements_dev = required('-dev')

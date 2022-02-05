@@ -7,6 +7,7 @@ from pysubyt import Generator, JinjaBasedGenerator, SourceFactory, Sink, SinkFac
 
 log = logging.getLogger(__name__)
 
+
 def get_arg_parser():
     """
     Defines the arguments to this script by using Python's
