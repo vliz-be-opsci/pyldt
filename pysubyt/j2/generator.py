@@ -22,7 +22,7 @@ class JinjaBasedGenerator(Generator):
         self._templates_env = Environment(
             loader=FileSystemLoader(self._templates_folder),
             autoescape=select_autoescape(
-                disabled_extensions=('ttl', 'txt'),
+                disabled_extensions=('ttl', 'txt', 'ldt', 'json', 'jsonld'),
                 default_for_string=True,
                 default=True
             ),
