@@ -1,4 +1,4 @@
-# py-SUbyT 
+# py-SUbyT
 
 Py Semantic Uplifting by Template - A python module for Linked Data production (aka semantic uplifting) through Templating
 
@@ -13,9 +13,16 @@ make init
 make test
 make install
 
-# run it
+# run it on some of the tests
+pysubyt -i tests/in/data.csv -t tests/templates -n 01-basic.ttl -l debug-logconf.yml
+
+# run it on your own stuff
 pysubyt --input ../path/to/datafile.csv --templates ./path.to.folder.with.templates/ --name sometemplate.ldt --out ./path/to/outputfile.ttl
 
-# help
+# ask help
 pysubyt --help
+
+# get involved as a contributor
+make init-dev
+make check
 ```
