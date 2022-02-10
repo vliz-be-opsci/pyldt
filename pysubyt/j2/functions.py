@@ -73,6 +73,12 @@ def turtle_format_datetime(content, quote, suffix):
     return turtle_value(asdtm.isoformat(), quote, "xsd:datetime")
 
 
+def turtle_format_uri(content, quote, suffix):
+    # assume content is valid uri for now
+    uri = content
+    return turtle_value(uri, quote, "xsd:anyURI")
+
+
 def turtle_format_string(content, quote, suffix):
     # deal with escapes -- note: code is odd to read, but this escapes single \ to double \\
     content = str(content).replace('\\', '\\\\')
@@ -95,6 +101,7 @@ TTL_FMT_TYPE_FN = {
     "xsd:double": turtle_format_double,
     "xsd:date": turtle_format_date,
     "xsd:datetime": turtle_format_datetime,
+    "xsd:anyURI": turtle_format_uri,
     "xsd:string": turtle_format_string,
 }
 

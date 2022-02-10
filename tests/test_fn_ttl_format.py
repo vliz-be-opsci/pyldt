@@ -51,6 +51,12 @@ class TestTTLFormatting(unittest.TestCase):
         fmt = "'" + val + "'^^" + type_name
         self.assertEqual(ttl_fmt(val, type_name), fmt, "bad %s format" % type_name)
 
+    def test_uri(self):
+        type_name = "xsd:anyURI"
+        val = "https://example.org/for/testing"
+        fmt = "'" + val + "'^^" + type_name
+        self.assertEqual(ttl_fmt(val, type_name), fmt, "bad %s format" % type_name)
+
     def test_string(self):
         type_name = "xsd:string"
         self.assertEqual(ttl_fmt("Hello!", type_name), "'Hello!'^^xsd:string", "bad %s format" % type_name)
