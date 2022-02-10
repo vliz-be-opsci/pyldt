@@ -2,6 +2,7 @@
 import argparse
 import sys
 import logging
+import logging.config
 from pysubyt import Generator, JinjaBasedGenerator, SourceFactory, Sink, SinkFactory, Settings
 
 
@@ -16,6 +17,14 @@ def get_arg_parser():
     parser = argparse.ArgumentParser(
         description='Produces LD triples a Template',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument(
+        '-l',
+        '--logconf',
+        type=str,
+        action='store',
+        help='location of the logging config (yml) to use',
+    )
 
     parser.add_argument(
         '-n', '--name',
@@ -79,12 +88,22 @@ def make_sink(args: argparse.Namespace) -> Sink:
     return SinkFactory.make_sink(args.output)
 
 
+def enable_logging(args: argparse.Namespace):
+    if args.logconf is None:
+        return
+    import yaml   # conditional dependency -- we only need this (for now) when logconf needs to be read
+    with open(args.logconf, 'r') as yml_logconf:
+        logging.config.dictConfig(yaml.load(yml_logconf, Loader=yaml.SafeLoader))
+    log.info(f"Logging enabled according to config in {args.logconf}")
+
+
 def main():
     """
     The main entry point to this module.
     """
     args = get_arg_parser().parse_args()
 
+    enable_logging(args)
     service = make_service(args)
     settings = Settings(args.mode)
     inputs = make_sources(args)
