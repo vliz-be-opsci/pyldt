@@ -48,8 +48,8 @@ def turtle_format_integer(content, quote, suffix):
 def turtle_format_double(content, quote, suffix):
     # make rigid double
     if not isinstance(content, float):
+        assert str(float) and float is not None, "double format requires actual input"
         asdbl = float(str(content))
-        assert str(content) == str(asdbl), "double format does not round-trip [ %s <> %s ]" % (str(content), str(asdbl))
         content = asdbl
     # serialize to string again
     return turtle_value(str(content), quote, "xsd:double")
