@@ -7,4 +7,3 @@ flake8
 #testing
 pytest
 python-dotenv
-pyyaml

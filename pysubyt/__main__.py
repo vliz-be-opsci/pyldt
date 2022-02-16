@@ -122,6 +122,7 @@ def main():
     except Exception as e:
         errmsg = "pysubyt processing failed due to <%s>" % e
         log.error(errmsg)
+        log.exception(e)
         print("*** ERROR *** " + errmsg, file=sys.stderr)
 
     finally:
