@@ -34,9 +34,10 @@ class TestTTLFormatting(unittest.TestCase):
     def test_double(self):
         type_name = "xsd:double"
         self.assertEqual(ttl_fmt(1.0, type_name), "'1.0'^^xsd:double", "bad %s format" % type_name)
-        with self.assertRaises(AssertionError, msg="proper type-conversion should be dealth with before formatting"):
-            ttl_fmt(1, type_name, '"')   # you should not simply assume this to become double 1.0
-        # in stead -- force float casting
+        self.assertEqual(ttl_fmt('1', type_name), "'1.0'^^xsd:double", "bad %s format" % type_name)   # automatic to float
+        self.assertEqual(ttl_fmt(1, type_name), "'1.0'^^xsd:double", "bad %s format" % type_name)     # automatic to float
+        self.assertEqual(ttl_fmt(1.00, type_name), "'1.0'^^xsd:double", "bad %s format" % type_name)  # reformatting sideeffect
+        # so actual forced float casting is not needed any more (but works)
         self.assertEqual(ttl_fmt(float(1), type_name), "'1.0'^^xsd:double", "bad %s format" % type_name)
 
     def test_date(self):
