@@ -202,6 +202,13 @@ try:
             # we might need to consider (json-stream)[https://pypi.org/project/json-stream/] in the future
             with open(self._json, mode="r", encoding="utf-8-sig") as jsonfile:
                 data = json.load(jsonfile)
+                # unwrap nested structures
+                while isinstance(data, dict) and len(data.keys()) == 1:
+                    child = list(data.values())[0]
+                    if isinstance(child, dict) and len(child.keys()) == 0:
+                        data = [data]
+                    else:
+                        data = child
                 if not isinstance(data, list):
                     data = [data]
             return iter(data)
