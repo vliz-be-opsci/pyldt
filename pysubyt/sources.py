@@ -218,7 +218,7 @@ except ImportError:
 
 
 try:
-    import xmltodict
+    import xmlasdict
 
     class XMLFileSource(Source):
         """
@@ -230,26 +230,12 @@ try:
 
         def __enter__(self):
 
-            def clean_mixed_content_debris(data):
-                """ removes dangling whitespace #text nodes """
-                if isinstance(data, dict):
-                    # only if we are still dealing with dicts
-                    for key in [k for k in data.keys() if k[0] == "#"]:
-                        del data[key]  # TODO checking if the stuff is actually whitespace would be safer?
-                return data
-
             with open(self._xml, mode="r", encoding="utf-8-sig") as xmlfile:
                 xml_str = xmlfile.read()
-                data = xmltodict.parse(xml_str, mixed_content=True)
-
+                xdict = xmlasdict.parse(xml_str)
                 # unpack root wrappers
-                data = clean_mixed_content_debris(data)
-                while isinstance(data, dict) and len(data.keys()) == 1:
-                    data = clean_mixed_content_debris(list(data.values())[0])
+                data = xdict.unpack()
 
-                # after unpacking - at least wrap as list
-                if not isinstance(data, list):
-                    data = [data]
             return iter(data)
 
         def __exit__(self):

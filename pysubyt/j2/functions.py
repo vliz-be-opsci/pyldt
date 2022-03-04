@@ -3,7 +3,7 @@ import re
 from collections.abc import Iterable
 from datetime import date, datetime
 from dateutil import parser
-import xmltodict
+from xmlasdict import parse, Wrapper, IterWrapper
 
 
 class Functions:
@@ -165,6 +165,5 @@ def map_build(it: Iterable, key_name: str, val_name: str = None, cached_as: str 
     return vmap
 
 
-def xml_unparse(node):
-    if isinstance(node, xmltodict.OrderedDict):
-        return xmltodict.unparse(node, full_document=False)
+def xml_unparse(wrapper):
+    return str(wrapper)

@@ -6,5 +6,5 @@ rfc6266
 typeguard
 python-dateutil
 pyyaml
-#xmltodict -- replaced for now by source code checkout:
--e git+http://git@github.com/marc-portier/xmltodict@bug/282#egg=xmltodict
+# xmlasdict -- waiting for release - for now available through git ref
+#-e git+http://git@github.com/vliz-be-opsci/py-xmlasdict#egg=xmlasdict
