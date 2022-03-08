@@ -8,6 +8,6 @@
 {% for colleague in sets['team'] -%}
 <{{uritexpand("https://orcid.org{/orcid}", colleague)}}>
     a foaf:Person;
-    foaf:name {{ ttl_fmt(colleague.name, "xsd:string") }}.
+    foaf:name {{ colleague.name | ttl("xsd:string") }}.
 {# force newline #}
 {%- endfor %}

@@ -12,12 +12,20 @@ class Functions:
     @staticmethod
     def all():
         return {
-            'ttl_fmt': turtle_format,
+            'ttl_fmt': turtle_format,  # todo -- remove this here after transition period from 0.1.0 to 0.2.0 -- deprecated use
             'uritexpand': uritexpand,
             'regexreplace': regexreplace,
             'map': map_build,
             'unparse': xml_unparse,
         }
+
+class Filters:
+    @staticmethod
+    def all():
+        return {
+            'ttl': turtle_format, # new way of using this formatting
+        }
+
 
 
 def turtle_value(content, quote, type_name, suffix=None):

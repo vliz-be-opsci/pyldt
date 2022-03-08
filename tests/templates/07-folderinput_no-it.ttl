@@ -5,5 +5,5 @@
 {% for city in sets['cities'] -%}
 <{{uritexpand("https://example.org/flemish-cities/byzipcode{/id}", city)}}>
     a ex:city;
-    ex:title {{ ttl_fmt(city.name, "xsd:string", '"') }}.
+    ex:title {{ city.name | ttl("xsd:string", '"') }}.
 {% endfor %}
