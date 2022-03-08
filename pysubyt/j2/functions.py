@@ -3,7 +3,6 @@ import re
 from collections.abc import Iterable
 from datetime import date, datetime
 from dateutil import parser
-from xmlasdict import parse, Wrapper, IterWrapper
 
 
 class Functions:
@@ -19,13 +18,13 @@ class Functions:
             'unparse': xml_unparse,    # todo -- remove this in 0.2.0 -- depracted use, no longer needed since xmlasdict
         }
 
+
 class Filters:
     @staticmethod
     def all():
         return {
-            'ttl': turtle_format, # new way of using this formatting
+            'ttl': turtle_format,  # new way of using this formatting
         }
-
 
 
 def turtle_value(content, quote, type_name, suffix=None):
