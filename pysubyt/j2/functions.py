@@ -12,11 +12,11 @@ class Functions:
     @staticmethod
     def all():
         return {
-            'ttl_fmt': turtle_format,  # todo -- remove this here after transition period from 0.1.0 to 0.2.0 -- deprecated use
+            'ttl_fmt': turtle_format,  # todo -- remove this in 0.2.0 -- deprecated use, now use `| ttl(...)` instead
             'uritexpand': uritexpand,
             'regexreplace': regexreplace,
             'map': map_build,
-            'unparse': xml_unparse,
+            'unparse': xml_unparse,    # todo -- remove this in 0.2.0 -- depracted use, no longer needed since xmlasdict
         }
 
 class Filters:

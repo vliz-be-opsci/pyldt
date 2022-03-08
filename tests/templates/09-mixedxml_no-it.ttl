@@ -4,5 +4,5 @@
 @prefix schema: <https://schema.org/>.
 
 {% for movie in sets['movies'] -%}
-[] schema:description {{unparse(movie.description) | ttl('xsd:string')}}.
+[] schema:description {{ movie.description | ttl('xsd:string')}}.
 {% endfor %}
