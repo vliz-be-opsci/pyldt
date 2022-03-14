@@ -13,10 +13,10 @@
 #}
 
 @prefix ex: <https://example.org/02-collection_no-it/> .
-ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}};
-    ex:ctrl-first {{ttl_fmt(ctrl.isFirst, "xsd:boolean")}};
-    ex:ctrl-last {{ttl_fmt(ctrl.isLast, "xsd:boolean")}};
-    ex:ctrl-index {{ttl_fmt(ctrl.index, "xsd:integer")}}.
+ex:fullset ex:iteration {{ctrl.settings.iteration | ttl("xsd:boolean")}};
+    ex:ctrl-first {{ctrl.isFirst | ttl("xsd:boolean")}};
+    ex:ctrl-last {{ctrl.isLast | ttl("xsd:boolean")}};
+    ex:ctrl-index {{ctrl.index | ttl("xsd:integer")}}.
 {% if not ctrl.settings.iteration -%}
     {%- set ctrymap = map(sets['countries'], 'Alpha-3 code', 'Alpha-2 code') -%}
     {% for _ in sets['_'] -%}
@@ -28,7 +28,7 @@ ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}};
     {%- endfor %}
     {%- for country in sets['countries'] -%}
         {%- if country['Alpha-2 code'] == 'BE' -%}
-<{{uritexpand("https://iso.org/countries{/Alpha-2 code}", country)}}> ex:name {{ttl_fmt(country['English short name lower case'], '@en')}}.
+<{{uritexpand("https://iso.org/countries{/Alpha-2 code}", country)}}> ex:name {{country['English short name lower case'] | ttl('@en')}}.
 {# force newline #}
         {%- endif -%}
     {%- endfor %}

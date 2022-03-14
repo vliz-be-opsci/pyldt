@@ -1,6 +1,6 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from pysubyt.api import Generator
-from pysubyt.j2.functions import Functions
+from pysubyt.j2.functions import Functions, Filters
 from typing import Callable
 import os
 
@@ -28,6 +28,7 @@ class JinjaBasedGenerator(Generator):
             ),
         )
         self._templates_env.globals = Functions.all()
+        self._templates_env.filters.update(Filters.all())
 
     def __repr__(self):
         abs_folder = os.path.abspath(self._templates_folder)
