@@ -1,9 +1,20 @@
-{#-
- #  This template mainly shows of some standard tricks available in jinja2 to optimise template-management
--#}
+{# Template '03-demo-j2_no-it.ttl' 
+  Description: 'This template mainly shows of some standard tricks available in jinja2 to optimise template-management.' 
+  Author: Marc Portier
+  Date: 29/10/2021
+  Target vocabs: (see include-file)
+  Inputs: 
+    - input-file: (None)
+    - set-file(s): 
+        - data_countries.csv as countries,
+        - data.csv as _
+    - include-file(s): prefixes.ttl
+    - macro-file(s): things-and-countries.ttl as tac
+#}
+
 @prefix ex: <https://example.org/03-demo-j2_no-it/>.
 {% import 'macros/things-and-countries.ttl' as tac -%}
-{% if ctrl.isFirst -%}{# executes only on first iteration -- equaly so in no-iteration modus -#}
+{% if ctrl.isFirst -%} {# executes only on first iteration -- equaly so in no-iteration modus -#}
 {% include 'includes/prefixes.ttl' %}
 {% endif %}
 

@@ -1,9 +1,16 @@
-{#-
- #  This template shows basic usage of operation and some essential functions:
- #    * uritemplate-expansion,
- #    * regex-replacements
- #    * specific urtle (ttl) formatting support
--#}
+{# Template '01-basic.ldt' 
+  Description: 'This template shows basic usage of operation and some essential functions:
+                  * uritemplate-expansion,
+                  * regex-replacements
+                  * specific turtle (ttl) formatting support' 
+  Author: Marc Portier
+  Date: 08/03/2022
+  Target vocabs:
+    - ex: <https://example.org/01-basic/>
+  Inputs: 
+    - input-file: data.csv
+#}
+
 @prefix ex: <https://example.org/01-basic/> .
 <{{uritexpand("https://vliz.be/code/pysubyt/test/item{#id}",_)}}>
   a ex:test ;

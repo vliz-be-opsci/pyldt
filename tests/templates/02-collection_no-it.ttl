@@ -1,7 +1,17 @@
-{#-
- #  This template shows how to create and apply a translation map from one of the input sets
- #     but does so in no-it "one run" or "collection mode"
--#}
+{# Template '02-collection_no-it.ttl' 
+  Description: 'This template shows how to create and apply a translation map from one of the input sets; 
+                and does so in no-it "one run" or "collection mode.' 
+  Author: Marc Portier
+  Date: 08/03/2022
+  Target vocabs:
+    - ex: <https://example.org/02-collection_no-it/>
+  Inputs: 
+    - input-file: (None)
+    - set-file(s): 
+        - data_countries.csv as countries,
+        - data.csv as _
+#}
+
 @prefix ex: <https://example.org/02-collection_no-it/> .
 ex:fullset ex:iteration {{ttl_fmt(ctrl.settings.iteration, "xsd:boolean")}};
     ex:ctrl-first {{ttl_fmt(ctrl.isFirst, "xsd:boolean")}};
