@@ -16,7 +16,7 @@ clean:
 init:
 	@pip install --upgrade pip
 	@pip install -e .
-	@pip install -r requirements.txt -U   #we need to keep this as long as we have that specific xmltodict(from source) dependency - to keep automatic testing happy
+	#@pip install -r requirements.txt -U   #we need this explicit variant wheb using unreleased -e dependencies - to keep automatic testing happy
 
 init-dev: init
 	@pip install -e .[dev]
