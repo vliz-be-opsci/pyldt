@@ -67,8 +67,7 @@ def get_arg_parser():
         help='''Modifies the mode of iteration:
                 1. it vs. no-it (default): template called for each iteration in the input set vs. template called once for the complete input set;
                 2. ig vs. no-ig: to be implemented;
-                3. fl vs. no-fl: to be implemented.
-        ''',
+                3. fl vs. no-fl: to be implemented.''',
     )
     return parser
 

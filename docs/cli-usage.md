@@ -25,8 +25,8 @@ pysubyt --input /path/to/inputfile.csv
         --logconf /path/to/loggingconfigfile
         --mode    it(eration) | no-it(eration) 
                 
-        (--mode   fl(atten) | no-fl(atten)         )
-        (--mode   ig(norecare) | no-ig(norecase)   )
+        (--mode   fl(atten) | no-fl(atten)       )
+        (--mode   ig(norecare) | no-ig(norecase) ) 
 
 
 # overview of parameters and flags
@@ -58,10 +58,10 @@ see [test-02](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates
 
 - mode settings:                   
     - **it(eration) | no-it(eration)**:  
-    --> *no-it(eration)* = template called once for the complete input set (see [test-02-no-it](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection_no-it.ttl)). (default)  
+    --> *no-it(eration)* = the template is called once for the complete input set (see [test-02-no-it](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection_no-it.ttl)). (default)  
     Iteration through input set is still possible via for-loop within template (see code line 22).  
     --> *it(eration)* = template called with each iteration through the input set (see [test-02](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection.ttl)).  
-    Extra control variables: ctrl.isFirst and ctrl.isLast, which are only called when iteration is respectively on first and last iteration (see code lines 16 and 31).    
+    Extra control variables available: 'ctrl.isFirst' and 'ctrl.isLast', which are only called when iteration is respectively on first and last iteration (see code lines 16 and 31).    
     
     - **ig(norecase) | no-ig(norecase)**:  
     --> *to be implemented*

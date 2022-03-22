@@ -10,7 +10,7 @@
     - set-file(s): 
         - data_countries.csv as countries,
         - data.csv as _
-    - mode: iteration
+    - mode: iteration,
 #}
 
 {% if ctrl.isFirst %}
