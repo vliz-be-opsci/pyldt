@@ -23,7 +23,10 @@ pysubyt --input /path/to/inputfile.csv
         --output /path/to/outputfile
 
         --logconf /path/to/loggingconfigfile
-        --mode ignorecase (#these could be clarified more in _main_.py) 
+        --mode    it(eration) | no-it(eration) 
+                
+        (--mode   fl(atten) | no-fl(atten)         )
+        (--mode   ig(norecare) | no-ig(norecase)   )
 
 
 # overview of parameters and flags
@@ -54,10 +57,16 @@ see [test-07](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates
 see [test-02](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection.ttl) (and [test-02-no-it](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection_no-it.ttl))
 
 - mode settings:                   
-    - (no-)ignorecase | (no-)ig --> ?
-    - (no-)flatten | (no-)fl --> ?
-    - (no-)iteration | (no-)it --> ?  
-    see [test-02](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection.ttl) (with iteration) and [test-02-no-it](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection_no-it.ttl) (without iteration)  
+    - **it(eration) | no-it(eration)**:  
+    --> *no-it(eration)* = template called once for the complete input set (see [test-02-no-it](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection_no-it.ttl)). (default)  
+    Iteration through input set is still possible via for-loop within template (see code line 22).  
+    --> *it(eration)* = template called with each iteration through the input set (see [test-02](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection.ttl)).  
+    Extra control variables: ctrl.isFirst and ctrl.isLast, which are only called when iteration is respectively on first and last iteration (see code lines 16 and 31).    
+    
+    - **ig(norecase) | no-ig(norecase)**:  
+    --> *to be implemented*
+    - **fl(atten) | no-fl(atten)**:  
+    --> *to be implemented*
 
 - template management features provided by Jinja2  
 see [test-03](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/03-demo-j2_no-it.ttl)  and [test-05](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/05-jsonify_no-it.json)  
@@ -67,5 +76,4 @@ All examples of how to PySUByT can be used, including all input data, can be fou
 
 ## Style guide
 
-Besides a usage guide, we have also provided a style guide to help with FAIR template management.  
-See [./StyleGuide.md](https://github.com/vliz-be-opsci/pysubyt/blob/main/docs/StyleGuide.md)
+Besides a usage guide, we have also provided a style guide to help with FAIR template management, see [./StyleGuide.md](https://github.com/vliz-be-opsci/pysubyt/blob/main/docs/StyleGuide.md)
