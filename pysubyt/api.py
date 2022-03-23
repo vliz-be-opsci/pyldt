@@ -9,20 +9,17 @@ log = logging.getLogger(__name__)
 
 
 class Sink(ABC):
-    """
-    Abstract Interface for sinks
+    """ Abstract Interface for sinks
     """
 
     @abstractmethod
     def close(self):
-        """
-        notifies the Sink all writing has been done - allows cleanup
+        """ Notifies the Sink all writing has been done - allows cleanup
         """
 
     @abstractmethod
     def add(self, part: str, item: dict = None):
-        """
-        writes out the part to the sink
+        """ Writes out the part to the sink
 
         :param part: the result for a sepcific part that needs to be sinked
         :type part: str
@@ -32,25 +29,21 @@ class Sink(ABC):
 
 
 class Source(ABC):
-    """
-    Abstract Interface for input Sources - mainly context-manager for the actual Iterable to be returned
+    """ Abstract Interface for input Sources - mainly context-manager for the actual Iterable to be returned
     """
     @abstractmethod
     def __enter__(self) -> Iterable:
-        """
-        Source context is expected to yield an Iterable
+        """ Source context is expected to yield an Iterable
         """
 
     @abstractmethod
     def __exit__(self, *exc):
-        """
-        Source context cleanup
+        """ Source context cleanup
         """
 
 
 class Settings:
-    """
-    Embodies all the actual possible modifiers to the process
+    """ Embodies all the actual possible modifiers to the process
     """
 
     _scheme: Dict[str, Dict] = {
@@ -122,6 +115,9 @@ class Settings:
 
 
 class ReIterableAccess(dict):
+    """ Helper class wraps around an existing dict of iterables, making it posible to access the members so
+    that they return independent object wrappers that insure totally independent iterating loops into them
+    """
     def __init__(self, *args, **kwargs):
         self.update(*args, **kwargs)
 
@@ -162,25 +158,22 @@ class IteratorsFromSources(dict):
 
 
 class Generator(ABC):
-    """
-    Abstract Base Class for the actual generation Service
+    """ Abstract Base Class for the actual generation Service
     """
     @abstractmethod
     def make_render_fn(self, template_name: str) -> Callable:
-        """
-        Produces the actual render strategy tied to a specific templating implementation
+        """ Produces the actual render strategy tied to a specific templating implementation
         """
 
     def make_processor(self, template_name: str, sets: Dict[str, Iterable], settings: Settings, sink: Sink):
         return Generator.Processor(self.make_render_fn(template_name), sets, settings, sink)
 
     class Processor:
-        """
-        Rendition proces Manager - controls queue, manages context
+        """ Rendition proces Manager - controls queue, manages context
 
         This mainly introduces
-        - a fifo queue of one item allowing to detect and mark the 'last' element of an iteration
-        - abstracts the actual template rendition to a Callable function producing text out of context **kvargs
+          (1) a fifo queue of one item allowing to detect and mark the 'last' element of an iteration
+          (2) abstracts the actual template rendition to a Callable function producing text out of context ``**kvargs``
         """
         def __init__(self, render_fn: Callable, sets: Dict[str, Iterable], settings: Settings, sink: Sink):
             self.render = render_fn
@@ -193,8 +186,7 @@ class Generator(ABC):
             self.index = 0
 
         def take(self, next_item):
-            """
-            Takes next item to be rendered and synced (might queue up to next take before actually processing)
+            """ Takes next item to be rendered and synced (might queue up to next take before actually processing)
 
             Pushes the previous taken item out, and puts the new item in the queue
             """
@@ -204,8 +196,7 @@ class Generator(ABC):
             self.queued_item = next_item
 
         def all_taken(self):
-            """
-            Indicates all items have been taken -- finalization
+            """ Indicates all items have been taken -- finalization
 
             Will push the last item (already queued)
             """
@@ -213,8 +204,7 @@ class Generator(ABC):
             self.push()
 
         def push(self):
-            """
-            Actually pushes the item queued
+            """ Actually pushes the item queued
             """
             item = self.queued_item
             log.debug("processing item _ = %s" % item)
@@ -234,8 +224,7 @@ class Generator(ABC):
     def process(
         self, template_name: str, inputs: Dict[str, Source], settings: Settings, sink: Sink
     ) -> None:
-        """
-        Process the records found in the base input and write them to the sink.
+        """ Process the records found in the base input and write them to the sink.
         Note the base input is expected to be found at inputs['_']
 
         :param template_name: name of the template to use

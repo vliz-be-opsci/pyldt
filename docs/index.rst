@@ -26,5 +26,5 @@ API Docs
 pyldt
 ****************************************
 
-.. automodule:: pyldt.generator
+.. automodule:: pysubyt
     :members:
