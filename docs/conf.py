@@ -17,8 +17,8 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'pyldt'
-copyright = '2021, VLIZ vzw'
+project = 'pysubyt'
+copyright = '2021-2022, VLIZ vzw'
 author = 'Marc Portier'
 
 # The short X.Y version
