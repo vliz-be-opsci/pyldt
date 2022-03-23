@@ -70,6 +70,7 @@ An example:
         
 - _Template structure:_
 
+```jinja
         {# Template 'ARMS_Samples_IJI_template_macrotest.ldt' 
         Description: 'Template to generate triples from ARMS Samples IJI data.' 
         Author: Laurian Van Maldeghem
@@ -100,3 +101,4 @@ An example:
             {%- endif %}
         {%- endfor -%}
         .
+```
