@@ -12,6 +12,9 @@ make init
 make test
 make install
 
+# build docu
+make build
+
 # run it on some of the tests
 pysubyt -i tests/in/data.csv -t tests/templates -n 01-basic.ttl -l debug-logconf.yml
 
