@@ -61,6 +61,12 @@ def get_arg_parser():
         help='Specifies where to write the output, can use {uritemplate}.',
     )
     parser.add_argument(
+        '-f', '--force',
+        default=False,
+        action="store_true",
+        help='Force writing output, do not check if output files already exist.',
+    )
+    parser.add_argument(
         '-m', '--mode',
         metavar=" (no-)it(eration), (no-)ig(norecase), (no-)fl(atten) ",
         action="store",
@@ -89,7 +95,7 @@ def make_sources(args: argparse.Namespace) -> dict:
 
 
 def make_sink(args: argparse.Namespace) -> Sink:
-    return SinkFactory.make_sink(args.output)
+    return SinkFactory.make_sink(args.output, args.force)
 
 
 def enable_logging(args: argparse.Namespace):
