@@ -19,7 +19,7 @@ All tests are executed automatically by executing `make test`, but you can run e
 
 Below we describe each test-template and cross-reference the [features](./styleguide.html#a-supported-features) they are made to highlight.
 
-## 01-basic.ttl
+## 01-basic
 > see [tests/templates/01-basic.ttl](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/01-basic.ttl)
 
 ``` bash
@@ -38,48 +38,48 @@ In doing so it uses a number of basic helpful techniques provided by pySUbyT:
 
 TODO follow the above pattern and further describe the essence of all Examples
 
-## 02-collection_no-it.ttl
+## 02-collection_no-it
 > see [tests/templates/02-collection_no-it.ttl](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection_no-it.tt)
 
 ``` bash
 ```
 
-## 02-collection.ttl
+## 02-collection
 ``` bash
 ```
 
-## 03-demo-j2_no-it.ttl
+## 03-demo-j2_no-it
 ``` bash
 ```
 
-## 04-json-team_no-it.ttl
+## 04-json-team_no-it
 ``` bash
 ```
 
-## 05-jsonify_no-it.json
+## 05-jsonify_no-it
 ``` bash
 ```
 
-## 06-singlejson_no-it.ttl
+## 06-singlejson_no-it
 ``` bash
 ```
 
-## 07-folderinput_no-it.ttl
+## 07-folderinput_no-it
 ``` bash
 ```
 
-## 08-singlexml_no-it.ttl
+## 08-singlexml_no-it
 ``` bash
 ```
 
-## 09-mixedxml_no-it.ttl
+## 09-mixedxml_no-it
 ``` bash
 ```
 
-## 10-csv-experiment_no-it.ttl
+## 10-csv-experiment_no-it
 ``` bash
 ```
 
-## 11-schemadriven.ttl
+## 11-schemadriven
 ``` bash
 ```

@@ -28,7 +28,7 @@ Will produce:
 <https://ex.org/boat#01472> a ex:boat .
 ```
 
-> see [example-01](./examples.md#01-basic.ttl), and basically every other one in fact, because this is just the way to go!
+> see [example-01](./examples.md#01-basic), and basically every other one in fact, because this is just the way to go!
 
 
 ## regex-replacements:
@@ -42,7 +42,7 @@ So that e.g.
 
 Will simply throw away all text before and including the first semicolon.
 
-> see [example-01](./examples.md#01-basic.ttl)
+> see [example-01](./examples.md#01-basic)
 
 ## turtle formatting:
 
@@ -67,7 +67,7 @@ Supported types are:
 | xsd:boolean | converts any of `'', 'no, 'false', 'off', '0', 0, False` to `false` and everything else to `true`, adds the `^^xsd:boolean`
 | xsd:anyURI | adds `^^xsd:anyURI`
 
-> see [example-01](./examples.md#01-basic.ttl)
+> see [example-01](./examples.md#01-basic)
 
 ## file input from various sources:
 
@@ -79,37 +79,37 @@ TODO describe how
 
 TODO obvious but useful to mention that fieldnames come from the column names (a line with those is assumed)
 
-> see [example-01](./examples.md#01-basic.ttl)
+> see [example-01](./examples.md#01-basic)
 
 ### xml input:
 
 TODO mention xmladict + mixed content model support
 
-> see [example-08](./examples.md#08-singlexml_no-it.ttl), [example-09](./examples.md#09-mixedxml_no-it.ttl)
+> see [example-08](./examples.md#08-singlexml_no-it), [example-09](./examples.md#09-mixedxml_no-it)
 
 ### json input:
 
 TODO give a simple exmaple
 
-> see [example-04](./example.md#04-json-team_no-it.ttl), [example-06](./examples.md#06-singlejson_no-it.ttl)    
+> see [example-04](./example.md#04-json-team_no-it), [example-06](./examples.md#06-singlejson_no-it)    
 
 ### folder input:
 
 TODO point out the mixed-format support
 
-> see [example-07](./examples.md#07-folderinput_no-it.ttl)
+> see [example-07](./examples.md#07-folderinput_no-it)
 
 ## mapping:
 
 TODO the why and how
 
-> see [example-02](./examples.md#02-collection.ttl), and [example-02-no-it](./examples.md#02-collection_no-it.ttl))
+> see [example-02](./examples.md#02-collection), and [example-02-no-it](./examples.md#02-collection_no-it))
 
 ## various execution mode settings:
 see [client docu](./cli.md)                
 
 ## template management features provided by Jinja2:  
-> see [example-03](./examples.md#03-demo-j2_no-it.ttl), and [example-05](./examples.md#05-jsonify_no-it.json),
+> see [example-03](./examples.md#03-demo-j2_no-it), and [example-05](./examples.md#05-jsonify_no-it.json),
 
 Please check out the [Jinja documentation](https://jinja.palletsprojects.com/en/3.0.x/) as well.
 
@@ -117,4 +117,4 @@ Please check out the [Jinja documentation](https://jinja.palletsprojects.com/en/
 
 TODO explain {{ctrl.isFirst}} {{ctrl.isLast}} {{ctrl.index}}
 
-> see [example-01](./examples.md#01-basic.ttl)
+> see [example-01](./examples.md#01-basic)
