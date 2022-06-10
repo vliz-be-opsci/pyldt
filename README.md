@@ -1,6 +1,15 @@
 # py-SUbyT
 
-Py Semantic Uplifting by Template - A python module for Linked Data production (aka semantic uplifting) through Templating
+  A <u>Py</u>thon library for <u>S</u>emantic <u>U</u>plifting <u>by</u> <u>T</u>emplates.
 
-### Usage
-Please check out the Py-SUByt [user guide](https://github.com/vliz-be-opsci/pysubyt/blob/main/docs/cli-usage.md) and [style guide](https://github.com/vliz-be-opsci/pysubyt/blob/main/docs/cli-style.md)!
+  An easy way (through python) to produce Linked Data
+  (aka semantic uplifting)
+  from classic data files (CSV, XML, JSON) into triples (RDF, turtle)
+  through jinja-Templating
+
+### Usage and further reading
+Please check out the Py-SUbyt documentation. Namely:
+- the [user guide](./docs/cli-usage.md)
+- the supported [features](./docs /features.md)
+- the [examples](./docs/examples.md)
+- and the [style guide](./docs/cli-style.md)!
