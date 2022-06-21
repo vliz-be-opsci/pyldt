@@ -8,8 +8,9 @@
   through jinja-Templating
 
 ### Usage and further reading
+
 Please check out the Py-SUbyt documentation. Namely:
-- the [user guide](./docs/cli-usage.md)
-- the supported [features](./docs /features.md)
+- the [user guide](./docs/cli.md)
+- the supported [features](./docs/features.md)
 - the [examples](./docs/examples.md)
 - and the [style guide](./docs/cli-style.md)!
