@@ -101,7 +101,7 @@ Any higher wrapper levels are automatically unpacked, immediately iterating over
 
 As with xml higher level wrapping structures are automatically unpacked.
 
-> see [example-04](./example.md#04-json-team_no-it), [example-06](./examples.md#06-singlejson_no-it)    
+> see [example-04](./examples.md#04-json-team_no-it), [example-06](./examples.md#06-singlejson_no-it)    
 
 ### folder input:
 
@@ -138,7 +138,7 @@ All the smart tricks to optimise your template management and reuse consistnt tr
 
 Please check out the [Jinja documentation](https://jinja.palletsprojects.com/en/3.0.x/).
 
-> see [example-03](./examples.md#03-demo-j2_no-it), and [example-05](./examples.md#05-jsonify_no-it.json),
+> see [example-03](./examples.md#03-demo-j2_no-it), and [example-05](./examples.md#05-jsonify_no-it),
 
 
 
@@ -153,6 +153,6 @@ These are:
 | {{ctrl.isFirst}} |  boolean indicating if the current record in `_` is the first of the iterated set        |
 | {{ctrl.isLast}}  |  boolean indicating if the current record in `_` is the last of the iterated set         |
 | {{ctrl.index}}   |  integer sequence-number of the current record `_`, in the iterated set. (starts at 1)   |
-| {{ctrl.settings}}|  iobject structure holding some information on the operational settings of the execution |
+| {{ctrl.settings}}|  an object structure holding some information on the operational settings of the execution |
 
 > see [example-01](./examples.md#01-basic)
