@@ -17,7 +17,7 @@ Running these tests yourself assumes:
 
 All tests are executed automatically by executing `make test`, but you can run each example yourself through the provided cli Command
 
-Below we describe each test-template and cross-reference the [features](./styleguide.html#a-supported-features) they are made to highlight.
+Below we describe each test-template and cross-reference the [features](./features.md) they are made to highlight.
 
 
 ## 01-basic
@@ -54,7 +54,7 @@ In doing so it uses a number of basic helpful techniques provided by pySUbyT:
 This example shows how to use:
 - the [mapping](./features.md#mapping) to translate some coded reference into another using a mapping file (in this case for 2-char versus 3-char ISO country codes)
 - the available [process control indicators](./features.md#process-control-indicators) allowing to insert/exclude certain output based on the position (first/last/specific index) of the row in the main input.
-- the [cli](./cli.md) flags that allow controlling the execution `--mode` and injecting an extra data `--set`
+- the [cli flags](./cli.md#py-subyt-arguments) that allow controlling the execution `--mode` and injecting an extra data `--set`
 
 
 ## 02-collection
@@ -102,7 +102,7 @@ This test actually is showing off the existing/known features of [Jinja](https:/
 ```
 
 This test shows mainly that:
-- input can also come from [json formatted files](./features.md#application-json-input)
+- input can also come from [json formatted files](./features.md#applicationjson-input)
 - that the central `_` input-set (i.e. the one provided via `--input «PATH»`) can be omitted when in `--mode no-iteration`
 
 
@@ -133,7 +133,7 @@ As an extra play on the previous one, this example shows that the extra [turtle 
 
 This test makes a different combination of some topics addressed earlier. Namely:
 - applying [uritemplate-expansion](./features.md#uritemplate-expansion)
-- input coming from a [json formatted input set](./features.md#application-json-input)
+- input coming from a [json formatted input set](./features.md#applicationjson-input)
 
 
 ## 07-folderinput_no-it
@@ -161,7 +161,7 @@ This test shows how an [input-dataset can even actually be a folder](./features.
                  --mode no-iteration
 ```
 
-This test pulls data from an [xml formatted input](./features.md#text-xml-input)
+This test pulls data from an [xml formatted input](./features.md#textxml-input)
 
 
 ## 09-mixedxml_no-it
@@ -189,7 +189,7 @@ When dealing with XML, every now and then, one encounters the challenges of the 
                  --mode no-iteration
 ```
 
-Simply showing the handling of an extra [csv formatted](./festures.md#text-csv-input) set.
+Simply showing the handling of an extra [csv formatted](./features.md#textcsv-input) set.
 
 
 ## 11-schemadriven
