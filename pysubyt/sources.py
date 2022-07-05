@@ -1,8 +1,8 @@
 from pysubyt.api import Source
-from rfc6266 import parse_headers, ContentDisposition
 from typing import Callable
 from typeguard import check_type
 import mimetypes
+import re
 import validators
 import requests
 import os
@@ -15,6 +15,10 @@ log = logging.getLogger(__name__)
 def assert_readable(file_path):
     assert os.path.isfile(file_path), "File to read '%s' does not exists" % file_path
     assert os.access(file_path, os.R_OK), "Can not read '%s'" % file_path
+
+
+def fname_from_cdisp(cdisp):
+    return re.split(r'; ?filename=', cdisp, flags=re.IGNORECASE) 
 
 
 class SourceFactory:
@@ -59,11 +63,10 @@ class SourceFactory:
         response = requests.head(url, allow_redirects=True)
         if response.status_code == 200:
             mime: str = response.info().get_content_type()
-            cdhead: ContentDisposition = response.headers.get('Content-Disposition')
+            cdhead: response.headers.get('Content-Disposition')
             if mime == 'application/octet-stream' and cdhead is not None:
-                cd = parse_headers(cdhead)
-                mime = SourceFactory.mime_from_identifier(
-                    cd.filename_sanitized())
+                cd = fname_from_cdisp(cdhead)
+                mime = SourceFactory.mime_from_identifier(cd)
         return mime
 
     @staticmethod
