@@ -47,11 +47,11 @@ class Settings:
     """
 
     _scheme: Dict[str, Dict] = {
-        "ignorecase":  {
+        "ignorecase": {
             "default": True,
             "description": "Make all keys lowercase so to ignore case in key references"
         },
-        "flatten":  {
+        "flatten": {
             "default": True,
             "description": "Flatten hierarchical strcutures by making hierarchical key references."
         },

@@ -63,7 +63,7 @@ class SourceFactory:
         response = requests.head(url, allow_redirects=True)
         if response.status_code == 200:
             mime: str = response.info().get_content_type()
-            cdhead: response.headers.get('Content-Disposition')
+            cdhead = response.headers.get('Content-Disposition')
             if mime == 'application/octet-stream' and cdhead is not None:
                 cd = fname_from_cdisp(cdhead)
                 mime = SourceFactory.mime_from_identifier(cd)
