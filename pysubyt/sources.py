@@ -18,7 +18,7 @@ def assert_readable(file_path):
 
 
 def fname_from_cdisp(cdisp):
-    return re.split(r'; ?filename=', cdisp, flags=re.IGNORECASE) 
+    return re.split(r'; ?filename=', cdisp, flags=re.IGNORECASE)
 
 
 class SourceFactory:
@@ -26,7 +26,7 @@ class SourceFactory:
 
     def __init__(self):
         self._register = dict()
-        self._ext_mime_map = dict()
+        self._ext_mime_map = {"csv": "text/csv"}
 
     @property
     def ext_2_mime(self):
