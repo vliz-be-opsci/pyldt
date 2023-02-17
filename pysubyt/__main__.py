@@ -40,6 +40,14 @@ def get_arg_parser():
         action="append",              # multiple -s can be combined
         help='Multiple entries will add different sets under sets["KEY"] to the templating process',
     )
+    
+    parser.add_argument(
+        '-v', '--var',
+        nargs=2,                      # each -v should have 2 arguments
+        metavar=('NAME', 'VALUE'),    # meaning/purpose of those arguments
+        action="append",              # multiple -v can be combined
+        help='Multiple entries will add different named variables to the templating process',
+    )
 
     parser.add_argument(
         '-t', '--templates',
@@ -98,6 +106,13 @@ def make_sink(args: argparse.Namespace) -> Sink:
     return SinkFactory.make_sink(args.output, args.force)
 
 
+def vars_to_dict(vars: list) -> dict:
+    if not vars:
+        return None
+    # else
+    return {name: value for [name, value] in vars}
+
+
 def enable_logging(args: argparse.Namespace):
     if args.logconf is None:
         return
@@ -116,16 +131,18 @@ def main():
     enable_logging(args)
     service = make_service(args)
     settings = Settings(args.mode)
+    vars_dict = vars_to_dict(args.var)
     inputs = make_sources(args)
     sink = make_sink(args)
 
     try:
         log.debug("service  = %s" % service)
         log.debug("settings = %s" % settings)
+        log.debug("variables = %s" % vars_dict)
         log.debug("inputs   = %s" % inputs)
         log.debug("sink     = %s" % sink)
 
-        service.process(args.name, inputs, settings, sink)
+        service.process(args.name, inputs, settings, sink, vars_dict)
 
         log.debug("processing done")
 

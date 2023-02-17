@@ -165,8 +165,8 @@ class Generator(ABC):
         """ Produces the actual render strategy tied to a specific templating implementation
         """
 
-    def make_processor(self, template_name: str, sets: Dict[str, Iterable], settings: Settings, sink: Sink):
-        return Generator.Processor(self.make_render_fn(template_name), sets, settings, sink)
+    def make_processor(self, template_name: str, sets: Dict[str, Iterable], settings: Settings, sink: Sink, vars_dict: dict = None):
+        return Generator.Processor(self.make_render_fn(template_name), sets, settings, sink, vars_dict)
 
     class Processor:
         """ Rendition proces Manager - controls queue, manages context
@@ -175,11 +175,12 @@ class Generator(ABC):
           (1) a fifo queue of one item allowing to detect and mark the 'last' element of an iteration
           (2) abstracts the actual template rendition to a Callable function producing text out of context ``**kvargs``
         """
-        def __init__(self, render_fn: Callable, sets: Dict[str, Iterable], settings: Settings, sink: Sink):
+        def __init__(self, render_fn: Callable, sets: Dict[str, Iterable], settings: Settings, sink: Sink, vars_dict: dict = None):
             self.render = render_fn
             self.sets = sets
             self.settings = settings
             self.sink = sink
+            self.variables = vars_dict
             self.queued_item = None
             self.isFirst = True
             self.isLast = False
@@ -215,6 +216,7 @@ class Generator(ABC):
                     "isFirst": self.isFirst, "isLast": self.isLast, "index": self.index,
                     "settings": self.settings,
                 },
+                **self.variables,
             )
             self.sink.add(part, item)
             self.queued_item = None
@@ -222,7 +224,7 @@ class Generator(ABC):
             self.index += 1
 
     def process(
-        self, template_name: str, inputs: Dict[str, Source], settings: Settings, sink: Sink
+        self, template_name: str, inputs: Dict[str, Source], settings: Settings, sink: Sink, vars_dict: dict = None
     ) -> None:
         """ Process the records found in the base input and write them to the sink.
         Note the base input is expected to be found at inputs['_']
@@ -238,7 +240,7 @@ class Generator(ABC):
         """
         # convert inputs into sets
         with IteratorsFromSources(inputs) as sets:
-            proc = self.make_processor(template_name, sets, settings, sink)
+            proc = self.make_processor(template_name, sets, settings, sink, vars_dict)
 
             if not settings.iteration or '_' not in sets:   # conditions for collection modus
                 settings.iteration = False
