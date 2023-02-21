@@ -8,7 +8,7 @@ formatters:
 handlers:
   stderr:
     class: logging.StreamHandler
-    level: INFO
+    level: DEBUG
     formatter: base
     stream: ext://sys.stderr
   file:

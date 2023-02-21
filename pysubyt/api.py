@@ -180,7 +180,7 @@ class Generator(ABC):
             self.sets = sets
             self.settings = settings
             self.sink = sink
-            self.variables = vars_dict
+            self.variables = vars_dict if vars_dict is not None else {}
             self.queued_item = None
             self.isFirst = True
             self.isLast = False
