@@ -6,6 +6,7 @@ import re
 import validators
 import requests
 import os
+import glob
 import logging
 
 
@@ -89,6 +90,11 @@ class SourceFactory:
         if os.path.isdir(identifier):
             source = FolderSource(identifier)
             return source
+        
+        # else
+        if glob.has_magic(identifier):
+            source = GlobSource(identifier)
+            return source
 
         # else
         mime: str = SourceFactory.mime_from_identifier(identifier)
@@ -158,6 +164,19 @@ class FolderSource(Source):
     def __exit__(self):
         # exit the current open source
         self._exitCurrent()
+        self._reset()
+
+
+class GlobSource(FolderSource):
+    """ For now, this class is inheriting from FolderSource. As soon as another
+    class appears with similar behavior to FolderSource and GlobSource, we may
+    consider to create an abstract class "CollectionSource" and make all of them
+    inherit from this abstract class.
+    """
+    def __init__(self, pattern, pattern_root_dir="."):
+        self._folder = pattern_root_dir
+        self._sourcefiles = sorted([p for p in glob.glob(pattern) if os.path.isfile(p)])
+        assert len(self._sourcefiles) > 0, "GlobSource '%s' should have content files." % self._folder
         self._reset()
 
 
