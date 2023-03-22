@@ -47,6 +47,9 @@ def get_expected_parts(outfile):
 
 
 def get_indicator_from_name(name: str, splitter: str = '_', fallback: str = None):
+    known_cases = {"data_glob/*.json": "glob"}
+    if name in known_cases.keys():
+        return known_cases[name]
     stem = os.path.splitext(name)[0]
     indicator = stem[stem.index(splitter) + 1:] if splitter in stem else fallback
     return indicator
@@ -68,6 +71,8 @@ class TestJinjaGenerator(unittest.TestCase):
         inp_content = next(os.walk(inp_path), (None, None, []))  # the stuff in the folder
         inp_names = list(inp_content[2])   # the files
         inp_names.extend(inp_content[1])   # the folders too
+        inp_names = [i for i in inp_names if i != "data_glob"]  # filter "data_glob" folder source out
+        inp_names.extend(["data_glob/*.json"])  # insert "glob pattern" glob source
         for inp_name in inp_names:
             key = get_indicator_from_name(inp_name, fallback='_')
             assert key not in inputs, "duplicate key '%s' for input '%s' --> object[%s]" % (key, inp_name, inputs[key])
@@ -86,7 +91,7 @@ class TestJinjaGenerator(unittest.TestCase):
 
             # process
             log.debug("processing test-template: %s " % os.path.join(tpl_path, name))
-            g.process(name, inputs, settings, sink)
+            g.process(name, inputs, settings, sink, vars_dict={"my_domain": "realexample.org"})
 
             # assure all records were passed
             sink.close()
