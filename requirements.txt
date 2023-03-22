@@ -2,7 +2,7 @@ jinja2
 uritemplate
 validators
 requests
-typeguard
+typeguard==2.13.3
 python-dateutil
 pyyaml
 xmlasdict
