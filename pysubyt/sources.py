@@ -39,9 +39,7 @@ class SourceFactory:
     def _add(self, mime: str, sourceClass: Callable[[str], Source]) -> None:
         assert mime is not False, "mime cannot be empty to register "
         assert sourceClass is not None, "sourceClass must be provided"
-        check_type(
-            "Source <Constructor>", sourceClass, Callable[[str], Source]
-        )
+        check_type(sourceClass, Callable[[str], Source])
 
         self._register[mime] = sourceClass
 
