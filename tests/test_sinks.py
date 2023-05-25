@@ -6,8 +6,7 @@ import unittest
 
 from util4tests import run_single_test
 
-from pysubyt import SinkFactory
-from pysubyt.sinks import PatternedFileSink, SingleFileSink
+from pysubyt.sinks import PatternedFileSink, SingleFileSink, SinkFactory
 
 
 class TestSinks(unittest.TestCase):
