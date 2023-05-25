@@ -22,6 +22,7 @@ uritemplate = "^4.1.1"
 poetry = "^1.5.0"
 validators = "^0.20.0"
 typeguard = "^4.0.0"
+python-dateutil = "^2.8.2"
 
 # Development tools
 pre-commit = {version = "^3.3.1", optional = true}
