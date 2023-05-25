@@ -1,11 +1,10 @@
 import os
 import unittest
 
-from util4tests import log, run_single_test
-
 from pysubyt.api import Settings, Sink
 from pysubyt.j2.generator import JinjaBasedGenerator
 from pysubyt.sources import SourceFactory
+from tests.util4tests import log, run_single_test
 
 
 class AssertingSink(Sink):
