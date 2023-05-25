@@ -47,7 +47,7 @@ jobs:
 
     - id: run-tests
       if: ${{steps.pytest_test.outcome == 'success'}}
-      uses: dima-engineer/pytest-reporter@v2.1.1
+      uses: JotaFan/pytest-reporter@v1.0.0
       with:
         cov-omit-list: tests/*, *__init__*, *__version__*, *__main__*, *exceptions*
         cov-threshold-single: 85
