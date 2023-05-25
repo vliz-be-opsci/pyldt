@@ -1,12 +1,26 @@
-*.log
+# IDE folder
+.idea/
+.vscode/
 
-__pycache__/
+# vi backups
+*~
+
+# build results
 build/
+_build/
+*.log
 dist/
-*.egg-info/
-workspace/
-.env
+
+# venv / Byte-compiled / optimized / DLL files
 venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# python
+.coverage
+.pytest_cache
 
 # local dependency to xmltodict
 src/xmltodict
