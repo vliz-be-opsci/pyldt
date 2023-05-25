@@ -2,9 +2,8 @@ import unittest
 from collections.abc import Iterable
 from typing import Callable
 
-from util4tests import log, run_single_test
-
 from pysubyt.api import Generator, Settings, Sink, Source
+from tests.util4tests import log, run_single_test
 
 
 class DebugIterator(Iterable):

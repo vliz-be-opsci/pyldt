@@ -4,9 +4,8 @@ import string
 import tempfile
 import unittest
 
-from util4tests import run_single_test
-
 from pysubyt.sinks import PatternedFileSink, SingleFileSink, SinkFactory
+from tests.util4tests import run_single_test
 
 
 class TestSinks(unittest.TestCase):
