@@ -1,7 +1,7 @@
-SHELL := /bin/bash
-PYTHON = python3
 TEST_PATH = ./tests/
 FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
+PROJECT = pysubyt
+AUTHOR = Marc Portier 
 
 clean:
 	@find . -name '*.pyc' -exec rm --force {} +
@@ -13,26 +13,54 @@ clean:
 	@rm -f *.sqlite
 	@rm -rf .cache
 
-init:
-	@pip install --upgrade pip
-	@pip install -e .
-	#@pip install -r requirements.txt -U   #we need this explicit variant wheb using unreleased -e dependencies - to keep automatic testing happy
-
-init-dev: init
-	@pip install -e .[dev]
-
-docu:
-	@${PYTHON} setup.py build_sphinx
-
-test:
-	@${PYTHON} -m pytest ${TEST_PATH} --disable-warnings
-
-check:
-	@${PYTHON} -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude ${FLAKE8_EXCLUDE}
-	@${PYTHON} -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=132 --statistics --exclude ${FLAKE8_EXCLUDE}
+startup:
+	pip install --upgrade pip
+	which poetry >/dev/null || pip install poetry
 
 install:
-	@${PYTHON} setup.py install
+	poetry install
+
+init: startup install
+
+init-dev: startup
+	poetry install --extras 'tests' --extras 'dev' --extras 'docs'
+	poetry run pre-commit install
+	poetry run pre-commit install --hook-type commit-msg
+
+init-docs: startup
+	poetry install --extras 'docs'
+
+docs:
+	if ! [ -d "./docs" ]; then poetry run sphinx-quickstart -q --ext-autodoc --sep --project $(PROJECT) --author $(AUTHOR) docs; fi
+	poetry run sphinx-apidoc -o ./docs/source ./$(PROJECT)
+	poetry run sphinx-build -b html ./docs/source ./docs/build/html
+
+test:
+	poetry run pytest ${TEST_PATH}
+
+test-coverage:
+	poetry run pytest --cov=$(PROJECT) ${TEST_PATH} --cov-report term-missing
+
+check:
+	poetry run black --check --diff .
+	poetry run isort --check --diff .
+	poetry run flake8 . --exclude ${FLAKE8_EXCLUDE}
+
+lint-fix:
+	poetry run black .
+	poetry run isort .
 
 docker-build:
-	@docker build . -t pysubyt
+	docker build . -t pysubyt
+
+
+update:
+	poetry update
+	poetry run pre-commit autoupdate
+
+
+build: update check test docs
+	poetry build
+
+release: build
+	poetry release

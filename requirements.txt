@@ -1,9 +1,0 @@
-jinja2
-uritemplate
-validators
-requests
-typeguard==2.13.3
-python-dateutil
-pyyaml
-xmlasdict
-#-e git+http://git@github.com/vliz-be-opsci/py-xmlasdict#egg=xmlasdict
