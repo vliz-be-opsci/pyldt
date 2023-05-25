@@ -1,8 +1,10 @@
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-from pysubyt.api import Generator
-from pysubyt.j2.functions import Functions, Filters
-from typing import Callable
 import os
+from typing import Callable
+
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+from pysubyt.api import Generator
+from pysubyt.j2.functions import Filters, Functions
 
 
 class JinjaBasedGenerator(Generator):
@@ -22,9 +24,9 @@ class JinjaBasedGenerator(Generator):
         self._templates_env = Environment(
             loader=FileSystemLoader(self._templates_folder),
             autoescape=select_autoescape(
-                disabled_extensions=('ttl', 'txt', 'ldt', 'json', 'jsonld'),
+                disabled_extensions=("ttl", "txt", "ldt", "json", "jsonld"),
                 default_for_string=True,
-                default=True
+                default=True,
             ),
         )
         self._templates_env.globals = Functions.all()

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 import argparse
-import sys
 import logging
 import logging.config
-from pysubyt import Generator, JinjaBasedGenerator, SourceFactory, Sink, SinkFactory, Settings
+import sys
 
+from pysubyt.api import Generator, Settings, Sink
+from pysubyt.j2.generator import JinjaBasedGenerator
+from pysubyt.sinks import SinkFactory
+from pysubyt.sources import SourceFactory
 
 log = logging.getLogger(__name__)
 
@@ -15,74 +18,97 @@ def get_arg_parser():
     [argparse](https://docs.python.org/3/library/argparse.html)
     """
     parser = argparse.ArgumentParser(
-        description='Produces LD triples a Template',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        description="Produces LD triples a Template",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
 
     parser.add_argument(
-        '-l',
-        '--logconf',
+        "-l",
+        "--logconf",
         type=str,
-        action='store',
-        help='location of the logging config (yml) to use',
+        action="store",
+        help="location of the logging config (yml) to use",
     )
 
     parser.add_argument(
-        '-n', '--name',
-        action='store',
+        "-n",
+        "--name",
+        action="store",
         required=True,
-        help='Speficies the name of the template to use'
+        help="Speficies the name of the template to use",
     )
 
     parser.add_argument(
-        '-s', '--set',
-        nargs=2,                      # each -s should have 2 arguments
-        metavar=('KEY', 'FILE'),      # meaning/purpose of those arguments
-        action="append",              # multiple -s can be combined
-        help='Multiple entries will add different sets under sets["KEY"] to the templating process',
-    )
-    
-    parser.add_argument(
-        '-v', '--var',
-        nargs=2,                      # each -v should have 2 arguments
-        metavar=('NAME', 'VALUE'),    # meaning/purpose of those arguments
-        action="append",              # multiple -v can be combined
-        help='Multiple entries will add different named variables to the templating process',
+        "-s",
+        "--set",
+        nargs=2,  # each -s should have 2 arguments
+        metavar=("KEY", "FILE"),  # meaning/purpose of those arguments
+        action="append",  # multiple -s can be combined
+        help=(
+            "Multiple entries will add different sets "
+            'under sets["KEY"] to the templating process'
+        ),
     )
 
     parser.add_argument(
-        '-t', '--templates',
-        metavar="FOLDER",             # meaning of the argument
+        "-v",
+        "--var",
+        nargs=2,  # each -v should have 2 arguments
+        metavar=("NAME", "VALUE"),  # meaning/purpose of those arguments
+        action="append",  # multiple -v can be combined
+        help=(
+            "Multiple entries will add different named"
+            " variables to the templating process"
+        ),
+    )
+
+    parser.add_argument(
+        "-t",
+        "--templates",
+        metavar="FOLDER",  # meaning of the argument
         action="store",
-        default='.',                  # local working directory
-        help='Passes the context folder holding all the templates',
+        default=".",  # local working directory
+        help="Passes the context folder holding all the templates",
     )
     parser.add_argument(
-        '-i', '--input',
-        metavar="FILE",               # meaning of the argument
+        "-i",
+        "--input",
+        metavar="FILE",  # meaning of the argument
         action="store",
-        help='Specifies the base input set to run over. Shorthand for -s _ FILE',
+        help=(
+            "Specifies the base input set to run over."
+            " Shorthand for -s _ FILE"
+        ),
     )
     parser.add_argument(
-        '-o', '--output',
-        metavar="FILE|PATTERN",       # meaning of the argument
+        "-o",
+        "--output",
+        metavar="FILE|PATTERN",  # meaning of the argument
         action="store",
-        help='Specifies where to write the output, can use {uritemplate}.',
+        help="Specifies where to write the output, can use {uritemplate}.",
     )
     parser.add_argument(
-        '-f', '--force',
+        "-f",
+        "--force",
         default=False,
         action="store_true",
-        help='Force writing output, do not check if output files already exist.',
+        help=(
+            "Force writing output, do not check "
+            "if output files already exist."
+        ),
     )
     parser.add_argument(
-        '-m', '--mode',
+        "-m",
+        "--mode",
         metavar=" (no-)it(eration), (no-)ig(norecase), (no-)fl(atten) ",
         action="store",
-        help='''Modifies the mode of iteration:
-                1. it (default) vs. no-it: apply template for each iterated row in the input set
-                                           vs. apply it only once once for the complete input set;
+        help="""Modifies the mode of iteration:
+                1. it (default) vs. no-it: apply template for each
+                                                iterated row in the input set
+                                           vs. apply it only once once for
+                                                the complete input set;
                 2. ig vs. no-ig: to be implemented;
-                3. fl vs. no-fl: to be implemented.''',
+                3. fl vs. no-fl: to be implemented.""",
     )
     return parser
 
@@ -95,7 +121,7 @@ def make_service(args: argparse.Namespace) -> Generator:
 def make_sources(args: argparse.Namespace) -> dict:
     inputs = dict()
     if args.input is not None:
-        inputs['_'] = SourceFactory.make_source(args.input)
+        inputs["_"] = SourceFactory.make_source(args.input)
     if args.set is not None:
         for [key, file_name] in args.set:
             inputs[key] = SourceFactory.make_source(file_name)
@@ -116,9 +142,14 @@ def vars_to_dict(vars: list) -> dict:
 def enable_logging(args: argparse.Namespace):
     if args.logconf is None:
         return
-    import yaml   # conditional dependency -- we only need this (for now) when logconf needs to be read
-    with open(args.logconf, 'r') as yml_logconf:
-        logging.config.dictConfig(yaml.load(yml_logconf, Loader=yaml.SafeLoader))
+    import yaml  # conditional dependency -- we only need this (for now)
+
+    # when logconf needs to be read
+
+    with open(args.logconf, "r") as yml_logconf:
+        logging.config.dictConfig(
+            yaml.load(yml_logconf, Loader=yaml.SafeLoader)
+        )
     log.info(f"Logging enabled according to config in {args.logconf}")
 
 
@@ -156,5 +187,5 @@ def main():
         sink.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

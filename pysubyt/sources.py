@@ -1,25 +1,28 @@
-from pysubyt.api import Source
-from typing import Callable
-from typeguard import check_type
-import mimetypes
-import re
-import validators
-import requests
-import os
 import glob
 import logging
+import mimetypes
+import os
+import re
+from typing import Callable
 
+import requests
+import validators
+from typeguard import check_type
+
+from pysubyt.api import Source
 
 log = logging.getLogger(__name__)
 
 
 def assert_readable(file_path):
-    assert os.path.isfile(file_path), "File to read '%s' does not exists" % file_path
+    assert os.path.isfile(file_path), (
+        "File to read '%s' does not exists" % file_path
+    )
     assert os.access(file_path, os.R_OK), "Can not read '%s'" % file_path
 
 
 def fname_from_cdisp(cdisp):
-    return re.split(r'; ?filename=', cdisp, flags=re.IGNORECASE)
+    return re.split(r"; ?filename=", cdisp, flags=re.IGNORECASE)
 
 
 class SourceFactory:
@@ -36,12 +39,16 @@ class SourceFactory:
     def _add(self, mime: str, sourceClass: Callable[[str], Source]) -> None:
         assert mime is not False, "mime cannot be empty to register "
         assert sourceClass is not None, "sourceClass must be provided"
-        check_type('Source <Constructor>', sourceClass, Callable[[str], Source])
+        check_type(
+            "Source <Constructor>", sourceClass, Callable[[str], Source]
+        )
 
         self._register[mime] = sourceClass
 
     def _find(self, mime: str):
-        assert mime in self._register, "no Source class available for mime '%s'" % mime
+        assert mime in self._register, (
+            "no Source class available for mime '%s'" % mime
+        )
         return self._register[mime]
 
     @staticmethod
@@ -64,8 +71,8 @@ class SourceFactory:
         response = requests.head(url, allow_redirects=True)
         if response.status_code == 200:
             mime: str = response.info().get_content_type()
-            cdhead = response.headers.get('Content-Disposition')
-            if mime == 'application/octet-stream' and cdhead is not None:
+            cdhead = response.headers.get("Content-Disposition")
+            if mime == "application/octet-stream" and cdhead is not None:
                 cd = fname_from_cdisp(cdhead)
                 mime = SourceFactory.mime_from_identifier(cd)
         return mime
@@ -90,7 +97,7 @@ class SourceFactory:
         if os.path.isdir(identifier):
             source = FolderSource(identifier)
             return source
-        
+
         # else
         if glob.has_magic(identifier):
             source = GlobSource(identifier)
@@ -98,8 +105,12 @@ class SourceFactory:
 
         # else
         mime: str = SourceFactory.mime_from_identifier(identifier)
-        assert mime is not None, "no valid mime derived from identifier '%s'" % identifier
-        sourceClass: Callable[[str], Source] = SourceFactory.instance()._find(mime)
+        assert mime is not None, (
+            "no valid mime derived from identifier '%s'" % identifier
+        )
+        sourceClass: Callable[[str], Source] = SourceFactory.instance()._find(
+            mime
+        )
         source: Source = sourceClass(identifier)
 
         return source
@@ -108,8 +119,12 @@ class SourceFactory:
 class FolderSource(Source):
     def __init__(self, folder_path):
         self._folder = os.path.abspath(folder_path)
-        self._sourcefiles = sorted(list(next(os.walk(self._folder), (None, None, []))[2]))
-        assert len(self._sourcefiles) > 0, "FolderSource '%s' should have content files." % self._folder
+        self._sourcefiles = sorted(
+            list(next(os.walk(self._folder), (None, None, []))[2])
+        )
+        assert len(self._sourcefiles) > 0, (
+            "FolderSource '%s' should have content files." % self._folder
+        )
         self._reset()
 
     def __repr__(self):
@@ -128,7 +143,9 @@ class FolderSource(Source):
         self._exitCurrent()
         self._ix += 1
         if self._ix < len(self._sourcefiles):
-            self._current_source = SourceFactory.make_source(os.path.join(self._folder, self._sourcefiles[self._ix]))
+            self._current_source = SourceFactory.make_source(
+                os.path.join(self._folder, self._sourcefiles[self._ix])
+            )
             self._current_iter = self._current_source.__enter__()
         else:
             self._current_source = None
@@ -148,7 +165,7 @@ class FolderSource(Source):
         raise StopIteration
 
     def __enter__(self):
-        class IterProxy():
+        class IterProxy:
             def __init__(self, me):
                 self._me = me
 
@@ -168,15 +185,20 @@ class FolderSource(Source):
 
 
 class GlobSource(FolderSource):
-    """ For now, this class is inheriting from FolderSource. As soon as another
+    """For now, this class is inheriting from FolderSource. As soon as another
     class appears with similar behavior to FolderSource and GlobSource, we may
-    consider to create an abstract class "CollectionSource" and make all of them
-    inherit from this abstract class.
+    consider to create an abstract class "CollectionSource" and make all of
+    theminherit from this abstract class.
     """
+
     def __init__(self, pattern, pattern_root_dir="."):
         self._folder = pattern_root_dir
-        self._sourcefiles = sorted([p for p in glob.glob(pattern) if os.path.isfile(p)])
-        assert len(self._sourcefiles) > 0, "GlobSource '%s' should have content files." % self._folder
+        self._sourcefiles = sorted(
+            [p for p in glob.glob(pattern) if os.path.isfile(p)]
+        )
+        assert len(self._sourcefiles) > 0, (
+            "GlobSource '%s' should have content files." % self._folder
+        )
         self._reset()
 
 
@@ -187,13 +209,14 @@ try:
         """
         Source producing iterator over data-set coming from CSV on file
         """
+
         def __init__(self, csv_file_path):
             assert_readable(csv_file_path)
             self._csv = csv_file_path
 
         def __enter__(self):
             self._csvfile = open(self._csv, mode="r", encoding="utf-8-sig")
-            return csv.DictReader(self._csvfile, delimiter=',')
+            return csv.DictReader(self._csvfile, delimiter=",")
 
         def __exit__(self):
             self._csvfile.close()
@@ -215,13 +238,16 @@ try:
         """
         Source producing iterator over data-set coming from json on file
         """
+
         def __init__(self, json_file_path):
             assert_readable(json_file_path)
             self._json = json_file_path
 
         def __enter__(self):
-            # note this is loading everything in memory -- will not work for large sets
-            # we might need to consider (json-stream)[https://pypi.org/project/json-stream/] in the future
+            # note this is loading everything in memory
+            #   -- will not work for large sets
+            #   in the future we might need to consider:
+            #   (json-stream)[https://pypi.org/project/json-stream/]
             with open(self._json, mode="r", encoding="utf-8-sig") as jsonfile:
                 data = json.load(jsonfile)
                 # unwrap nested structures
@@ -253,12 +279,12 @@ try:
         """
         Source producing iterator over data-set coming from XML on file
         """
+
         def __init__(self, xml_file_path):
             assert_readable(xml_file_path)
             self._xml = xml_file_path
 
         def __enter__(self):
-
             with open(self._xml, mode="r", encoding="utf-8-sig") as xmlfile:
                 xml_str = xmlfile.read()
                 xdict = xmlasdict.parse(xml_str)

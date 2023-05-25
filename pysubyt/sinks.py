@@ -1,15 +1,21 @@
-from pysubyt.api import Sink
-from uritemplate import URITemplate, variables
 import os
+
+from uritemplate import URITemplate, variables
+
+from pysubyt.api import Sink
 
 
 def assert_writable(file_path: str, force_output: bool = False):
     if not force_output:
-        assert not os.path.isfile(file_path), "File to write '%s' alread exists" % file_path
+        assert not os.path.isfile(file_path), (
+            "File to write '%s' alread exists" % file_path
+        )
     parent_path = os.path.dirname(os.path.abspath(file_path))
     if not os.path.exists(parent_path):
         os.makedirs(parent_path)
-    assert os.access(parent_path, os.W_OK), "Can not write to folder '%s' for creating new files" % parent_path
+    assert os.access(parent_path, os.W_OK), (
+        "Can not write to folder '%s' for creating new files" % parent_path
+    )
 
 
 class SinkFactory:
@@ -18,7 +24,7 @@ class SinkFactory:
         if identifier is None:
             return StdOutSink()
         # else:
-        if len(variables(identifier)) == 0:       # identifier is not a pattern
+        if len(variables(identifier)) == 0:  # identifier is not a pattern
             return SingleFileSink(identifier, force_output)
         # else:                                        #identifier is a pattern
         return PatternedFileSink(identifier, force_output)
@@ -46,7 +52,10 @@ class SingleFileSink(Sink):
         self._force_output = force_output
 
     def __repr__(self):
-        return "SingleFileSink('%s', %s)" % (os.path.abspath(self._file_path), self._force_output)
+        return "SingleFileSink('%s', %s)" % (
+            os.path.abspath(self._file_path),
+            self._force_output,
+        )
 
     def close(self):
         self._fopen.close()
@@ -63,7 +72,10 @@ class PatternedFileSink(Sink):
         self._force_output = force_output
 
     def __repr__(self):
-        return "PatternedFileSink('%s', %s)" % (self._name_template.uri, self._force_output)
+        return "PatternedFileSink('%s', %s)" % (
+            self._name_template.uri,
+            self._force_output,
+        )
 
     def close(self):
         pass
