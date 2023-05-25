@@ -2016,6 +2016,17 @@ files = [
 cffi = ">=1.0"
 
 [[package]]
+name = "xmlasdict"
+version = "0.2.2"
+description = "python library to read xml DOM trees as dicts (with iter and gettattribute behaviour)"
+optional = false
+python-versions = "*"
+files = [
+    {file = "xmlasdict-0.2.2-py3-none-any.whl", hash = "sha256:07bdf50ac031a70a9a94acc9405b9d877f5cedfd527c984390e81aec8188f378"},
+    {file = "xmlasdict-0.2.2.tar.gz", hash = "sha256:4b351c07538a508a6db4e7202b099cbfbca18cf2d61be470a71fdbb7edd9c0b3"},
+]
+
+[[package]]
 name = "zipp"
 version = "3.15.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
@@ -2038,4 +2049,4 @@ tests = ["coverage", "pytest", "pytest-cov", "python-dotenv", "pyyaml"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "24d1a4aa13884049bda16bba606aa031c0a37266aefca38b5d3bb6f3aa6715e3"
+content-hash = "b8a7063416bd5804787da57f43d4ced6cd11971e349979239875455783756f96"
