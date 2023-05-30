@@ -16,7 +16,7 @@ Please check out the Py-SUbyt documentation. Namely:
 - and the [style guide](./docs/cli-style.md)!
 
 
-[![cov](https://github.com/vliz-be-opsci/pysubyt/badges/coverage.svg)](https://github.com/JotaFan/pycoverage)
 <p align="center">
+<a href="https://github.com/JotaFan/pycoverage"><img src="https://github.com/vliz-be-opsci/pysubyt/badges/coverage.svg"></a>
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
