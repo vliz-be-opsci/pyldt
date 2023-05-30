@@ -40,8 +40,6 @@ jobs:
       run: |
         make init-dev
         pip install -e .[tests]
-        echo ${{ github.ref }}
-        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
 
     - name: Linting check
       id: linting_check
