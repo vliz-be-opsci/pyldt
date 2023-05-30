@@ -28,10 +28,18 @@ jobs:
       uses: actions/setup-python@v4.6.0
       with:
         python-version: 3.8
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+      id: extract_branch
+      
     - name: Install dependencies
       run: |
         make init-dev
         pip install -e .[tests]
+        echo ${{ github.ref }}
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
 
     - name: Linting check
       id: linting_check
@@ -54,3 +62,4 @@ jobs:
         cov-threshold-total: 90
         async-tests: true
         github_token: ${{ secrets.github_token }}
+        working_branch: ${{ steps.extract_branch.outputs.branch }}
