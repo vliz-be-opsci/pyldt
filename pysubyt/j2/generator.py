@@ -30,9 +30,6 @@ class JinjaBasedGenerator(Generator):
             ),
         )
         self._templates_env.globals = Functions.all()
-        # Since  the change ttl -> xsd, and removal of ttl to filters
-        # But this seems a bit redundact.
-        self._templates_env.globals.update(Filters.all())
         self._templates_env.filters.update(Filters.all())
 
     def __repr__(self):
