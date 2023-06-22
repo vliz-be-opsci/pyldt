@@ -1,8 +1,8 @@
 import os
 from typing import Callable
 
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-from pyrdfj2 import Filters, Functions
+from jinja2 import select_autoescape
+from pyrdfj2 import Filters, J2RDFSyntaxBuilder
 
 from pysubyt.api import Generator
 
@@ -21,20 +21,31 @@ class JinjaBasedGenerator(Generator):
         if templates_folder is None:
             templates_folder = "."
         self._templates_folder = templates_folder
-        self._templates_env = Environment(
-            loader=FileSystemLoader(self._templates_folder),
-            autoescape=select_autoescape(
-                disabled_extensions=("ttl", "txt", "ldt", "json", "jsonld"),
-                default_for_string=True,
-                default=True,
-            ),
+        ttl_filter = {"ttl": Filters.all()["xsd"]}
+
+        self.syntax_builder = J2RDFSyntaxBuilder(
+            templates_folder,
+            extra_filters=ttl_filter,
+            jinja_env_variables={
+                "autoescape": select_autoescape(
+                    disabled_extensions=(
+                        "ttl",
+                        "txt",
+                        "ldt",
+                        "json",
+                        "jsonld",
+                    ),
+                    default_for_string=True,
+                    default=True,
+                )
+            },
         )
-        self._templates_env.globals = Functions.all()
-        self._templates_env.filters.update(Filters.all())
 
     def __repr__(self):
         abs_folder = os.path.abspath(self._templates_folder)
         return "JinjaBasedGenerator('%s')" % abs_folder
 
     def make_render_fn(self, template_name: str) -> Callable:
-        return self._templates_env.get_template(template_name).render
+        return self.syntax_builder._get_rdfsyntax_template(
+            template_name
+        ).render
