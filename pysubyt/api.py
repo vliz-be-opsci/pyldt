@@ -38,6 +38,9 @@ class Source(ABC):
         """Source context cleanup"""
 
 
+# TODO make a pandas source in sources.py
+
+
 class Settings:
     """Embodies all the actual possible modifiers to the process"""
 
