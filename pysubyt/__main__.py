@@ -182,6 +182,7 @@ def main():
         log.error(errmsg)
         log.exception(e)
         print("*** ERROR *** " + errmsg, file=sys.stderr)
+        sys.exit(1)
 
     finally:
         sink.close()
