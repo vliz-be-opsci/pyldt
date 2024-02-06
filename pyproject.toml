@@ -25,6 +25,8 @@ python-dateutil =  "*"
 xmlasdict =  "*"
 jinja2 =  "*"
 pyrdfj2 =  "*"
+furo = "*"
+recommonmark = "*"
 
 [tool.poetry.group.docs]
 optional = true

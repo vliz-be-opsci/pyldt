@@ -10,9 +10,9 @@
 ### Usage and further reading
 
 Please check out the Py-SUbyt documentation. Namely:
-- the [user guide](./docs/cli.md)
-- the supported [features](./docs/features.md)
-- the [examples](./docs/examples.md)
+- the [user guide](pre_docs/cli.md)
+- the supported [features](pre_docs/features.md)
+- the [examples](pre_docs/examples.md)
 - and the [style guide](./docs/cli-style.md)!
 
 
