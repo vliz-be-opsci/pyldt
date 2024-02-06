@@ -1,0 +1,7 @@
+pysubyt
+=======
+
+.. toctree::
+   :maxdepth: 4
+
+   pysubyt

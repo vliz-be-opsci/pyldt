@@ -1,0 +1,45 @@
+pysubyt package
+===============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pysubyt.j2
+
+Submodules
+----------
+
+pysubyt.api module
+------------------
+
+.. automodule:: pysubyt.api
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysubyt.sinks module
+--------------------
+
+.. automodule:: pysubyt.sinks
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pysubyt.sources module
+----------------------
+
+.. automodule:: pysubyt.sources
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pysubyt
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,21 @@
+pysubyt.j2 package
+==================
+
+Submodules
+----------
+
+pysubyt.j2.generator module
+---------------------------
+
+.. automodule:: pysubyt.j2.generator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pysubyt.j2
+   :members:
+   :undoc-members:
+   :show-inheritance:
