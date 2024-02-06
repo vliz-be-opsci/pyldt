@@ -17,8 +17,9 @@ Indices and tables
 
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
-
+* `Examples <examples>`_
+* `Features <features>`_
+* `Cli <cli>`_
 
 API Docs
 ========

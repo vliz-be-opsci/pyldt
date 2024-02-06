@@ -1,7 +1,7 @@
 TEST_PATH = ./tests/
 FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
 PROJECT = pysubyt
-AUTHOR = Marc Portier 
+AUTHOR = Marc_Portier 
 
 clean:
 	@find . -name '*.pyc' -exec rm --force {} +
@@ -24,8 +24,6 @@ init: startup install
 
 init-dev: startup
 	poetry install --with 'tests' --with 'dev' --with 'docs'
-	poetry run pre-commit install
-	poetry run pre-commit install --hook-type commit-msg
 
 init-docs: startup
 	poetry install --with 'docs'
@@ -33,6 +31,7 @@ init-docs: startup
 docs:
 	if ! [ -d "./docs" ]; then poetry run sphinx-quickstart -q --ext-autodoc --sep --project $(PROJECT) --author $(AUTHOR) docs; fi
 	poetry run sphinx-apidoc -o ./docs/source ./$(PROJECT)
+	cp ./pre_docs/* ./docs/source/
 	poetry run sphinx-build -b html ./docs/source ./docs/build/html
 
 test:

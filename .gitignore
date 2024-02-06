@@ -10,6 +10,7 @@ build/
 _build/
 *.log
 dist/
+docs/
 
 # venv / Byte-compiled / optimized / DLL files
 venv/
