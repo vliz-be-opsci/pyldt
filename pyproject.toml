@@ -39,7 +39,6 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 poetry = "*"
-pre-commit = "*"
 isort = "*"
 black = "*"
 flake8 = "*"

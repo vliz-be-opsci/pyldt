@@ -12,6 +12,7 @@
 #
 import os
 import sys
+
 from recommonmark.parser import CommonMarkParser
 
 source_parsers = {
