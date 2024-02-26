@@ -8,6 +8,7 @@
 .. moduleauthor:: Marc Portier <marc.portier@gmail.com>
 
 """
+
 from pysubyt.api import Generator, Settings, Sink, Source
 from pysubyt.j2.generator import JinjaBasedGenerator
 from pysubyt.sinks import SinkFactory
