@@ -12,11 +12,11 @@ classifiers = [
     # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = "^3.9"
 requests =  "*"
 uritemplate =  "*"
 validators =  "*"
@@ -27,6 +27,7 @@ jinja2 =  "*"
 pyrdfj2 =  "*"
 furo = "*"
 recommonmark = "*"
+pandas = "*"
 
 [tool.poetry.group.docs]
 optional = true
@@ -38,7 +39,6 @@ sphinx = "*"
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-poetry = "*"
 isort = "*"
 black = "*"
 flake8 = "*"

@@ -2,7 +2,7 @@ import unittest
 from collections.abc import Iterable
 from typing import Callable
 
-from pysubyt.api import Generator, Settings, Sink, Source
+from pysubyt.api import Generator, GeneratorSettings, Sink, Source
 from tests.util4tests import log, run_single_test
 
 
@@ -28,6 +28,7 @@ class SimpleRangeSource(Source):
     """Just generates int items from zero to size-1"""
 
     def __init__(self, size):
+        super().__init__()
         self._size = size
 
     def __enter__(self) -> Iterable:
@@ -42,15 +43,22 @@ class CountingSink(Sink):
     the expected size"""
 
     def __init__(self, size):
+        super().__init__()
         self._size = size
         self._count = 0
 
-    def add(self, part: str, item):
+    def add(self, part: str, item, source_mtime: float = None):
         assert int(part) == item, "pass-through behaviour failed"
         assert item == self._count, "item not arriving at expected count"
         self._count += 1
 
+    def open(self):
+        pass
+
     def close(self):
+        pass
+
+    def evaluate(self):
         assert (
             self._count == self._size
         ), "sink did not receive expected number of added parts"
@@ -108,9 +116,10 @@ class TestAPIProcessor(unittest.TestCase):
         TESTNAME = "something to be actually ignored but just tested"
         fg = SimplePassGenerator(TESTNAME, TESTSIZE)
         inputs = dict(_=SimpleRangeSource(TESTSIZE))
-        settings = Settings()
+        generator_settings = GeneratorSettings()
         sink = CountingSink(TESTSIZE)
-        fg.process(TESTNAME, inputs, settings, sink)
+        fg.process(TESTNAME, inputs, generator_settings, sink)
+        sink.evaluate()
 
 
 if __name__ == "__main__":

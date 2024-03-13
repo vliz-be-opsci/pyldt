@@ -2,33 +2,35 @@ import random
 import unittest
 from itertools import product
 
-from pysubyt.api import Settings
+from pysubyt.api import GeneratorSettings
 from tests.util4tests import run_single_test
 
 
-class TestSettings(unittest.TestCase):
+class TestGeneratorSettings(unittest.TestCase):
     def test_statics(self):
-        descr = Settings.describe()
+        descr = GeneratorSettings.describe()
         self.assertTrue(descr, "generic description should not be empty")
         self.assertEqual(
-            len(Settings._scheme.keys()),
+            len(GeneratorSettings._scheme.keys()),
             descr.count("\n") + 1,
             "Each key in the description should be described",
         )
 
     def test_parse(self):
         mode: str = "no-ig,fl,it"
-        settings: Settings = Settings(mode)
-        self.assertFalse(settings.ignorecase, "IgnoreCase should be off")
-        self.assertTrue(settings.flatten, "Flatten should be on")
-        self.assertTrue(settings.iteration, "Iteration should be on")
+        generator_settings: GeneratorSettings = GeneratorSettings(mode)
+        self.assertFalse(
+            generator_settings.ignorecase, "IgnoreCase should be off"
+        )
+        self.assertTrue(generator_settings.flatten, "Flatten should be on")
+        self.assertTrue(generator_settings.iteration, "Iteration should be on")
 
     def test_errors(self):
         pass
 
     def test_cases_roundtrip(self):
         minlen = 2  # minimal length of the part to still be unambiguous
-        keys = Settings._scheme.keys()
+        keys = GeneratorSettings._scheme.keys()
         for case in product([True, False], repeat=len(keys)):
             case_vals = {key: case[i] for (i, key) in enumerate(keys)}
             case_keys = list()
@@ -41,16 +43,16 @@ class TestSettings(unittest.TestCase):
                 case_parts.append(val_pfx + part)
                 case_keys.append(val_pfx + key)
             case_mode = ",".join(case_parts)
-            case_settings = Settings(case_mode)
+            case_generator_settings = GeneratorSettings(case_mode)
             for key in keys:
                 self.assertEqual(
                     case_vals[key],
-                    case_settings.__getattr__(key),
+                    case_generator_settings.__getattr__(key),
                     "wrong setting for key '%s' via modstr '%s' should be %s"
                     % (key, case_mode, case_vals[key]),
                 )
 
-            case_roundtrip = case_settings.as_modifier_str()
+            case_roundtrip = case_generator_settings.as_modifier_str()
             self.assertEqual(
                 set(case_keys),
                 set(case_roundtrip.split(",")),

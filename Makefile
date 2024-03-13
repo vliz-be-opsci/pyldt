@@ -1,7 +1,7 @@
 TEST_PATH = ./tests/
 FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
 PROJECT = pysubyt
-AUTHOR = Marc_Portier 
+AUTHOR = Vlaams Instituut voor de Zee (VLIZ)
 
 clean:
 	@find . -name '*.pyc' -exec rm --force {} +
@@ -13,19 +13,15 @@ clean:
 	@rm -f *.sqlite
 	@rm -rf .cache
 
-startup:
-	pip install --upgrade pip
-	which poetry >/dev/null || pip install poetry
-
 install:
 	poetry install
 
-init: startup install
+init: install
 
-init-dev: startup
+init-dev:
 	poetry install --with 'tests' --with 'dev' --with 'docs'
 
-init-docs: startup
+init-docs:
 	poetry install --with 'docs'
 
 docs:

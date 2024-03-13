@@ -48,6 +48,7 @@ class TestSinks(unittest.TestCase):
             )
 
             for sink in [sfs, pfs]:
+                sink.open()
                 for item in items:
                     sink.add(item["data"], item)
                 sink.close()

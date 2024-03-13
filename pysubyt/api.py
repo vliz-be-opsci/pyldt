@@ -10,15 +10,23 @@ log = logging.getLogger(__name__)
 class Sink(ABC):
     """Abstract Interface for sinks"""
 
+    def __init__(self) -> None:
+        # lastModifiedTime for each file in the sink, t = 0 by default
+        self.mtimes = {".": 0.0}
+
+    @abstractmethod
+    def open(self):
+        """Open file handle to Sink"""
+
     @abstractmethod
     def close(self):
         """Notifies the Sink all writing has been done - allows cleanup"""
 
     @abstractmethod
-    def add(self, part: str, item: dict = None):
+    def add(self, part: str, item: dict = None, source_mtime: float = None):
         """Writes out the part to the sink
 
-        :param part: the result for a sepcific part that needs to be sinked
+        :param part: the result for a specific part that needs to be sinked
         :type part: str
         :param item: the record for which this part was produced
         :type item: dict
@@ -28,6 +36,10 @@ class Sink(ABC):
 class Source(ABC):
     """Abstract Interface for input Sources - mainly context-manager
     for the actual Iterable to be returned"""
+
+    def __init__(self) -> None:
+        # lastModifiedTime for each file in the source, t = infinity by default
+        self.mtimes = {".": float("inf")}
 
     @abstractmethod
     def __enter__(self) -> Iterable:
@@ -41,7 +53,7 @@ class Source(ABC):
 # TODO make a pandas source in sources.py
 
 
-class Settings:
+class GeneratorSettings:
     """Embodies all the actual possible modifiers to the process"""
 
     _scheme: Dict[str, Dict] = {
@@ -74,13 +86,14 @@ class Settings:
         return "\n".join(
             [
                 "%30s: %s" % (key, val["description"])
-                for (key, val) in Settings._scheme.items()
+                for (key, val) in GeneratorSettings._scheme.items()
             ]
         )
 
     def __init__(self, modifiers: str = None):
         self._values = {
-            key: val["default"] for (key, val) in Settings._scheme.items()
+            key: val["default"]
+            for (key, val) in GeneratorSettings._scheme.items()
         }
         self.load_from_modifiers(modifiers)
 
@@ -98,9 +111,9 @@ class Settings:
 
         for part in modifiers.split(","):
             val: bool = True
-            if part.startswith(Settings._negation):
+            if part.startswith(GeneratorSettings._negation):
                 val = False
-                part = part[len(Settings._negation) :]
+                part = part[len(GeneratorSettings._negation) :]
             found = [
                 key
                 for (key, val) in self._values.items()
@@ -132,19 +145,20 @@ class Settings:
         )
 
     def __repr__(self) -> str:
-        return "Settings('%s')" % self.as_modifier_str()
+        return "GeneratorSettings('%s')" % self.as_modifier_str()
 
     def __getattr__(self, key: str) -> bool:
         return self._values[key]
 
     def __setattr__(self, key: str, val: bool) -> None:
         if key in ["_values"]:  # actual props to be handled through super
-            super(Settings, self).__setattr__(key, val)
+            super(GeneratorSettings, self).__setattr__(key, val)
             return
         # else  --> dynamic props to be stored in self._values
-        if key not in Settings._scheme.keys():
+        if key not in GeneratorSettings._scheme.keys():
             raise KeyError(
-                "attribute '%s' not writeable in Settings object" % key
+                "attribute '%s' not writeable in GeneratorSettings object"
+                % key
             )
         self._values[key] = val
 
@@ -211,12 +225,18 @@ class Generator(ABC):
         self,
         template_name: str,
         sets: Dict[str, Iterable],
-        settings: Settings,
+        generator_settings: GeneratorSettings,
         sink: Sink,
+        source_mtime: float = None,
         vars_dict: dict = None,
     ):
         return Generator.Processor(
-            self.make_render_fn(template_name), sets, settings, sink, vars_dict
+            self.make_render_fn(template_name),
+            sets,
+            generator_settings,
+            sink,
+            source_mtime,
+            vars_dict,
         )
 
     class Processor:
@@ -233,14 +253,16 @@ class Generator(ABC):
             self,
             render_fn: Callable,
             sets: Dict[str, Iterable],
-            settings: Settings,
+            generator_settings: GeneratorSettings,
             sink: Sink,
+            source_mtime: float = None,
             vars_dict: dict = None,
         ):
             self.render = render_fn
             self.sets = sets
-            self.settings = settings
+            self.generator_settings = generator_settings
             self.sink = sink
+            self.source_mtime = source_mtime
             self.variables = vars_dict if vars_dict is not None else {}
             self.queued_item = None
             self.isFirst = True
@@ -282,11 +304,13 @@ class Generator(ABC):
                     "isFirst": self.isFirst,
                     "isLast": self.isLast,
                     "index": self.index,
-                    "settings": self.settings,
+                    "settings": self.generator_settings,
                 },
                 **self.variables,
             )
-            self.sink.add(part, item)
+            self.sink.open()
+            self.sink.add(part, item, self.source_mtime)
+            self.sink.close()
             self.queued_item = None
             self.isFirst = False
             self.index += 1
@@ -295,9 +319,10 @@ class Generator(ABC):
         self,
         template_name: str,
         inputs: Dict[str, Source],
-        settings: Settings,
+        generator_settings: GeneratorSettings,
         sink: Sink,
         vars_dict: dict = None,
+        conditional: bool = False,
     ) -> None:
         """Process the records found in the base input and
             write them to the sink.
@@ -307,21 +332,42 @@ class Generator(ABC):
         :type template_name: str
         :param input: dict of named Source objects providing content
         :type inputs: Dict[str, Source]
-        :param settings: Settings object holding the
-        :type settings: Settings
+        :param generator_settings: GeneratorSettings object holding the
+        :type generator_settings: GeneratorSettings
         :param sink: the sink to write result to
         :type sink: Sink
         """
+        source_mtimes = [v.mtimes for v in inputs.values()]
+        source_mtime = (
+            None  # default source_mtime for non-conditional processing
+        )
+        if conditional:
+            source_mtime = max([v for d in source_mtimes for v in d.values()])
+            # sink.mtimes is None for a PatternedFileSink,
+            # but other Sinks can already be handled here
+            if sink.mtimes and (
+                source_mtime < min([v for v in sink.mtimes.values()])
+            ):
+                logging.info(
+                    f"Aborting process (source_mtimes = {source_mtimes}; "
+                    f"sink_mtimes = {sink.mtimes})"
+                )
+                return
         # convert inputs into sets
         with IteratorsFromSources(inputs) as sets:
             proc = self.make_processor(
-                template_name, sets, settings, sink, vars_dict
+                template_name,
+                sets,
+                generator_settings,
+                sink,
+                source_mtime,
+                vars_dict,
             )
 
             if (
-                not settings.iteration or "_" not in sets
+                not generator_settings.iteration or "_" not in sets
             ):  # conditions for collection modus
-                settings.iteration = False
+                generator_settings.iteration = False
                 proc.all_taken()
             else:  # default modus
                 data = sets["_"]
