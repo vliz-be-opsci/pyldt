@@ -13,15 +13,19 @@ clean:
 	@rm -f *.sqlite
 	@rm -rf .cache
 
+startup:
+	python -m pip install --upgrade pip
+	which poetry >/dev/null || pip install poetry
+
 install:
 	poetry install
 
-init: install
+init: startup install
 
-init-dev:
+init-dev: startup
 	poetry install --with 'tests' --with 'dev' --with 'docs'
 
-init-docs:
+init-docs: startup
 	poetry install --with 'docs'
 
 docs:

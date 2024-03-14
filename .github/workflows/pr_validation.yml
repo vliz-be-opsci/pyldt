@@ -31,7 +31,6 @@ jobs:
       
     - name: Install dependencies
       run: |
-        pip install poetry
         make init-dev
         pip install -e .[tests]
 
