@@ -25,14 +25,13 @@ jobs:
             - 'tests/**'
 
     - name: Set up Python 3.9
-      uses: actions/setup-python@v4.6.0
+      uses: actions/setup-python@v2
       with:
         python-version: 3.9
       
     - name: Install dependencies
       run: |
         make init-dev
-        pip install -e .[tests]
 
     - name: Linting check
       id: linting_check
@@ -53,4 +52,4 @@ jobs:
         cov-omit-list: tests/*, *__init__*, *__version__*, *__main__*, *exceptions*
         cov-threshold-single: 85
         cov-threshold-total: 90
-        async-tests: false
+        async-tests: true
