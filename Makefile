@@ -1,7 +1,7 @@
 TEST_PATH = ./tests/
 FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
 PROJECT = pysubyt
-AUTHOR = Vlaams Instituut voor de Zee (VLIZ)
+AUTHOR = "Vlaams Instituut voor de Zee (VLIZ)"
 
 clean:
 	@find . -name '*.pyc' -exec rm --force {} +
