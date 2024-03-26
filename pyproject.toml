@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pysubyt"
-version = "0.0.2"
+version = "0.1.0"
 description = "Python implementation of LinkedData Templates to produce triples out of various datasources"
 authors = ["Marc Portier <marc.portier@gmail.com>"]
 readme = "README.md"
