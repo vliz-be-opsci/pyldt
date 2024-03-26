@@ -3,6 +3,7 @@ import logging
 import mimetypes
 import os
 import re
+from pathlib import Path
 from typing import Callable
 
 import requests
@@ -114,19 +115,14 @@ class SourceFactory:
         return source
 
 
-class FolderSource(Source):
-    def __init__(self, folder_path):
-        self._folder = os.path.abspath(folder_path)
-        self._sourcefiles = sorted(
-            list(next(os.walk(self._folder), (None, None, []))[2])
-        )
-        assert len(self._sourcefiles) > 0, (
-            "FolderSource '%s' should have content files." % self._folder
-        )
-        self._reset()
+class CollectionSource(Source):
+    def __init__(self) -> None:
+        super().__init__()
+        self._collection_path = "."
+        self._sourcefiles = []
 
     def __repr__(self):
-        return "%s('%s')" % (type(self), self._folder)
+        return "%s('%s')" % (type(self), self._collection_path)
 
     def _reset(self):
         self._current_source = None
@@ -142,7 +138,9 @@ class FolderSource(Source):
         self._ix += 1
         if self._ix < len(self._sourcefiles):
             self._current_source = SourceFactory.make_source(
-                os.path.join(self._folder, self._sourcefiles[self._ix])
+                os.path.join(
+                    self._collection_path, self._sourcefiles[self._ix]
+                )
             )
             self._current_iter = self._current_source.__enter__()
         else:
@@ -159,8 +157,6 @@ class FolderSource(Source):
         except StopIteration:
             self._nextSource()
             return next(self._current_iter)
-        # else
-        raise StopIteration
 
     def __enter__(self):
         class IterProxy:
@@ -182,22 +178,40 @@ class FolderSource(Source):
         self._reset()
 
 
-class GlobSource(FolderSource):
-    """For now, this class is inheriting from FolderSource. As soon as another
-    class appears with similar behavior to FolderSource and GlobSource, we may
-    consider to create an abstract class "CollectionSource" and make all of
-    theminherit from this abstract class.
-    """
+class FolderSource(CollectionSource):
+    def __init__(self, folder_path):
+        super().__init__()
+        self._collection_path = os.path.abspath(folder_path)
+        self._sourcefiles = sorted(
+            list(next(os.walk(self._collection_path), (None, None, []))[2])
+        )
+        assert len(self._sourcefiles) > 0, (
+            "FolderSource '%s' should have content files."
+            % self._collection_path
+        )
+        self._reset()
+        self.mtimes = {}
+        for p in self._sourcefiles:
+            p = Path(self._collection_path) / Path(p)
+            self.mtimes.update({str(p): os.stat(p).st_mtime})
 
+
+class GlobSource(CollectionSource):
     def __init__(self, pattern, pattern_root_dir="."):
-        self._folder = pattern_root_dir
+        super().__init__()
+        self._collection_path = pattern_root_dir
         self._sourcefiles = sorted(
             [p for p in glob.glob(pattern) if os.path.isfile(p)]
         )
         assert len(self._sourcefiles) > 0, (
-            "GlobSource '%s' should have content files." % self._folder
+            "GlobSource '%s' should have content files."
+            % self._collection_path
         )
         self._reset()
+        self.mtimes = {}
+        for p in self._sourcefiles:
+            p = Path(self._collection_path) / Path(p)
+            self.mtimes.update({str(p): os.stat(p).st_mtime})
 
 
 try:
@@ -209,8 +223,11 @@ try:
         """
 
         def __init__(self, csv_file_path):
+            super().__init__()
             assert_readable(csv_file_path)
             self._csv = csv_file_path
+            if Path(csv_file_path).exists():
+                self.mtimes = {csv_file_path: os.stat(csv_file_path).st_mtime}
 
         def __enter__(self):
             self._csvfile = open(self._csv, mode="r", encoding="utf-8-sig")
@@ -238,8 +255,13 @@ try:
         """
 
         def __init__(self, json_file_path):
+            super().__init__()
             assert_readable(json_file_path)
             self._json = json_file_path
+            if Path(json_file_path).exists():
+                self.mtimes = {
+                    json_file_path: os.stat(json_file_path).st_mtime
+                }
 
         def __enter__(self):
             # note this is loading everything in memory
@@ -279,8 +301,11 @@ try:
         """
 
         def __init__(self, xml_file_path):
+            super().__init__()
             assert_readable(xml_file_path)
             self._xml = xml_file_path
+            if Path(xml_file_path).exists():
+                self.mtimes = {xml_file_path: os.stat(xml_file_path).st_mtime}
 
         def __enter__(self):
             with open(self._xml, mode="r", encoding="utf-8-sig") as xmlfile:

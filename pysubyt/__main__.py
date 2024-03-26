@@ -4,7 +4,7 @@ import logging
 import logging.config
 import sys
 
-from pysubyt.api import Generator, Settings, Sink
+from pysubyt.api import Generator, GeneratorSettings, Sink
 from pysubyt.j2.generator import JinjaBasedGenerator
 from pysubyt.sinks import SinkFactory
 from pysubyt.sources import SourceFactory
@@ -110,6 +110,20 @@ def get_arg_parser():
                 2. ig vs. no-ig: to be implemented;
                 3. fl vs. no-fl: to be implemented.""",
     )
+    parser.add_argument(
+        "-r",
+        "--allow-repeated-sink-paths",
+        default=False,
+        action="store_true",
+        help=("Allow repeated sink paths in case of duplicated data items."),
+    )
+    parser.add_argument(
+        "-c",
+        "--conditional",
+        default=False,
+        action="store_true",
+        help=("Execute only when input has been updated. Abort otherwise."),
+    )
     return parser
 
 
@@ -129,7 +143,9 @@ def make_sources(args: argparse.Namespace) -> dict:
 
 
 def make_sink(args: argparse.Namespace) -> Sink:
-    return SinkFactory.make_sink(args.output, args.force)
+    return SinkFactory.make_sink(
+        args.output, args.force, args.allow_repeated_sink_paths
+    )
 
 
 def vars_to_dict(vars: list) -> dict:
@@ -161,19 +177,26 @@ def main():
 
     enable_logging(args)
     service = make_service(args)
-    settings = Settings(args.mode)
+    generator_settings = GeneratorSettings(args.mode)
     vars_dict = vars_to_dict(args.var)
     inputs = make_sources(args)
     sink = make_sink(args)
 
     try:
         log.debug("service  = %s" % service)
-        log.debug("settings = %s" % settings)
+        log.debug("generator_settings = %s" % generator_settings)
         log.debug("variables = %s" % vars_dict)
         log.debug("inputs   = %s" % inputs)
         log.debug("sink     = %s" % sink)
 
-        service.process(args.name, inputs, settings, sink, vars_dict)
+        service.process(
+            args.name,
+            inputs,
+            generator_settings,
+            sink,
+            vars_dict,
+            args.conditional,
+        )
 
         log.debug("processing done")
 

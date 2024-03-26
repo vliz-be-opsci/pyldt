@@ -25,3 +25,6 @@ __pycache__/
 
 # local dependency to xmltodict
 src/xmltodict
+
+examples/data
+tests/tmp

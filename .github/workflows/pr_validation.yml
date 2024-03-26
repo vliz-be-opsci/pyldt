@@ -24,15 +24,14 @@ jobs:
           tests:
             - 'tests/**'
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4.6.0
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: 3.9
       
     - name: Install dependencies
       run: |
         make init-dev
-        pip install -e .[tests]
 
     - name: Linting check
       id: linting_check

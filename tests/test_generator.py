@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pysubyt.api import Settings, Sink
+from pysubyt.api import GeneratorSettings, Sink
 from pysubyt.j2.generator import JinjaBasedGenerator
 from pysubyt.sources import SourceFactory
 from tests.util4tests import log, run_single_test
@@ -9,6 +9,7 @@ from tests.util4tests import log, run_single_test
 
 class AssertingSink(Sink):
     def __init__(self, test):
+        super().__init__()
         self._test = test
         self._parts = []
 
@@ -19,7 +20,7 @@ class AssertingSink(Sink):
     def _assert_count(self):
         self._test.assertEqual(self._index, len(self._parts))
 
-    def add(self, part: str, item: dict = None):
+    def add(self, part: str, item: dict = None, source_mtime: float = None):
         log.debug("part received no. %d:\n--\n%s\n--" % (self._index, part))
         expected = self._parts[self._index].strip()
         part = part.strip()
@@ -33,7 +34,13 @@ class AssertingSink(Sink):
         )
         self._index += 1
 
+    def open(self):
+        pass
+
     def close(self):
+        pass
+
+    def evaluate(self):
         self._assert_count()
 
 
@@ -109,7 +116,9 @@ class TestJinjaGenerator(unittest.TestCase):
         for name in names:
             # load the expected parts from the matching output-file in the sink
             sink.load_parts(get_expected_parts(os.path.join(out_path, name)))
-            settings = Settings(get_indicator_from_name(name))
+            generator_settings = GeneratorSettings(
+                get_indicator_from_name(name)
+            )
 
             # process
             log.debug(
@@ -118,13 +127,13 @@ class TestJinjaGenerator(unittest.TestCase):
             g.process(
                 name,
                 inputs,
-                settings,
+                generator_settings,
                 sink,
                 vars_dict={"my_domain": "realexample.org"},
             )
 
             # assure all records were passed
-            sink.close()
+            sink.evaluate()
         log.debug("ending test_templates")
 
 
