@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 def assert_readable(file_path):
     assert os.path.isfile(file_path), (
-        "File to read '%s' does not exists" % file_path
+        "File to read '%s' does not exist" % file_path
     )
     assert os.access(file_path, os.R_OK), "Can not read '%s'" % file_path
 

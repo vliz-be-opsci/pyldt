@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 def assert_writable(file_path: str, force_output: bool = False):
     if not force_output:
         assert not os.path.isfile(file_path), (
-            "File to write '%s' alread exists" % file_path
+            "File to write '%s' already exists" % file_path
         )
     parent_path = os.path.dirname(os.path.abspath(file_path))
     if not os.path.exists(parent_path):
