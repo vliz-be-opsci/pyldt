@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Supported features - pysubyt v0.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -188,18 +188,18 @@
         </div>
         <article role="main">
           <section id="supported-features">
-<h1>Supported features<a class="headerlink" href="#supported-features" title="Permalink to this heading">#</a></h1>
+<h1>Supported features<a class="headerlink" href="#supported-features" title="Link to this heading">#</a></h1>
 <p>Below is a description of the main features that are currently supported in PySUByT together with links to <a class="reference internal" href="examples.html"><span class="doc">examples</span></a> of how to use them.</p>
 <p>If you would like to have features added, please check out the already reported issues and <a class="reference external" href="https://github.com/vliz-be-opsci/pysubyt/issues/new">create a new one</a> if your specific idea isn’t listed yet.</p>
 <section id="uritemplate-expansion">
-<h2>uritemplate-expansion:<a class="headerlink" href="#uritemplate-expansion" title="Permalink to this heading">#</a></h2>
+<h2>uritemplate-expansion:<a class="headerlink" href="#uritemplate-expansion" title="Link to this heading">#</a></h2>
 <p>We recommend using the built-in function <code class="docutils literal notranslate"><span class="pre">uritexpand(uritemplat,</span> <span class="pre">context)</span></code> to produce valid URI based on data variables available in a context-object. (and not through cumbersome, non-standard, and often brittle string-concatenation techniques)</p>
 <p>This implementation follows the <a class="reference external" href="#">URITemplates - RFC6570</a> standard.</p>
 <p>Assuming a context object <code class="docutils literal notranslate"><span class="pre">_</span></code> that looks like:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-  &quot;id&quot;: 01472,
-  &quot;type&quot;: &#39;boat&#39;
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">01472</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;boa</span><span class="kc">t</span><span class="err">&#39;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Then a basic template containing:</p>
@@ -215,7 +215,7 @@
 </div></blockquote>
 </section>
 <section id="regex-replacements">
-<h2>regex-replacements:<a class="headerlink" href="#regex-replacements" title="Permalink to this heading">#</a></h2>
+<h2>regex-replacements:<a class="headerlink" href="#regex-replacements" title="Link to this heading">#</a></h2>
 <p>For basic string-reformatting we provided the <code class="docutils literal notranslate"><span class="pre">regereplace(regexmatch,</span> <span class="pre">replacement,</span> <span class="pre">original)</span></code> function.</p>
 <p>So that e.g.</p>
 <div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span><span class="nv">regexreplace</span><span class="o">(</span><span class="s1">&#39;^[^:]*:&#39;</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="o">,</span> <span class="s1">&#39;all-after-semicolon:is-kept&#39;</span><span class="o">)</span><span class="cp">}}</span>
@@ -227,7 +227,7 @@
 </div></blockquote>
 </section>
 <section id="turtle-formatting">
-<h2>turtle formatting:<a class="headerlink" href="#turtle-formatting" title="Permalink to this heading">#</a></h2>
+<h2>turtle formatting:<a class="headerlink" href="#turtle-formatting" title="Link to this heading">#</a></h2>
 <p>We consider <code class="docutils literal notranslate"><span class="pre">text/turtle</span></code> to be (contemporary) the triple-format with the best balanced features towards ‘ease of reading/writing’ by humans at least.  More machine-friendly RDF formats can be easily generated from it.  Following that thought we assume templates will be easiest to read/write when targeting that output-format.</p>
 <p>While the underlying jinjai engine still allows to generate any text based output, we currently have made a special effort to facilitate typical turtle-based string-formatting.</p>
 <p>The provided jinja filter that deals with this is called <code class="docutils literal notranslate"><span class="pre">|</span> <span class="pre">ttl(type,</span> <span class="pre">quote_char)</span></code> and uses a type-argument to indicate the intended effect.</p>
@@ -248,7 +248,7 @@
 </div></blockquote>
 </section>
 <section id="file-input-from-various-sources">
-<h2>file input from various sources:<a class="headerlink" href="#file-input-from-various-sources" title="Permalink to this heading">#</a></h2>
+<h2>file input from various sources:<a class="headerlink" href="#file-input-from-various-sources" title="Link to this heading">#</a></h2>
 <p>As explained in the documentation for the <a class="reference internal" href="cli.html"><span class="doc">cli</span></a> one can specify mulitple datafiles to be available during the templating process.</p>
 <p>These input-datafiles can be in any of the following format:</p>
 <ul class="simple">
@@ -258,7 +258,7 @@
 </ul>
 <p>It could even be a folder containing files of the above format, or even a mix of those.</p>
 <section id="text-csv-input">
-<h3><code class="docutils literal notranslate"><span class="pre">text/csv</span></code> input:<a class="headerlink" href="#text-csv-input" title="Permalink to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">text/csv</span></code> input:<a class="headerlink" href="#text-csv-input" title="Link to this heading">#</a></h3>
 <p>These are expected to use the <code class="docutils literal notranslate"><span class="pre">,</span></code> as separator, be encoded in utf-8, and use the a (first) header-line holding the comma-separated column-names for each of the contained fields.</p>
 <p>Each row in the table is iterated as a single record to be templated.</p>
 <blockquote>
@@ -266,7 +266,7 @@
 </div></blockquote>
 </section>
 <section id="text-xml-input">
-<h3><code class="docutils literal notranslate"><span class="pre">text/xml</span></code> input:<a class="headerlink" href="#text-xml-input" title="Permalink to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">text/xml</span></code> input:<a class="headerlink" href="#text-xml-input" title="Link to this heading">#</a></h3>
 <p>These are parsed using the <code class="docutils literal notranslate"><span class="pre">[xmlasict](https://github.com/vliz-be-opsci/xmlasdict)</span></code> project to preserve a decent support for XML’s native mixed-content model.</p>
 <p>Any higher wrapper levels are automatically unpacked, immediately iterating over the lowest possible (auto-detected) nested that level in the XML that will produce repeatable contents.</p>
 <blockquote>
@@ -274,14 +274,14 @@
 </div></blockquote>
 </section>
 <section id="application-json-input">
-<h3><code class="docutils literal notranslate"><span class="pre">application/json</span></code> input:<a class="headerlink" href="#application-json-input" title="Permalink to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">application/json</span></code> input:<a class="headerlink" href="#application-json-input" title="Link to this heading">#</a></h3>
 <p>As with xml higher level wrapping structures are automatically unpacked.</p>
 <blockquote>
 <div><p>see <a class="reference external" href="./examples.md#04-json-team_no-it">example-04</a>, <a class="reference external" href="./examples.md#06-singlejson_no-it">example-06</a></p>
 </div></blockquote>
 </section>
 <section id="folder-input">
-<h3>folder input:<a class="headerlink" href="#folder-input" title="Permalink to this heading">#</a></h3>
+<h3>folder input:<a class="headerlink" href="#folder-input" title="Link to this heading">#</a></h3>
 <p>Folder input-structures (nested folders and files) are iterated in file-system-order and depth-first so to produce their own records one ata a time. As such it is even possible to combine various formats of data-input files inside one folder.</p>
 <blockquote>
 <div><p>see <a class="reference external" href="./examples.md#07-folderinput_no-it">example-07</a></p>
@@ -289,7 +289,7 @@
 </section>
 </section>
 <section id="mapping">
-<h2>mapping:<a class="headerlink" href="#mapping" title="Permalink to this heading">#</a></h2>
+<h2>mapping:<a class="headerlink" href="#mapping" title="Link to this heading">#</a></h2>
 <p>A typical use case for using multiple input data-sets (various input-sources) in puSUbyT is to have a certain value from your main input source mapped onto some normalized reference value by using a translation-set (or mapping-file).</p>
 <p>To do exactly this the built-in <code class="docutils literal notranslate"><span class="pre">map(set,</span> <span class="pre">key_name,</span> <span class="pre">value_name,</span> <span class="pre">cache_key)</span></code> function will create a so-called <code class="docutils literal notranslate"><span class="pre">ValueMapper</span></code> object that then can <code class="docutils literal notranslate"><span class="pre">apply(record,</span> <span class="pre">origin_name,</span> <span class="pre">target_name)</span></code> the mapping to a specific record.</p>
 <p>In all of this:</p>
@@ -310,7 +310,7 @@
 </div></blockquote>
 </section>
 <section id="template-management-features-provided-by-jinja2">
-<h2>template management features provided by Jinja2:<a class="headerlink" href="#template-management-features-provided-by-jinja2" title="Permalink to this heading">#</a></h2>
+<h2>template management features provided by Jinja2:<a class="headerlink" href="#template-management-features-provided-by-jinja2" title="Link to this heading">#</a></h2>
 <p>All the smart tricks to optimise your template management and reuse consistnt tricks and effects across your templates by using <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">import</span> <span class="pre">%}</span></code>, <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">macro</span> <span class="pre">%}</span></code>,  and <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">include</span> <span class="pre">%}</span></code> are provided by Jinja itself and just accessible too.</p>
 <p>Please check out the <a class="reference external" href="https://jinja.palletsprojects.com/en/3.0.x/">Jinja documentation</a>.</p>
 <blockquote>
@@ -318,7 +318,7 @@
 </div></blockquote>
 </section>
 <section id="process-control-indicators">
-<h2>process control indicators<a class="headerlink" href="#process-control-indicators" title="Permalink to this heading">#</a></h2>
+<h2>process control indicators<a class="headerlink" href="#process-control-indicators" title="Link to this heading">#</a></h2>
 <p>Finally, there are some specific control-information elements availablt to your template via the <code class="docutils literal notranslate"><span class="pre">ctrl</span></code> variable.</p>
 <p>These are:</p>
 <p>| variable         | function / meaning          |
@@ -395,9 +395,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=f3b75425"></script>
+</div><script src="_static/documentation_options.js?v=8b92e751"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>pySUbyT - pysubyt v0.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -188,10 +188,10 @@
         </div>
         <article role="main">
           <section id="pysubyt">
-<h1>pySUbyT<a class="headerlink" href="#pysubyt" title="Permalink to this heading">#</a></h1>
+<h1>pySUbyT<a class="headerlink" href="#pysubyt" title="Link to this heading">#</a></h1>
 <p>Py Semantic Uplifting by Template (py-SUbyT) is a python module for Linked Data production (a.k.a. semantic uplifting) through Templating.</p>
 <section id="how-to-use">
-<h2>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this heading">#</a></h2>
+<h2>How to use<a class="headerlink" href="#how-to-use" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a py virtualenv</span>
 <span class="n">virtualenv</span> <span class="n">venv</span> <span class="o">-</span><span class="n">p</span> <span class="n">python3</span>
 
@@ -221,30 +221,30 @@
 </div>
 </section>
 <section id="py-subyt-arguments">
-<h2>Py-SUByT arguments<a class="headerlink" href="#py-subyt-arguments" title="Permalink to this heading">#</a></h2>
+<h2>Py-SUByT arguments<a class="headerlink" href="#py-subyt-arguments" title="Link to this heading">#</a></h2>
 <section id="input-file-i-file">
-<h3><code class="docutils literal notranslate"><span class="pre">--input</span> <span class="pre">«FILE»</span></code> | <code class="docutils literal notranslate"><span class="pre">-i</span> <span class="pre">«FILE»</span></code><a class="headerlink" href="#input-file-i-file" title="Permalink to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">--input</span> <span class="pre">«FILE»</span></code> | <code class="docutils literal notranslate"><span class="pre">-i</span> <span class="pre">«FILE»</span></code><a class="headerlink" href="#input-file-i-file" title="Link to this heading">#</a></h3>
 <p>Specifies the base input to run over during the templating process. This can either be a folder or a file and is callable as <code class="docutils literal notranslate"><span class="pre">_</span></code> within the template.<br />Is actually shorthand for -s _ FILE. So other characters than _ can also be specified to call the input in the template.</p>
 <p>Default: None<br />Example use:
 <code class="docutils literal notranslate"><span class="pre">--input</span> <span class="pre">../../Documents/some_folder/example_data.csv</span> <span class="pre">-i</span> <span class="pre">../example.xml</span> <span class="pre">-s</span> <span class="pre">_</span> <span class="pre">../../Documents/some_folder/example_data.csv</span></code></p>
 </section>
 <section id="set-name-path-s-name-path">
-<h3><code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">«name»</span> <span class="pre">«PATH»</span></code> | <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">«name»</span> <span class="pre">«PATH»</span></code><a class="headerlink" href="#set-name-path-s-name-path" title="Permalink to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">«name»</span> <span class="pre">«PATH»</span></code> | <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">«name»</span> <span class="pre">«PATH»</span></code><a class="headerlink" href="#set-name-path-s-name-path" title="Link to this heading">#</a></h3>
 <p>Specifies (other) inputs to run over. Multiple entries will add different sets under <code class="docutils literal notranslate"><span class="pre">sets[&quot;name&quot;]</span></code> to the templating process.</p>
 <p>Default: None<br />Example use:<br /><code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">jsondata</span> <span class="pre">./data_formats/data.json</span> <span class="pre">--set</span> <span class="pre">xmldata</span> <span class="pre">./data_formats/data.xml</span> <span class="pre">-s</span> <span class="pre">people</span> <span class="pre">../people/</span></code></p>
 </section>
 <section id="templates-folder-t-folder">
-<h3><code class="docutils literal notranslate"><span class="pre">--templates</span> <span class="pre">«FOLDER»</span></code>  | <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">«FOLDER»</span></code><a class="headerlink" href="#templates-folder-t-folder" title="Permalink to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">--templates</span> <span class="pre">«FOLDER»</span></code>  | <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">«FOLDER»</span></code><a class="headerlink" href="#templates-folder-t-folder" title="Link to this heading">#</a></h3>
 <p>Passes the context folder holding all the templates.</p>
 <p>Default: ./ (current folder)<br />Example use:<br /><code class="docutils literal notranslate"><span class="pre">--templates</span> <span class="pre">../templates/</span> <span class="pre">-t</span> <span class="pre">../xml_templates/</span></code></p>
 </section>
 <section id="name-name-n-name">
-<h3><code class="docutils literal notranslate"><span class="pre">--name</span> <span class="pre">«name»</span></code> | <code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">«name»</span></code><a class="headerlink" href="#name-name-n-name" title="Permalink to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">--name</span> <span class="pre">«name»</span></code> | <code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">«name»</span></code><a class="headerlink" href="#name-name-n-name" title="Link to this heading">#</a></h3>
 <p>Speficies the name of the template to use.</p>
 <p>Default: None<br />Example use:<br /><code class="docutils literal notranslate"><span class="pre">--name</span> <span class="pre">anothertemplate.ttl</span> <span class="pre">-n</span> <span class="pre">template_name.ldt</span></code></p>
 </section>
 <section id="output-path-o-path">
-<h3><code class="docutils literal notranslate"><span class="pre">--output</span> <span class="pre">«PATH»</span></code> | <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">«PATH»</span></code><a class="headerlink" href="#output-path-o-path" title="Permalink to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">--output</span> <span class="pre">«PATH»</span></code> | <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">«PATH»</span></code><a class="headerlink" href="#output-path-o-path" title="Link to this heading">#</a></h3>
 <p>Specifies where to write the output.
 You can make use of {uritemplate} notatoin which allows to include the values of a specified iterable field (a column, key, element, …) in the name of the output-files.</p>
 <p>Default: None<br />Example use:<br /><code class="docutils literal notranslate"><span class="pre">--output</span> <span class="pre">./data_updated/file1.ttl</span> <span class="pre">-o</span> <span class="pre">../updated_datasets/dataset-{id}.ttl</span> <span class="pre">#when</span> <span class="pre">the</span> <span class="pre">input</span> <span class="pre">contains</span> <span class="pre">an</span> <span class="pre">iterable</span> <span class="pre">(column,</span> <span class="pre">key,</span> <span class="pre">...)</span> <span class="pre">with</span> <span class="pre">name</span> <span class="pre">'id'</span></code></p>
@@ -256,10 +256,10 @@ You can make use of {uritemplate} notatoin which allows to include the values of
 <code class="docutils literal notranslate"><span class="pre">--logconfig</span> <span class="pre">../logconfig.yml</span> <span class="pre">-l</span> <span class="pre">../logconf.yml</span></code></p>
 </section>
 <section id="mode-mode-string-m-mode-string">
-<h3><code class="docutils literal notranslate"><span class="pre">--mode</span> <span class="pre">«mode_string»</span></code> | <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">«mode_string»</span></code><a class="headerlink" href="#mode-mode-string-m-mode-string" title="Permalink to this heading">#</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">--mode</span> <span class="pre">«mode_string»</span></code> | <code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">«mode_string»</span></code><a class="headerlink" href="#mode-mode-string-m-mode-string" title="Link to this heading">#</a></h3>
 <p>The mode-string is a comma-separated (no spaces) list of (possibly abbreviated) codes that modify the behaviour of the templating system.</p>
 <section id="it-eration-no-it-eration">
-<h4><strong>it(eration) | no-it(eration)</strong><a class="headerlink" href="#it-eration-no-it-eration" title="Permalink to this heading">#</a></h4>
+<h4><strong>it(eration) | no-it(eration)</strong><a class="headerlink" href="#it-eration-no-it-eration" title="Link to this heading">#</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* no-it(eration) = the template is called once for the complete input set in templating process. Iteration through input set is still possible via for-loop within template (see [test-02-no-it](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection_no-it.ttl)).  
 * it(eration) = template called with each iteration through the input set. Extra control variables available: &#39;ctrl.isFirst&#39; and &#39;ctrl.isLast&#39;, which are called on first and last iteration respectively (see [test-02](https://github.com/vliz-be-opsci/pysubyt/blob/main/tests/templates/02-collection.ttl)).  
 
@@ -273,7 +273,7 @@ Use examples:
 </div>
 </section>
 <section id="fl-atten-no-fl-atten">
-<h4><strong>fl(atten) | no-fl(atten)</strong><a class="headerlink" href="#fl-atten-no-fl-atten" title="Permalink to this heading">#</a></h4>
+<h4><strong>fl(atten) | no-fl(atten)</strong><a class="headerlink" href="#fl-atten-no-fl-atten" title="Link to this heading">#</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Not yet implemented.  
 
 Default: no-fl
@@ -286,7 +286,7 @@ Use examples:
 </div>
 </section>
 <section id="ignorecase-no-ignorecase">
-<h4><strong>ignorecase | no-ignorecase</strong><a class="headerlink" href="#ignorecase-no-ignorecase" title="Permalink to this heading">#</a></h4>
+<h4><strong>ignorecase | no-ignorecase</strong><a class="headerlink" href="#ignorecase-no-ignorecase" title="Link to this heading">#</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Not yet implemented.  
 
 Default: no-ig
@@ -366,9 +366,9 @@ Use examples:
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=f3b75425"></script>
+</div><script src="_static/documentation_options.js?v=8b92e751"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

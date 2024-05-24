@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>pysubyt.sinks - pysubyt v0.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -186,17 +186,23 @@
         </div>
         <article role="main">
           <h1>Source code for pysubyt.sinks</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">from</span> <span class="nn">uritemplate</span> <span class="kn">import</span> <span class="n">URITemplate</span><span class="p">,</span> <span class="n">variables</span>
 
 <span class="kn">from</span> <span class="nn">pysubyt.api</span> <span class="kn">import</span> <span class="n">Sink</span>
 
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<div class="viewcode-block" id="assert_writable"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.assert_writable">[docs]</a><span class="k">def</span> <span class="nf">assert_writable</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="assert_writable">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.assert_writable">[docs]</a>
+<span class="k">def</span> <span class="nf">assert_writable</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">force_output</span><span class="p">:</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="p">(</span>
-            <span class="s2">&quot;File to write &#39;</span><span class="si">%s</span><span class="s2">&#39; alread exists&quot;</span> <span class="o">%</span> <span class="n">file_path</span>
+            <span class="s2">&quot;File to write &#39;</span><span class="si">%s</span><span class="s2">&#39; already exists&quot;</span> <span class="o">%</span> <span class="n">file_path</span>
         <span class="p">)</span>
     <span class="n">parent_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">parent_path</span><span class="p">):</span>
@@ -206,38 +212,80 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SinkFactory"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SinkFactory">[docs]</a><span class="k">class</span> <span class="nc">SinkFactory</span><span class="p">:</span>
-<div class="viewcode-block" id="SinkFactory.make_sink"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SinkFactory.make_sink">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">make_sink</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sink</span><span class="p">:</span>
+
+<div class="viewcode-block" id="SinkFactory">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SinkFactory">[docs]</a>
+<span class="k">class</span> <span class="nc">SinkFactory</span><span class="p">:</span>
+<div class="viewcode-block" id="SinkFactory.make_sink">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SinkFactory.make_sink">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_sink</span><span class="p">(</span>
+        <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">force_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">allow_repeated_sink_paths</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sink</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">identifier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">allow_repeated_sink_paths</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;repeated sink paths do not apply to StdOutSink, &quot;</span>
+                    <span class="s2">&quot;ignoring...&quot;</span>
+                <span class="p">)</span>
             <span class="k">return</span> <span class="n">StdOutSink</span><span class="p">()</span>
         <span class="c1"># else:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">variables</span><span class="p">(</span><span class="n">identifier</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># identifier is not a pattern</span>
+            <span class="k">if</span> <span class="n">allow_repeated_sink_paths</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;repeated sink paths do not apply to SingleFileSink, &quot;</span>
+                    <span class="s2">&quot;ignoring...&quot;</span>
+                <span class="p">)</span>
             <span class="k">return</span> <span class="n">SingleFileSink</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">force_output</span><span class="p">)</span>
         <span class="c1"># else:                                        #identifier is a pattern</span>
-        <span class="k">return</span> <span class="n">PatternedFileSink</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">force_output</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">PatternedFileSink</span><span class="p">(</span>
+            <span class="n">identifier</span><span class="p">,</span> <span class="n">force_output</span><span class="p">,</span> <span class="n">allow_repeated_sink_paths</span>
+        <span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="StdOutSink"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.StdOutSink">[docs]</a><span class="k">class</span> <span class="nc">StdOutSink</span><span class="p">(</span><span class="n">Sink</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StdOutSink">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.StdOutSink">[docs]</a>
+<span class="k">class</span> <span class="nc">StdOutSink</span><span class="p">(</span><span class="n">Sink</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;StdOutSink&quot;</span>
 
-<div class="viewcode-block" id="StdOutSink.close"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.StdOutSink.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StdOutSink.open">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.StdOutSink.open">[docs]</a>
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="StdOutSink.add"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.StdOutSink.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">part</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="StdOutSink.close">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.StdOutSink.close">[docs]</a>
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="SingleFileSink"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SingleFileSink">[docs]</a><span class="k">class</span> <span class="nc">SingleFileSink</span><span class="p">(</span><span class="n">Sink</span><span class="p">):</span>
+<div class="viewcode-block" id="StdOutSink.add">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.StdOutSink.add">[docs]</a>
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_mtime</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">part</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SingleFileSink">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SingleFileSink">[docs]</a>
+<span class="k">class</span> <span class="nc">SingleFileSink</span><span class="p">(</span><span class="n">Sink</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">assert_writable</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">force_output</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">file_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fopen</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_force_output</span> <span class="o">=</span> <span class="n">force_output</span>
+        <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mtimes</span> <span class="o">=</span> <span class="p">{</span><span class="n">file_path</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;SingleFileSink(&#39;</span><span class="si">%s</span><span class="s2">&#39;, </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
@@ -245,19 +293,44 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_force_output</span><span class="p">,</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="SingleFileSink.close"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SingleFileSink.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SingleFileSink.open">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SingleFileSink.open">[docs]</a>
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fopen</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SingleFileSink.close">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SingleFileSink.close">[docs]</a>
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fopen</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fopen</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="SingleFileSink.add"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SingleFileSink.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fopen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;File to Sink to already close()d&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fopen</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">part</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="SingleFileSink.add">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.SingleFileSink.add">[docs]</a>
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_mtime</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fopen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;File to Sink to already closed&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fopen</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">part</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="PatternedFileSink"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.PatternedFileSink">[docs]</a><span class="k">class</span> <span class="nc">PatternedFileSink</span><span class="p">(</span><span class="n">Sink</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PatternedFileSink">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.PatternedFileSink">[docs]</a>
+<span class="k">class</span> <span class="nc">PatternedFileSink</span><span class="p">(</span><span class="n">Sink</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name_pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">force_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">allow_repeated_sink_paths</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name_template</span> <span class="o">=</span> <span class="n">URITemplate</span><span class="p">(</span><span class="n">name_pattern</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_force_output</span> <span class="o">=</span> <span class="n">force_output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_allow_repeated_sink_paths</span> <span class="o">=</span> <span class="n">allow_repeated_sink_paths</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mtimes</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;PatternedFileSink(&#39;</span><span class="si">%s</span><span class="s2">&#39;, </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
@@ -265,16 +338,56 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_force_output</span><span class="p">,</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="PatternedFileSink.close"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.PatternedFileSink.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PatternedFileSink.open">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.PatternedFileSink.open">[docs]</a>
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="PatternedFileSink.add"><a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.PatternedFileSink.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PatternedFileSink.close">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.PatternedFileSink.close">[docs]</a>
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">part</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source_mtime</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">sink_mtime</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span> <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">source_mtime</span> <span class="ow">and</span> <span class="p">(</span><span class="n">source_mtime</span> <span class="o">&lt;</span> <span class="n">sink_mtime</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Aborting creation of </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(source_mtime = </span><span class="si">{</span><span class="n">source_mtime</span><span class="si">}</span><span class="s2">; sink_mtime = </span><span class="si">{</span><span class="n">sink_mtime</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">assert_writable</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_output</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PatternedFileSink.add">
+<a class="viewcode-back" href="../../pysubyt.html#pysubyt.sinks.PatternedFileSink.add">[docs]</a>
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">source_mtime</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">assert</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;No data context available to expand template&quot;</span>
         <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="n">assert_writable</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_output</span><span class="p">)</span>
-        <span class="n">fopen</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-        <span class="n">fopen</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
-        <span class="n">fopen</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_repeated_sink_paths</span><span class="p">:</span>
+            <span class="n">extended_file_path</span> <span class="o">=</span> <span class="n">file_path</span><span class="p">[:]</span>
+            <span class="k">if</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_paths</span><span class="p">:</span>
+                <span class="n">extended_file_path</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_paths</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">extended_file_path</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="n">source_mtime</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_paths</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2"> was already created in this process, &quot;</span>
+                    <span class="s2">&quot;make sure data items are not duplicated or &quot;</span>
+                    <span class="s2">&quot;set allow_repeated_sink_paths to True&quot;</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="n">source_mtime</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -307,9 +420,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=f3b75425"></script>
+</div><script src="../../_static/documentation_options.js?v=8b92e751"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

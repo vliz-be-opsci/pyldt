@@ -36,6 +36,14 @@ pysubyt.sources module
    :undoc-members:
    :show-inheritance:
 
+pysubyt.subyt module
+--------------------
+
+.. automodule:: pysubyt.subyt
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

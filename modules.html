@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>pysubyt - pysubyt v0.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -188,7 +188,7 @@
         </div>
         <article role="main">
           <section id="pysubyt">
-<h1>pysubyt<a class="headerlink" href="#pysubyt" title="Permalink to this heading">#</a></h1>
+<h1>pysubyt<a class="headerlink" href="#pysubyt" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pysubyt.html">pysubyt package</a><ul>
@@ -210,20 +210,21 @@
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.Generator.process"><code class="docutils literal notranslate"><span class="pre">Generator.process()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.api.GeneratorSettings"><code class="docutils literal notranslate"><span class="pre">GeneratorSettings</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.GeneratorSettings.as_modifier_str"><code class="docutils literal notranslate"><span class="pre">GeneratorSettings.as_modifier_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.GeneratorSettings.describe"><code class="docutils literal notranslate"><span class="pre">GeneratorSettings.describe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.GeneratorSettings.load_from_modifiers"><code class="docutils literal notranslate"><span class="pre">GeneratorSettings.load_from_modifiers()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.api.IteratorsFromSources"><code class="docutils literal notranslate"><span class="pre">IteratorsFromSources</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.api.ReIterableAccess"><code class="docutils literal notranslate"><span class="pre">ReIterableAccess</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.ReIterableAccess.update"><code class="docutils literal notranslate"><span class="pre">ReIterableAccess.update()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.api.Settings"><code class="docutils literal notranslate"><span class="pre">Settings</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.Settings.as_modifier_str"><code class="docutils literal notranslate"><span class="pre">Settings.as_modifier_str()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.Settings.describe"><code class="docutils literal notranslate"><span class="pre">Settings.describe()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.Settings.load_from_modifiers"><code class="docutils literal notranslate"><span class="pre">Settings.load_from_modifiers()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.api.Sink"><code class="docutils literal notranslate"><span class="pre">Sink</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.Sink.add"><code class="docutils literal notranslate"><span class="pre">Sink.add()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.Sink.close"><code class="docutils literal notranslate"><span class="pre">Sink.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.api.Sink.open"><code class="docutils literal notranslate"><span class="pre">Sink.open()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.api.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a></li>
@@ -233,11 +234,13 @@
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.PatternedFileSink"><code class="docutils literal notranslate"><span class="pre">PatternedFileSink</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.PatternedFileSink.add"><code class="docutils literal notranslate"><span class="pre">PatternedFileSink.add()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.PatternedFileSink.close"><code class="docutils literal notranslate"><span class="pre">PatternedFileSink.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.PatternedFileSink.open"><code class="docutils literal notranslate"><span class="pre">PatternedFileSink.open()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.SingleFileSink"><code class="docutils literal notranslate"><span class="pre">SingleFileSink</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.SingleFileSink.add"><code class="docutils literal notranslate"><span class="pre">SingleFileSink.add()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.SingleFileSink.close"><code class="docutils literal notranslate"><span class="pre">SingleFileSink.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.SingleFileSink.open"><code class="docutils literal notranslate"><span class="pre">SingleFileSink.open()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.SinkFactory"><code class="docutils literal notranslate"><span class="pre">SinkFactory</span></code></a><ul>
@@ -247,6 +250,7 @@
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.StdOutSink"><code class="docutils literal notranslate"><span class="pre">StdOutSink</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.StdOutSink.add"><code class="docutils literal notranslate"><span class="pre">StdOutSink.add()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.StdOutSink.close"><code class="docutils literal notranslate"><span class="pre">StdOutSink.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.StdOutSink.open"><code class="docutils literal notranslate"><span class="pre">StdOutSink.open()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sinks.assert_writable"><code class="docutils literal notranslate"><span class="pre">assert_writable()</span></code></a></li>
@@ -254,6 +258,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pysubyt.html#module-pysubyt.sources">pysubyt.sources module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sources.CSVFileSource"><code class="docutils literal notranslate"><span class="pre">CSVFileSource</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sources.CollectionSource"><code class="docutils literal notranslate"><span class="pre">CollectionSource</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sources.FolderSource"><code class="docutils literal notranslate"><span class="pre">FolderSource</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sources.GlobSource"><code class="docutils literal notranslate"><span class="pre">GlobSource</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sources.JsonFileSource"><code class="docutils literal notranslate"><span class="pre">JsonFileSource</span></code></a></li>
@@ -272,6 +277,13 @@
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.sources.fname_from_cdisp"><code class="docutils literal notranslate"><span class="pre">fname_from_cdisp()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pysubyt.html#module-pysubyt.subyt">pysubyt.subyt module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.subyt.Subyt"><code class="docutils literal notranslate"><span class="pre">Subyt</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.subyt.Subyt.process"><code class="docutils literal notranslate"><span class="pre">Subyt.process()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="pysubyt.html#module-pysubyt">Module contents</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.Generator"><code class="docutils literal notranslate"><span class="pre">Generator</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.Generator.Processor"><code class="docutils literal notranslate"><span class="pre">Generator.Processor</span></code></a></li>
@@ -280,19 +292,20 @@
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.Generator.process"><code class="docutils literal notranslate"><span class="pre">Generator.process()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.JinjaBasedGenerator"><code class="docutils literal notranslate"><span class="pre">JinjaBasedGenerator</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.JinjaBasedGenerator.make_render_fn"><code class="docutils literal notranslate"><span class="pre">JinjaBasedGenerator.make_render_fn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.GeneratorSettings"><code class="docutils literal notranslate"><span class="pre">GeneratorSettings</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.GeneratorSettings.as_modifier_str"><code class="docutils literal notranslate"><span class="pre">GeneratorSettings.as_modifier_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.GeneratorSettings.describe"><code class="docutils literal notranslate"><span class="pre">GeneratorSettings.describe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.GeneratorSettings.load_from_modifiers"><code class="docutils literal notranslate"><span class="pre">GeneratorSettings.load_from_modifiers()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.Settings"><code class="docutils literal notranslate"><span class="pre">Settings</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.Settings.as_modifier_str"><code class="docutils literal notranslate"><span class="pre">Settings.as_modifier_str()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.Settings.describe"><code class="docutils literal notranslate"><span class="pre">Settings.describe()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.Settings.load_from_modifiers"><code class="docutils literal notranslate"><span class="pre">Settings.load_from_modifiers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.JinjaBasedGenerator"><code class="docutils literal notranslate"><span class="pre">JinjaBasedGenerator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.JinjaBasedGenerator.make_render_fn"><code class="docutils literal notranslate"><span class="pre">JinjaBasedGenerator.make_render_fn()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.Sink"><code class="docutils literal notranslate"><span class="pre">Sink</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.Sink.add"><code class="docutils literal notranslate"><span class="pre">Sink.add()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.Sink.close"><code class="docutils literal notranslate"><span class="pre">Sink.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.Sink.open"><code class="docutils literal notranslate"><span class="pre">Sink.open()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.SinkFactory"><code class="docutils literal notranslate"><span class="pre">SinkFactory</span></code></a><ul>
@@ -308,6 +321,10 @@
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.SourceFactory.mime_from_identifier"><code class="docutils literal notranslate"><span class="pre">SourceFactory.mime_from_identifier()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.SourceFactory.mime_from_url"><code class="docutils literal notranslate"><span class="pre">SourceFactory.mime_from_url()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.SourceFactory.register"><code class="docutils literal notranslate"><span class="pre">SourceFactory.register()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pysubyt.html#pysubyt.Subyt"><code class="docutils literal notranslate"><span class="pre">Subyt</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pysubyt.html#pysubyt.Subyt.process"><code class="docutils literal notranslate"><span class="pre">Subyt.process()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -349,9 +366,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=f3b75425"></script>
+</div><script src="_static/documentation_options.js?v=8b92e751"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>pysubyt.j2.generator - pysubyt v0.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -195,7 +195,9 @@
 <span class="kn">from</span> <span class="nn">pysubyt.api</span> <span class="kn">import</span> <span class="n">Generator</span>
 
 
-<div class="viewcode-block" id="JinjaBasedGenerator"><a class="viewcode-back" href="../../../pysubyt.j2.html#pysubyt.JinjaBasedGenerator">[docs]</a><span class="k">class</span> <span class="nc">JinjaBasedGenerator</span><span class="p">(</span><span class="n">Generator</span><span class="p">):</span>
+<div class="viewcode-block" id="JinjaBasedGenerator">
+<a class="viewcode-back" href="../../../pysubyt.j2.html#pysubyt.JinjaBasedGenerator">[docs]</a>
+<span class="k">class</span> <span class="nc">JinjaBasedGenerator</span><span class="p">(</span><span class="n">Generator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Core class for the jinja based LD Templating service.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -233,10 +235,14 @@
         <span class="n">abs_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_templates_folder</span><span class="p">)</span>
         <span class="k">return</span> <span class="s2">&quot;JinjaBasedGenerator(&#39;</span><span class="si">%s</span><span class="s2">&#39;)&quot;</span> <span class="o">%</span> <span class="n">abs_folder</span>
 
-<div class="viewcode-block" id="JinjaBasedGenerator.make_render_fn"><a class="viewcode-back" href="../../../pysubyt.j2.html#pysubyt.JinjaBasedGenerator.make_render_fn">[docs]</a>    <span class="k">def</span> <span class="nf">make_render_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<div class="viewcode-block" id="JinjaBasedGenerator.make_render_fn">
+<a class="viewcode-back" href="../../../pysubyt.j2.html#pysubyt.JinjaBasedGenerator.make_render_fn">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_render_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">syntax_builder</span><span class="o">.</span><span class="n">_get_rdfsyntax_template</span><span class="p">(</span>
             <span class="n">template_name</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">render</span></div></div>
+        <span class="p">)</span><span class="o">.</span><span class="n">render</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -269,9 +275,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=f3b75425"></script>
+</div><script src="../../../_static/documentation_options.js?v=8b92e751"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
