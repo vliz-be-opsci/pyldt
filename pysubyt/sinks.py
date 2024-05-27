@@ -83,7 +83,7 @@ class SingleFileSink(Sink):
         )
 
     def open(self):
-        self._fopen = open(self._file_path, "w")
+        self._fopen = open(self._file_path, "w", encoding="utf-8")
 
     def close(self):
         self._fopen.close()
@@ -133,7 +133,7 @@ class PatternedFileSink(Sink):
             return
         assert_writable(file_path, self._force_output)
         logger.info(f"Creating {file_path}")
-        with open(file_path, "w") as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             f.write(part)
 
     def add(self, part: str, item: dict = None, source_mtime: float = None):
