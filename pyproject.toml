@@ -24,7 +24,7 @@ typeguard =  "*"
 python-dateutil =  "*"
 xmlasdict =  "*"
 jinja2 =  "*"
-pyrdfj2 =  "*"
+pyrdfj2 = { git = "https://github.com/vliz-be-opsci/pyrdfj2.git", branch = "main" }
 furo = "*"
 recommonmark = "*"
 pandas = "*"
