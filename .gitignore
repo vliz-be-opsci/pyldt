@@ -28,3 +28,4 @@ src/xmltodict
 
 examples/data
 tests/tmp
+.env
